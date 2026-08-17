@@ -1,216 +1,162 @@
-# Apypos
+# MHXR — Apypos Server (restoration work)
 
-[![CI](https://github.com/Forgotten-MH/apypos-server/actions/workflows/ci.yml/badge.svg)](https://github.com/Forgotten-MH/apypos-server/actions/workflows/ci.yml)
-[![Docker](https://github.com/Forgotten-MH/apypos-server/actions/workflows/docker.yml/badge.svg)](https://github.com/Forgotten-MH/apypos-server/actions/workflows/docker.yml)
+**Work in progress.** A private server for *Monster Hunter Explore* (モンスターハンター エクスプロア),
+the Capcom mobile game whose official servers were shut down in 2020.
 
-A server emulator for **Monster Hunter Explore** (MHXR), the mobile-exclusive Monster Hunter title (iOS/Android) shut down by Capcom. Apypos handles Blowfish-encrypted HTTP API routes, real-time multiplayer via Socket.IO, and serves game resource files (FPK archives).
+This repository is a working fork of [Forgotten-MH/apypos-server](https://github.com/Forgotten-MH/apypos-server),
+focused on one goal: **making the event quests actually work**. Story/island quests already
+ran fine upstream; event quests were largely broken or invisible. Most of the work here is
+about bringing those back.
 
-> [!WARNING]
-> This project is in a **WIP** state. If you paid for any of this, you were scammed.
+The long-term aim is to get the server stable enough to open it up so people can play together
+again. It is not there yet — see [Current state](#current-state).
 
-## Table of Contents
+> **Owner:** [@Heroic853](https://github.com/Heroic853) — everyone else contributes.
 
-- [Prerequisites](#prerequisites)
-- [Setup](#setup)
-- [Configuration](#configuration)
-- [Resource Files](#resource-files)
-- [Running](#running)
-- [Commands](#commands)
-- [Architecture](#architecture)
-- [IDs and Quests](#ids-and-quests)
-- [Logging](#logging)
-- [Why the Name?](#why-the-name)
-- [Disclaimer](#disclaimer)
-- [License](#license)
+---
 
-## Prerequisites
+## Current state
 
-- **Node.js** >= 20
-  - Via [nvm](https://github.com/nvm-sh/nvm/releases/): `nvm install 20`
-  - Or [direct download](https://nodejs.org/)
-- **Yarn**: `npm install -g yarn`
-- **MongoDB** — either:
-  - [Install locally](https://www.mongodb.com/products/self-managed/community-edition), or
-  - Run `docker-compose up` (requires [Docker](https://www.docker.com/))
-- **Git** (optional) — [Download](https://git-scm.com/)
+| Area | Status |
+|---|---|
+| Login, account creation, asset download | working |
+| Story / island quests | working (unchanged from upstream) |
+| Event quests — visibility | **fixed** — all 2189 event quest entries are now reachable in game |
+| Event quests — correct monster | **~1490 assigned**, roughly 96% of event quests |
+| Event quests — rewards | **fixed** — quests now grant their own reward materials |
+| Multiplayer | working, lightly tested |
+| Public/open server | not yet — still running privately on a home machine |
 
-## Setup
+---
 
-1. Clone the repository.
+## What was fixed here
 
-2. Install dependencies:
-   ```bash
-   yarn install
-   ```
+### Event quests were invisible
 
-3. Run the setup script (creates `.env`, resource directories, and empty download lists):
-   ```bash
-   yarn setup
-   ```
+The game reads events from six collections (`tourevents`, `m16events`, `standingevents`,
+`assualtevents`, `scoreevents`, `ticketevents`). Only 289 of the 983 event nodes had ever been
+registered into any of them, so **74% of event content simply did not exist** as far as the client
+was concerned. Mapping the remaining `mBannerPath` prefixes to their collections took reachable
+quests from 561 to 2189.
 
-4. Edit `.env` with your network settings (LAN IP, MongoDB credentials, etc.).
+### Boss and reward data was silently lost on import
 
-5. (Optional) If you have a local backup of the MHXR game resources, import them:
-   ```bash
-   yarn setup --import-resources /path/to/res/download
-   ```
-   The path should contain `android/` and/or `ios/` subdirectories. This creates symlinks into the server's resource directory and the server will generate download lists with real CRC checksums on next startup.
+Every event quest *does* carry its boss and reward list in the raw game files, but the XFS
+converter wraps them as `{mAutoDelete, classref_: {mpArray: [...]}}` — and in some quests the key
+is `array` instead, with the objects already merged. The Mongoose schema expects a plain array,
+received an object, and wrote `[null]`.
 
-6. (Optional) Build for production:
-   ```bash
-   yarn build
-   ```
+Recovered: **1525 boss entries** and **1524 reward lists**.
 
-## Configuration
+### Rewards were hardcoded
 
-`yarn setup` copies `.env.example` to `.env` automatically. Adjust the values as needed.
+Even after recovery, `questIsland.controller.ts` never read them: `other_list_add` was four fixed
+slots all handing out the same material id. Rewards are now drawn from the quest's own
+`mRewardItemList`, weighted by `mProbScale`.
 
-> [!IMPORTANT]
-> `IP`, `RES_URL`, and `WEB_URL` must be set to an IP address reachable by the game client (e.g. your LAN IP). The client runs on a mobile device or emulator and cannot reach `127.0.0.1` on the host machine.
+### Wrong monsters
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `IP` | `0.0.0.0` | Server bind address |
-| `PORT` | `80` | Server port |
-| `WEB_URL` | `http://127.0.0.1/web` | Web interface URL sent to the client — **set to your LAN IP** |
-| `RES_URL` | `http://127.0.0.1/` | Resource files base URL sent to the client — **set to your LAN IP** |
-| `DB_IP` | `127.0.0.1` | MongoDB host |
-| `DB_PORT` | `27017` | MongoDB port |
-| `DB_NAME` | `apypos` | MongoDB database name |
-| `DB_USER` | `root` | MongoDB username |
-| `DB_PASSWORD` | `example` | MongoDB password |
-| `IS_MAINTENANCE` | `false` | Enable maintenance mode |
-| `DEBUG` | `false` | Log full request/response bodies |
+The monster is not sent by the server — it comes from the **map block** the server picks. Wrong
+block, wrong monster. The quest→block mapping does not exist in any shipped file; upstream falls
+back to `getBlockHashsFromQuestHash`, an approximate search that increments a suffix until
+something matches.
 
-## Resource Files
+Blocks are now chosen by scoring candidates against the quest's actual target: monster name and
+variant (special species, elemental variants, collaboration monsters), continent, and difficulty,
+while penalising arena maps, tutorial-island continents and low-HP test blocks.
 
-### Game resources (FPK)
+### Two endpoints were never implemented
 
-The server expects game files in `src/public/res/download/` for your platform (Android or iOS). These are FPK archives containing the game's arc files. Only **v0282** is currently supported. You can generate these FPKs by running the FPK Packer script over a backup of the game files.
+`/event/normal/end` and `/event/m16/end` were commented out in the router. The client calls them
+when a hunt ends and retries forever without an answer, leaving the player stuck with no reward.
+Both now route to the existing generic handler.
 
-The recommended way to import resources is:
+### An XFS v16 parser that works on the Android build
+
+`tools-js/xfs-parse.cjs`. The upstream TypeScript parser is written for a 32-bit layout; MHXR
+Android uses 64-bit. Four differences: `propNum` sits at +8 rather than +4, property entries are
+80 bytes rather than 40, the `size` field after a classref is 64-bit, and strings are inline
+NUL-terminated rather than length-prefixed. Validated at 250/250 records against `blocks.csv`.
+
+### Smaller fixes
+
+- `box.controller.ts` `PaymentGet` returned a fixed currency list without ever reading the
+  database. It now reads the user's actual `box.payments`.
+- Block count now respects the rule validated across all 1995 story quests: the number of blocks
+  sent is always `>=` the highest `mAreaNo`. 167 event quests violated it.
+- `Boolean("false") === true` in JavaScript — `API_NOT_AVAILABLE_MAINTENANCE` must be left
+  *empty*, never set to `"false"`.
+
+---
+
+## What is **not** in this repository
+
+This repo contains code only. It deliberately excludes:
+
+- **game assets** (`src/public/res`, ~3.7 GB of FPK archives)
+- **the game client / APK**
+- anything extracted from the game binaries
+
+Those are Capcom's. You need your own copy of the game to obtain them. Nothing here will run a
+playable server on its own, by design.
+
+---
+
+## Running it
+
+Requires Docker. Copy `.env.example` to `.env` and fill it in, then:
+
 ```bash
-yarn setup --import-resources /path/to/res/download
+docker compose -f docker-compose.prod.yml up -d --build
 ```
 
-The server will start without resources (clients just won't be able to download game assets).
+Two things that will bite you otherwise:
 
-### Event banners
+1. `IP` in `.env` is **not** a bind address, despite what `.env.example` suggests. The server
+   interpolates it into the URLs it hands the client (`api: http://${IP}/api`). It must be the
+   hostname players actually reach. `0.0.0.0` produces a client that cannot connect.
+2. `yarn build` creates `dist/public` as a **symlink** to `../src/public`, and the runtime image
+   only copies `/app/dist`. Mount your assets at `/app/src/public`, not `/app/dist/public`.
 
-The game originally downloaded extra banners on startup for events. This is disabled by default. To enable it, populate the API in `src/controllers/bannerController.ts` and place your banner files in `src/public/res/banner/`.
+The database password must be **alphanumeric only** — it is interpolated into the Mongo
+connection string without URL encoding, so an `@` breaks it. On Windows, write `.env` as UTF-8
+**without BOM**, or compose reads the first key as `?IP`.
 
-## Running
+Maintenance scripts live in `tools-js/`, mounted at `/app/tools`:
 
-Start the server in production mode:
 ```bash
-yarn start
+docker compose -f docker-compose.prod.yml exec -T server node /app/tools/<script>.cjs
 ```
 
-Or in dev mode with auto-reload (nodemon):
-```bash
-yarn run start:dev
-```
+They use the `.cjs` extension on purpose: `package.json` declares `"type": "module"`, so any
+`.js` file under `/app` would be parsed as ESM and every `require()` would fail.
 
-The server will be available at `http://localhost:80` (or your configured port).
+---
 
-## Client Setup
+## `tools/` — PowerShell helpers
 
-To connect the MHXR game client to your server, the APK needs to be patched with your server's address. Use the **[online patcher](https://houmgaor.github.io/mhxr-patcher/)** — it runs entirely in your browser, no install needed.
+| Script | What it does |
+|---|---|
+| `Patch-MhxrUrl.ps1` | Rewrites the dispatch URL in `libMHS.so`. Validates **both** architectures before writing either, so arm64 and armeabi-v7a can never end up pointing at different servers — a mismatch that produces a client which works in an emulator and fails on a real phone. `-Restore` reverts. |
+| `Update-DuckDns.ps1` | Keeps a DuckDNS domain pointed at the current IP, public or LAN (`-UseLocalIp`). Token stored DPAPI-encrypted. Registers a scheduled task. |
+| `Backup-Mhxr.ps1` | Dumps and restores the database through `docker cp`, never through a shell redirect (which corrupts the gzip archive on Windows). |
 
-Alternatively, the Python patcher in `scripts/patcher/` can be used offline (requires Java + apktool). See `docs/APK_PATCHING_GUIDE.md` for full details on what each patch does.
+The reason the dispatch URL matters: the client has exactly **one** hardcoded address. Every other
+endpoint is handed to it at runtime from the server's own `.env`. Put a *domain* in that one slot
+and the client never needs repatching again — when the server moves, you update DNS.
 
-> [!NOTE]
-> **iOS version wanted** — We currently only have the Android APK (v09.03.06). If you have a copy of the iOS IPA or know where one can be found, please [open an issue](https://github.com/Forgotten-MH/apypos-server/issues) or get in touch. The server already supports iOS resource files, but we need the app itself for testing and preservation.
+The slot is fixed-width and cannot be extended: 55 bytes on arm64, **48 on armeabi-v7a**, which is
+the real limit. On arm64 a pointer table sits immediately after it, so overrunning corrupts the library.
 
-## Commands
+---
 
-| Command | Description |
-|---------|-------------|
-| `yarn setup` | Create `.env`, resource directories, and empty download lists |
-| `yarn setup --import-resources <path>` | Also symlink FPK files from a local resource dump |
-| `yarn install` | Install dependencies |
-| `yarn run install:clean` | Clean reinstall (removes node_modules + lockfile) |
-| `yarn build` | Clean and compile TypeScript to `dist/` |
-| `yarn start` | Run production server |
-| `yarn dev` | Run dev server (tsx, no auto-reload) |
-| `yarn run start:dev` | Run dev server with nodemon (auto-reload) |
-| `yarn test` | Run tests (vitest) |
-| `yarn test:watch` | Run tests in watch mode |
-| `yarn test:coverage` | Run tests with coverage |
-| `yarn lint` | Lint source files (ESLint) |
-| `yarn format` | Format source files (Prettier) |
-| `yarn fpk` | FPK/ARC/XFS archive tool (pack, unpack, convert) |
-| `yarn proxy` | MITM proxy for recording/replaying MHXR traffic |
-| `yarn generate-island` | Generate ocean/island data |
-| `yarn generate-questList` | Generate quest list |
-| `yarn bf-dec` | Test Blowfish decryption |
+## Credits and licence
 
-## Architecture
+Upstream: [Forgotten-MH/apypos-server](https://github.com/Forgotten-MH/apypos-server) —
+all the heavy lifting of the original server implementation is theirs.
 
-```
-Client (Android/iOS)
-  |  Blowfish ECB encrypted HTTP (application/octet-stream)
-  v
-Express Server (src/server.ts)
-  ├── Decrypt middleware (Blowfish ECB -> JSON)
-  ├── Input sanitization (strips MongoDB $ operators)
-  ├── API route groups (src/routes/api/)
-  ├── Encrypt response (JSON -> Blowfish ECB)
-  └── Static file serving (FPK game resources)
-  |
-  v
-MongoDB (via Mongoose ODM)
-```
+Licensed under **AGPL-3.0**, same as upstream. If you run a modified version of this server and
+let other people connect to it, the licence requires you to offer them the source.
 
-Multiplayer is handled by Socket.IO (`src/multiServer.ts`) with a 16-byte binary packet header format for room-based sessions.
-
-### Project Structure
-
-```
-src/
-├── server.ts           # Entry point
-├── app.ts              # Express app setup + middleware
-├── config.ts           # Environment configuration
-├── multiServer.ts      # Socket.IO multiplayer server
-├── routes/             # API routes (api/, version/, maintenance/, web/)
-├── model/              # Mongoose schemas (user, guild, quests, events, etc.)
-├── services/           # Business logic (quests, items, guilds, ocean, crypto)
-├── csv/                # Quest master data (CSV)
-├── json/               # Quest DB, event definitions, node configs (JSON)
-├── bin/                # CLI utilities
-└── public/res/         # Static game resources (FPK, banners)
-frida/                  # Frida scripts for runtime client analysis
-scripts/                # Offline data conversion tools (XFS, XML->JSON, FPK)
-```
-
-## IDs and Quests
-
-Most IDs can be found in the game files under `arc_cmn/resident`. You'll need to extract the arcs and convert the XFS files to XML using a tool like [Revil Toolkit](https://github.com/PredatorCZ/RevilLib).
-
-## Logging
-
-This project uses [Winston](https://github.com/winstonjs/winston). Logs are displayed in the console in the format:
-
-```
-Request: [HTTP_METHOD] [URL] | Response: [STATUS_CODE] [RESPONSE_TIME]ms
-```
-
-Set `DEBUG=true` in `.env` to log full request and response bodies.
-
-## Why the Name?
-
-The server is named after the in-game Guild character. It was originally called "Boromir" — randomly chosen by the initial framework developer who hadn't played the game when it was live. It was renamed because the Lord of the Rings association didn't fit Monster Hunter, and the original name may have been a localization error. The name follows the convention set by [Erupe](https://github.com/ZeruLight/Erupe), the MH Frontier server emulator.
-
-## Disclaimer
-
-This project is an unofficial, fan-made private server created for educational and preservation purposes only. It is not affiliated with, endorsed by, or connected to Capcom or its affiliates. All trademarks and copyrights related to MHXR are the property of their respective owners.
-
-This server and its associated software are provided "AS IS," without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose, and non-infringement. The developers and contributors are not responsible for any damages, losses, or legal consequences arising from the use of this software.
-
-Use of this server may violate the terms of service of Capcom and could result in suspension or banning from official services. Users assume all risk and responsibility.
-
-## License
-
-This project is licensed under the [AGPL-3.0 License](./LICENSE).
-
-If you modify this software and make it available to others over a network (for example, by hosting a web service), you must provide the complete source code of your modified version to all users of that service, per the AGPL terms.
+This is a non-commercial preservation project for a game that is no longer sold or operated.
+Not affiliated with Capcom.

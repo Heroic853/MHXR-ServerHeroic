@@ -40,10 +40,19 @@ questRouter.post('/eternal/start', validate(EternalStartSchema), questController
 
 //Event
 questRouter.post('/event/list/all', validate(SessionOnlySchema), questEventController.eventListAll);
-//questRouter.post("event/m16/end", );
+// Stessa storia di /event/normal/end: era commentata e il client resterebbe
+// bloccato a fine battaglia a 16. Collegata allo stesso gestore generico.
+questRouter.post('/event/m16/end', validate(IslandEndSchema), questIslandController.islandEnd);
 questRouter.post('/event/m16/restart', notImplemented.blankResponseEncrypted);
 //questRouter.post("/event/m16/start", );
-//questRouter.post("/event/normal/end", );
+// Il client chiama questa rotta appena finisce una quest evento, e se non
+// risponde riprova all'infinito: la ricompensa non arriva e si resta bloccati
+// sulla schermata di fine caccia. Era rimasta commentata, quindi il server
+// restituiva 404 UNMATCHED.
+// Uso lo stesso gestore gia' collegato a /event/score/end e /event/ticket/end:
+// islandEnd e' generico (mst_quest_id + clear_time + session_id), registra la
+// quest fra le completate e rimanda il riepilogo di fine missione.
+questRouter.post('/event/normal/end', validate(IslandEndSchema), questIslandController.islandEnd);
 //questRouter.post("/event/normal/restart", );
 questRouter.post('/event/normal/start', validate(EventStartSchema), questEventController.eventNormalStart);
 questRouter.post('/event/score/end', validate(IslandEndSchema), questIslandController.islandEnd);

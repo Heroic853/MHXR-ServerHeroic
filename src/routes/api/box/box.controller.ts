@@ -182,36 +182,54 @@ export const paymentLimitGet = (req: Request, res: Response) => {
   encryptAndSend(data, res, req);
 };
 
-export const PaymentGet = (req: Request, res: Response) => {
-  const data = {
-    payments: [
-      {
-        amount: 50,
-        mst_payment_id: 1573159746,
-      },
-      {
-        amount: 25,
-        mst_payment_id: 3301823224,
-      },
-      {
-        amount: 5,
-        mst_payment_id: 3016417902,
-      },
-      {
-        amount: 3,
-        mst_payment_id: 766408653,
-      },
-      {
-        amount: 2,
-        mst_payment_id: 1521043291,
-      },
-      {
-        amount: 1,
-        mst_payment_id: 3282048737,
-      },
-    ],
-  };
-  encryptAndSend(data, res, req);
+// Tipi di valuta premium noti, con la quantita' di partenza usata quando
+// l'utente non ne possiede affatto. Serve tenerli tutti nella risposta: il
+// client si aspetta l'elenco completo, non solo quelli che il giocatore ha.
+const PAYMENT_DEFAULTS = [
+  { amount: 50, mst_payment_id: 1573159746 },
+  { amount: 25, mst_payment_id: 3301823224 },
+  { amount: 5, mst_payment_id: 3016417902 },
+  { amount: 3, mst_payment_id: 766408653 },
+  { amount: 2, mst_payment_id: 1521043291 },
+  { amount: 1, mst_payment_id: 3282048737 },
+];
+
+export const PaymentGet = async (req: Request, res: Response) => {
+  try {
+    // Prima restituiva la lista qui sopra fissa, senza mai guardare il database:
+    // qualunque cosa si scrivesse in box.payments veniva ignorata, e il giocatore
+    // vedeva sempre e solo i valori di partenza. Ora vince il salvataggio vero.
+    const { session_id } = req.body as { session_id: string };
+    const doc = await User.findOne({ current_session: session_id });
+    if (!doc) {
+      return encryptAndSend({}, res, req, ERROR_CODE.NOT_AUTHENTICATED);
+    }
+
+    const posseduti = new Map<number, number>();
+    for (const p of doc.box?.payments ?? []) {
+      if (typeof p?.mst_payment_id === 'number') {
+        posseduti.set(p.mst_payment_id, p.amount ?? 0);
+      }
+    }
+
+    // Ogni tipo noto con la quantita' dell'utente se ce l'ha, altrimenti il default.
+    const payments = PAYMENT_DEFAULTS.map((d) => ({
+      mst_payment_id: d.mst_payment_id,
+      amount: posseduti.has(d.mst_payment_id) ? posseduti.get(d.mst_payment_id)! : d.amount,
+    }));
+
+    // Eventuali valute possedute che non sono nell'elenco noto: le aggiungo in coda.
+    for (const [id, amount] of posseduti) {
+      if (!PAYMENT_DEFAULTS.some((d) => d.mst_payment_id === id)) {
+        payments.push({ mst_payment_id: id, amount });
+      }
+    }
+
+    encryptAndSend({ payments }, res, req);
+  } catch (error) {
+    log.error('Error in payment get:', error);
+    encryptAndSend({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG, 'Get payments failed');
+  }
 };
 
 export const equipLevelup = async (req: Request, res: Response) => {

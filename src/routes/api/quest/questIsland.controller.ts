@@ -311,6 +311,62 @@ export const islandStart = async (req: Request, res: Response) => {
   }
 };
 
+/**
+ * Costruisce i quattro riquadri delle ricompense di fine caccia pescando dalla
+ * lista della quest. mProbScale fa da peso: i materiali comuni escono piu'
+ * spesso di quelli rari, come nel gioco originale.
+ *
+ * Le voci senza mItemHash valido vengono scartate; se non ne resta nessuna si
+ * ricade sul materiale fisso che il progetto usava prima, per non lasciare il
+ * giocatore a mani vuote.
+ */
+const MATERIALE_DI_RIPIEGO = 1714092880;
+
+// null ammesso oltre a undefined: e' cosi' che Mongoose tipizza i campi
+// facoltativi dei sottodocumenti, e senza il null la compilazione fallisce.
+interface VoceRicompensa {
+  mItemHash?: string | null;
+  mProbScale?: string | null;
+}
+
+function buildRewardSlots(lista?: readonly VoceRicompensa[] | null) {
+  const voci = (lista ?? [])
+    .filter((r) => r && r.mItemHash)
+    .map((r) => ({ id: Number(r.mItemHash), peso: Math.max(1, Number(r.mProbScale) || 1) }))
+    .filter((r) => Number.isFinite(r.id) && r.id > 0);
+
+  const pescaUno = () => {
+    if (!voci.length) return MATERIALE_DI_RIPIEGO;
+    const totale = voci.reduce((t, v) => t + v.peso, 0);
+    let n = Math.random() * totale;
+    for (const v of voci) {
+      n -= v.peso;
+      if (n <= 0) return v.id;
+    }
+    return voci[voci.length - 1]!.id;
+  };
+
+  return [1, 2, 3, 4].map((idx) => {
+    const slot: Record<string, unknown> = {
+      idx,
+      is_katamari: 0,
+      zeny: 1,
+      value: 1,
+      item_list: {
+        materials: [{ amount: 1 + Math.floor(Math.random() * 3), mst_material_id: pescaUno() }],
+      },
+    };
+    // il primo riquadro porta anche i punti evento, come faceva prima
+    if (idx === 1) {
+      slot.extend = {
+        item_list: { points: [{ amount: 5, mst_event_point_id: 3994654250 }] },
+        zeny: 0,
+      };
+    }
+    return slot;
+  });
+}
+
 export const islandEnd = async (req: Request, res: Response) => {
   try {
     const { mst_quest_id, clear_time, session_id } = req.body as IslandEndInput;
@@ -463,56 +519,12 @@ export const islandEnd = async (req: Request, res: Response) => {
       //DOUBLE CHECK BELOW START
       //This is the main reward screen
       normal_reward: {
-        other_list_add: [
-          {
-            idx: 1,
-            is_katamari: 0,
-            zeny: 1,
-            value: 1,
-            item_list: {
-              materials: [{ amount: 6, mst_material_id: 1714092880 }],
-            },
-            //Uncomment to get flag
-            extend: {
-              item_list: {
-                points: [
-                  {
-                    amount: 5,
-                    mst_event_point_id: 3994654250,
-                  },
-                ],
-              },
-              zeny: 0,
-            },
-          },
-          {
-            idx: 2,
-            is_katamari: 0,
-            zeny: 1,
-            value: 1,
-            item_list: {
-              materials: [{ amount: 6, mst_material_id: 1714092880 }],
-            },
-          },
-          {
-            idx: 3,
-            is_katamari: 0,
-            zeny: 1,
-            value: 1,
-            item_list: {
-              materials: [{ amount: 6, mst_material_id: 1714092880 }],
-            },
-          },
-          {
-            idx: 4,
-            is_katamari: 0,
-            zeny: 1,
-            value: 1,
-            item_list: {
-              materials: [{ amount: 6, mst_material_id: 1714092880 }],
-            },
-          },
-        ],
+        // Prima qui c'erano quattro voci fisse, tutte con lo stesso materiale
+        // 1714092880: qualunque caccia dava sempre gli stessi premi. Ora si
+        // pescano dalla lista della quest (mRewardItemList), con mProbScale
+        // come peso, cosi' ogni battuta da' materiali diversi e coerenti con
+        // la preda. Se la quest non ha premi si torna al vecchio valore fisso.
+        other_list_add: buildRewardSlots(quest?.mRewardItemList),
         add_list: {
           line2: {
             is_open: 1,

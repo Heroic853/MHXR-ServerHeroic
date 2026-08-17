@@ -1,0 +1,38 @@
+# Prova della nuova versione IN PARALLELO a quella che funziona.
+#
+#   docker compose -f docker-compose.test.yml up -d --build
+#   docker compose -f docker-compose.test.yml logs -f server-new
+#   docker compose -f docker-compose.test.yml down          <- non tocca il server vero
+#
+# Scelte fatte di proposito:
+# - riusa il container mongo gia' in esecuzione (rete esterna), cosi' non ci sono
+#   due database in memoria e il confronto e' pulito
+# - punta a apypos_new, che e' una COPIA: qualsiasi disastro non tocca il salvataggio
+# - esce sulla 8081, quindi la 80 resta al server che sta giocando
+# - monta le risorse da dove sono gia': sono 3,7 GB, non ha senso duplicarle
+
+services:
+  server-new:
+    build:
+      context: ./
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - '8081:80'
+    volumes:
+      # In questa versione "yarn build" crea dist/public come SYMLINK a ../src/public,
+      # ma lo stage di runtime copia solo /app/dist: senza questo mount il link
+      # resterebbe rotto e il gioco non scaricherebbe nulla.
+      - '../Monster Hunter XR/Server/apypos-server-main/src/public:/app/src/public'
+      # Script di manutenzione. Estensione .cjs, non .js: questo progetto ha
+      # "type": "module" nel package.json, quindi ogni .js sotto /app verrebbe
+      # letto come ESM e i require() esploderebbero.
+      - './tools-js:/app/tools'
+    networks:
+      - explore
+
+networks:
+  explore:
+    external: true
+    name: apypos-server-main_explore

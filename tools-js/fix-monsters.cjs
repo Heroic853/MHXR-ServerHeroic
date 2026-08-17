@@ -72,6 +72,14 @@ const REFUSI = [
   [/\brphenlos\b/g, 'rhenoplos'], [/\bgold rath\b/g, 'gold rathian'],
   [/\bnarg green\b/g, 'green nargacuga'], [/\bsubspecies lagi\b/g, 'ivory lagiacrus'],
   [/\bazuros\b/g, 'arzuros'], [/\bjaggis\b/g, 'jaggi'], [/\bjaggia\b/g, 'jaggi'],
+  // Chi ha compilato il foglio ha scritto lo stesso mostro in piu' modi. Ogni
+  // grafia non riconosciuta e' un blocco che non viene mai scelto, quindi un
+  // mostro che in gioco non compare: "unit 1" e "unit-01" sono la stessa Unita'
+  // di Evangelion, e da sole valgono 7 blocchi in piu'.
+  [/\bunit[ -]0?1\b/g, 'unit-01'], [/\bunit[ -]0?2\b/g, 'unit-02'],
+  [/\bfierceawtter\b/g, 'fiercewater'],
+  [/\bvolitile\b/g, 'volatile'], [/\bvolatiel\b/g, 'volatile'],
+  [/\bthunderemperor\b/g, 'thunder emperor'],
 ];
 
 /*
@@ -122,6 +130,12 @@ const TEMI = {
   'バレンタイン': 'valentines', '学園': 'gakuen', 'エヴァ': 'unit-01',
   'スイカ': 'watermelon', '西瓜': 'watermelon', 'チョコ': 'valentines',
   'ハロウィーン': 'halloween', 'サンクスギビング': 'thanksalot',
+  // Collaborazioni: il titolo non nomina mai il mostro, nomina l'opera. Servono
+  // come rete di sicurezza quando l'id nemico da solo non basta.
+  '真の格闘家': 'yoga', 'ストV': 'yoga', 'ストⅤ': 'yoga',
+  '鬼滅の刃': 'enma', '鬼狩り': 'enma', '鬼影': 'enma',
+  'ハガレン': 'steel armor',
+  'バイオハザード': 'rotten', 'バイオコラボ': 'rotten',
 };
 
 // I continenti della storia (l00-l18) hanno pochissimi blocchi evento e fra
@@ -186,6 +200,23 @@ const ID_MOSTRO = {
   90: 'goruru',              // "換金ゴルルーツアー" - tour dei Goruru
   133: 'unit-01 brachydios', // "使徒、襲来", "ニア・サードインパクト" - Evangelion
   162: 'unit-02 tigrex',     // "2号機、会敵！" - 2号機 e' letteralmente l'Unita' 02
+
+  // Collaborazioni identificate incrociando i titoli giapponesi di TUTTE le
+  // quest che usano lo stesso id. Il foglio dei blocchi ha i nomi inglesi da
+  // sempre, ma nessuno li collegava a questi id, quindi i mostri non uscivano.
+  140: 'yoga gigginox',      // Street Fighter: "SFV★5確定" e le sei difficolta'
+                             // di "真の格闘家" (il vero artista marziale) usano
+                             // il 140. Yoga e' Dhalsim.
+  163: 'steel armor diablos',// Fullmetal Alchemist: "【ハガレン】異邦より来たる双刃"
+                             // e "業を背負いし鋼" (l'acciaio che porta il peso
+                             // della colpa) - 鋼 = acciaio, l'armatura di Alphonse.
+  161: 'enma rajang',        // Demon Slayer: "【鬼滅の刃】爆裂の鬼狩り" e
+                             // "月下の鬼影" (l'ombra del demone sotto la luna).
+                             // 鬼 = demone, Enma e' il re degli inferi.
+  155: 'rotten uragaan',     // Resident Evil: "【バイオハザードコラボ】
+                             // リアル・サバイバル" e "サバイバル・ハロウィン".
+                             // Prendeva steel uragaan: stessa famiglia, ma qui
+                             // il tema sono gli zombie.
 };
 
 function pulisci(n) {
@@ -296,7 +327,15 @@ function leggiQuest(nome) {
     return migliore;
   }
 
-  const eventi = await qs.find({ mDefineId: /^EVENT/ })
+  // Non solo EVENT: anche TICKE (quest a ticket), ETERN e SCORE sono contenuto
+  // evento e hanno lo stesso problema. Restando fuori dal filtro si tenevano i
+  // blocchi originali, che sono quelli dei continenti della storia — fra cui
+  // l'isola del tutorial. E' il motivo per cui entrando in una quest a ticket
+  // partiva la missione iniziale invece dell'evento.
+  //
+  // Le quest della storia (prefisso QUEST) restano escluse: funzionano, e
+  // riassegnarle romperebbe 1995 missioni che vanno bene.
+  const eventi = await qs.find({ mDefineId: /^(EVENT|TICKE|ETERN|SCORE)/ })
     .project({ mDefineId: 1, mQuestID: 1, mQuestName: 1, mBossList: 1, mBlocks: 1, mBlocksPrima: 1 }).toArray();
 
   // --- passaggio 1: match dal nome, e costruzione della tabella mEnemyID -> mostro
@@ -366,7 +405,11 @@ function leggiQuest(nome) {
     }
     if (!info) { senza++; continue; }
 
-    const ml = String(q.mDefineId || '').match(/^EVENT(\d{2})/);
+    // Il continente sta nelle prime due cifre dopo il prefisso, e lo schema vale
+    // per tutti e quattro i tipi. Se non si riesce a leggerlo si passa null: la
+    // scelta resta comunque limitata ai continenti evento, quindi il peggio che
+    // puo' capitare e' una mappa meno azzeccata, mai il tutorial.
+    const ml = String(q.mDefineId || '').match(/^(?:EVENT|TICKE|ETERN|SCORE)(\d{2})/);
     const land = ml ? `l${ml[1]}` : null;
     const scelto = scegli(info.atteso, info.base, land, info.facile);
     if (!scelto) { senza++; continue; }
@@ -374,7 +417,29 @@ function leggiQuest(nome) {
     const indici = (q.mBossList || []).map((b) => parseInt(b?.mAreaNo, 10)).filter((n) => !isNaN(n));
     const posizione = indici.length ? Math.max(...indici) : 1;
 
-    const stessaMappa = (perMappa.get(scelto.mappa) || []).filter((b) => b.hash !== scelto.hash);
+    /*
+     * I blocchi prima del boss sono le fasi che il giocatore deve superare per
+     * arrivarci. Prima si prendeva "il primo che capita" nella stessa mappa, e
+     * fra quelli ci sono blocchi tutorial, di dialogo e di test: fasi che non si
+     * chiudono mai. Risultato, la quest si piantava alla fase 1 e il boss —
+     * che sta nell'ULTIMO blocco — non veniva mai raggiunto. Da fuori sembrava
+     * un mostro sbagliato (si vedeva il riempitivo, cioe' la versione normale).
+     *
+     * Ora si ordinano: prima i blocchi di raccolta e i mostri piccoli, che si
+     * chiudono da soli; mai quelli tutorial/dialogo/test.
+     */
+    const RIEMPITIVO_VIETATO = /tutorial|dialogue|dead|\btest\b|story|delete|hp:|hunter/i;
+    const RIEMPITIVO_BUONO = /collection node|gathering node|mining|bug|honey|herb|jaggi|baggi|bnahabra|bullfango|anteka/i;
+
+    const stessaMappa = (perMappa.get(scelto.mappa) || [])
+      .filter((b) => b.hash !== scelto.hash && !RIEMPITIVO_VIETATO.test(b.nota || ''))
+      .sort((a, b) => {
+        const pa = RIEMPITIVO_BUONO.test(a.nota || '') ? 0 : 1;
+        const pb = RIEMPITIVO_BUONO.test(b.nota || '') ? 0 : 1;
+        return pa - pb;
+      });
+    // Se la mappa non offre niente di sicuro, meglio ripetere il blocco del boss
+    // che infilare una fase che blocca la quest.
     const finali = [];
     const usate = new Set([scelto.area]);
     for (let i = 1; i <= posizione; i++) {

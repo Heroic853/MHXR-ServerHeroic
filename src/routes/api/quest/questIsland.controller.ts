@@ -10,6 +10,7 @@ import User from '../../../model/user.js';
 const log = createLogger('quest');
 
 import full_island from '../../../json/full_enabled_state.json' with { type: 'json' };
+import catalogoRicompense from '../../../json/catalogo-ricompense.json' with { type: 'json' };
 
 import { readFile } from 'fs/promises';
 
@@ -311,16 +312,38 @@ export const islandStart = async (req: Request, res: Response) => {
   }
 };
 
-/**
- * Costruisce i quattro riquadri delle ricompense di fine caccia pescando dalla
- * lista della quest. mProbScale fa da peso: i materiali comuni escono piu'
- * spesso di quelli rari, come nel gioco originale.
+const MATERIALE_DI_RIPIEGO = 1714092880; // verificato: e' un materiale vero
+
+/*
+ * SMISTAMENTO DELLE RICOMPENSE PER FAMIGLIA.
  *
- * Le voci senza mItemHash valido vengono scartate; se non ne resta nessuna si
- * ricade sul materiale fisso che il progetto usava prima, per non lasciare il
- * giocatore a mani vuote.
+ * mRewardItemList non dice di che tipo sia un premio: c'e' un campo
+ * mRewardType, ma analizzando le 2635 quest si e' visto che NON serve a questo
+ * (il tipo 1 contiene 13970 materiali e 13936 equipaggiamenti insieme).
+ * L'unico criterio affidabile e' in quale tabella del gioco cade l'id, e le
+ * tabelle sono disgiunte: zero id in comune, verificato.
+ *
+ * Le ricompense usano quattro famiglie, non una:
+ *   materiale       -> box.materials      mst_material_id
+ *   equipaggiamento -> box.equipments      mst_equipment_id   (506 quest!)
+ *   crescita        -> box.growth_items    mst_growth_item_id (POTENTIAL_*)
+ *   limitato        -> box.limiteds        mst_limited_id     (LIMITED*)
+ *
+ * Prima il codice trattava tutto come materiale e scartava il resto: per
+ * questo le armi e le armature promesse da 506 quest non arrivavano mai.
+ *
+ * Un id che non sta nel catalogo va SEMPRE scartato. Non e' teoria: scriverne
+ * uno in box mette nell'inventario un oggetto che il client non sa disegnare, e
+ * da quel momento il login crasha a ogni tentativo perche' /api/box/get lo
+ * rimanda ogni volta — e' successo con l'id 1277724242.
  */
-const MATERIALE_DI_RIPIEGO = 1714092880;
+type Famiglia = 'materiale' | 'equipaggiamento' | 'crescita' | 'limitato';
+
+const CATALOGO = new Map<number, Famiglia>(
+  (catalogoRicompense as ReadonlyArray<{ id: number; f: string }>)
+    .filter((v) => v.f === 'materiale' || v.f === 'equipaggiamento' || v.f === 'crescita' || v.f === 'limitato')
+    .map((v) => [v.id, v.f as Famiglia]),
+);
 
 // null ammesso oltre a undefined: e' cosi' che Mongoose tipizza i campi
 // facoltativi dei sottodocumenti, e senza il null la compilazione fallisce.
@@ -329,11 +352,46 @@ interface VoceRicompensa {
   mProbScale?: string | null;
 }
 
+/** La forma di un equipaggiamento che il client accetta: 16 campi esatti. */
+function nuovoEquipaggiamento(idIstanza: string, mstId: number) {
+  return {
+    auto_potential_composite: 0,
+    awaked: 0,
+    created: Math.floor(Date.now() / 1000),
+    elv: 1,
+    endAwakeCount: 0,
+    endAwakeRemain: 0,
+    end_remain: 0,
+    equipment_id: idIstanza,
+    evolve_start_time: 0,
+    favorite: 0,
+    is_awake: 0,
+    is_complete_auto_potential_composite: 0,
+    mst_equipment_id: mstId,
+    potential: 0,
+    slv: 1,
+    start_remain: 0,
+  };
+}
+
+/**
+ * Pesca le ricompense UNA VOLTA SOLA e restituisce due cose: i quattro riquadri
+ * per la risposta e la lista di cio' che e' stato pescato, da mettere in
+ * inventario.
+ *
+ * Sono la stessa estrazione di proposito. Prima la funzione pescava solo per la
+ * risposta e nessuno scriveva niente: il giocatore vedeva la ricompensa a fine
+ * caccia e nell'inventario non arrivava. Pescare due volte, una per lo schermo e
+ * una per l'inventario, sarebbe stato peggio: avrebbe mostrato un materiale e
+ * consegnato un altro.
+ */
 function buildRewardSlots(lista?: readonly VoceRicompensa[] | null) {
   const voci = (lista ?? [])
     .filter((r) => r && r.mItemHash)
     .map((r) => ({ id: Number(r.mItemHash), peso: Math.max(1, Number(r.mProbScale) || 1) }))
-    .filter((r) => Number.isFinite(r.id) && r.id > 0);
+    // Solo id presenti nel catalogo: qualunque altro numero verrebbe scritto in
+    // inventario come oggetto inesistente e bloccherebbe il login.
+    .filter((r) => Number.isFinite(r.id) && r.id > 0 && CATALOGO.has(r.id));
 
   const pescaUno = () => {
     if (!voci.length) return MATERIALE_DI_RIPIEGO;
@@ -346,18 +404,54 @@ function buildRewardSlots(lista?: readonly VoceRicompensa[] | null) {
     return voci[voci.length - 1]!.id;
   };
 
-  return [1, 2, 3, 4].map((idx) => {
+  const vinti = new Map<number, { quanti: number; famiglia: Famiglia }>();
+
+  /**
+   * Una fila di quattro riquadri. `fila` distingue le casse fra loro: entra
+   * nell'id istanza di un equipaggiamento, che deve restare unico anche fra
+   * casse diverse della stessa caccia.
+   */
+  const costruisciFila = (fila: number, conPuntiEvento: boolean) => [1, 2, 3, 4].map((idx) => {
+    const id = pescaUno();
+    const famiglia = CATALOGO.get(id) ?? 'materiale';
+    // Un'arma o un'armatura si vince a pezzo singolo, non a mucchietti: solo
+    // materiali, oggetti di crescita e limitati hanno una quantita'.
+    const quanti = famiglia === 'equipaggiamento' ? 1 : 1 + Math.floor(Math.random() * 3);
+
+    const gia = vinti.get(id);
+    vinti.set(id, { quanti: (gia?.quanti ?? 0) + quanti, famiglia });
+
+    let itemList: Record<string, unknown>;
+    switch (famiglia) {
+      case 'equipaggiamento':
+        // "equipments" al plurale: e' la chiave che il client si aspetta dentro
+        // item_list, la stessa usata da questTraining e questForest. Al
+        // singolare il client non trova la lista e si chiude alla schermata
+        // delle ricompense, senza che il server registri nessun errore.
+        // L'id istanza porta fila, riquadro e momento della vittoria: due pezzi
+        // con lo stesso equipment_id sono il modo classico di rompere la box in
+        // modo permanente.
+        itemList = { equipments: [nuovoEquipaggiamento(`Q${id}_${fila}_${idx}_${Date.now()}`, id)] };
+        break;
+      case 'crescita':
+        itemList = { growth_items: [{ amount: quanti, mst_growth_item_id: id }] };
+        break;
+      case 'limitato':
+        itemList = { limiteds: [{ amount: quanti, mst_limited_id: id }] };
+        break;
+      default:
+        itemList = { materials: [{ amount: quanti, mst_material_id: id }] };
+    }
+
     const slot: Record<string, unknown> = {
       idx,
       is_katamari: 0,
       zeny: 1,
       value: 1,
-      item_list: {
-        materials: [{ amount: 1 + Math.floor(Math.random() * 3), mst_material_id: pescaUno() }],
-      },
+      item_list: itemList,
     };
     // il primo riquadro porta anche i punti evento, come faceva prima
-    if (idx === 1) {
+    if (conPuntiEvento && idx === 1) {
       slot.extend = {
         item_list: { points: [{ amount: 5, mst_event_point_id: 3994654250 }] },
         zeny: 0,
@@ -365,6 +459,95 @@ function buildRewardSlots(lista?: readonly VoceRicompensa[] | null) {
     }
     return slot;
   });
+
+  /*
+   * Tre file: quella principale piu' le due casse bonus (add_list.line2 e
+   * line3). Anche quelle erano rimaste al materiale fisso 1714092880 e, come
+   * la fila principale prima del fix, non venivano accreditate: si vedevano a
+   * schermo e in inventario non arrivava niente. Pescando qui dentro finiscono
+   * tutte e tre nella stessa mappa `vinti`, quindi cio' che il giocatore vede
+   * e' esattamente cio' che riceve.
+   */
+  return {
+    slots: costruisciFila(1, true),
+    bonus2: costruisciFila(2, false),
+    bonus3: costruisciFila(3, false),
+    vinti,
+  };
+}
+
+interface VoceQuantita {
+  amount?: number | null;
+}
+
+interface BoxPremi {
+  materials?: (VoceQuantita & { mst_material_id?: number | null })[];
+  growth_items?: (VoceQuantita & { mst_growth_item_id?: number | null })[];
+  limiteds?: (VoceQuantita & { mst_limited_id?: number | null })[];
+  equipments?: { equipment_id?: string | null; mst_equipment_id?: number | null }[];
+}
+
+/**
+ * Accredita i premi vinti, ognuno nell'array giusto della box.
+ * Restituisce un riepilogo per il log.
+ */
+function accreditaPremi(box: BoxPremi, vinti: Map<number, { quanti: number; famiglia: Famiglia }>) {
+  const conteggio = { materiale: 0, crescita: 0, limitato: 0, equipaggiamento: 0 };
+
+  /** Somma una quantita' a un array "a mucchietto" (materiali/crescita/limitati). */
+  const somma = <T extends VoceQuantita>(
+    arr: T[], trovato: (v: T) => boolean, crea: () => T, quanti: number,
+  ) => {
+    const v = arr.find(trovato);
+    if (v) v.amount = Number(v.amount ?? 0) + quanti;
+    else arr.push(crea());
+  };
+
+  for (const [id, { quanti, famiglia }] of vinti) {
+    switch (famiglia) {
+      case 'materiale':
+        if (!box.materials) box.materials = [];
+        somma(box.materials, (m) => Number(m?.mst_material_id) === id,
+          () => ({ mst_material_id: id, amount: quanti }), quanti);
+        conteggio.materiale++;
+        break;
+
+      case 'crescita':
+        if (!box.growth_items) box.growth_items = [];
+        somma(box.growth_items, (m) => Number(m?.mst_growth_item_id) === id,
+          () => ({ mst_growth_item_id: id, amount: quanti }), quanti);
+        conteggio.crescita++;
+        break;
+
+      case 'limitato':
+        if (!box.limiteds) box.limiteds = [];
+        somma(box.limiteds, (m) => Number(m?.mst_limited_id) === id,
+          () => ({ mst_limited_id: id, amount: quanti }), quanti);
+        conteggio.limitato++;
+        break;
+
+      case 'equipaggiamento': {
+        if (!box.equipments) box.equipments = [];
+        /*
+         * Un equipaggiamento e' un'istanza, non una quantita': due spade uguali
+         * sono due righe con lo stesso mst_equipment_id ma equipment_id diversi
+         * — se coincidessero il client le considererebbe lo stesso oggetto e ne
+         * mostrerebbe una sola. Si cerca quindi un identificativo libero.
+         */
+        const usati = new Set(box.equipments.map((e) => String(e?.equipment_id)));
+        for (let n = 0; n < quanti; n++) {
+          let idIstanza = `Q${id}`;
+          let contatore = 2;
+          while (usati.has(idIstanza)) idIstanza = `Q${id}_${contatore++}`;
+          usati.add(idIstanza);
+          box.equipments.push(nuovoEquipaggiamento(idIstanza, id));
+        }
+        conteggio.equipaggiamento++;
+        break;
+      }
+    }
+  }
+  return conteggio;
 }
 
 export const islandEnd = async (req: Request, res: Response) => {
@@ -391,7 +574,26 @@ export const islandEnd = async (req: Request, res: Response) => {
       cleared_quests[questIndex]!.clear_time = clearTime;
     }
 
-    const update = { cleared_quests: cleared_quests };
+    /*
+     * Le ricompense si pescano QUI, prima di scrivere, e vengono accreditate
+     * nella stessa operazione che segna la quest come completata.
+     *
+     * Prima venivano costruite solo dentro la risposta, piu' in basso: il
+     * client le mostrava a fine caccia e nell'inventario non arrivava niente.
+     * Era il bug piu' visibile del server — si cacciava per nulla.
+     */
+    const premi = buildRewardSlots(quest?.mRewardItemList);
+
+    const update: Record<string, unknown> = { cleared_quests: cleared_quests };
+
+    if (doc.box) {
+      const c = accreditaPremi(doc.box as unknown as BoxPremi, premi.vinti);
+      update.box = doc.box;
+      log.info(
+        'ricompense accreditate | quest=%s materiali=%d crescita=%d limitati=%d equipaggiamenti=%d',
+        String(cleared_quest), c.materiale, c.crescita, c.limitato, c.equipaggiamento,
+      );
+    }
 
     // Await the update so you know it completed
     await User.findOneAndUpdate(filter, update, { new: true });
@@ -524,90 +726,31 @@ export const islandEnd = async (req: Request, res: Response) => {
         // pescano dalla lista della quest (mRewardItemList), con mProbScale
         // come peso, cosi' ogni battuta da' materiali diversi e coerenti con
         // la preda. Se la quest non ha premi si torna al vecchio valore fisso.
-        other_list_add: buildRewardSlots(quest?.mRewardItemList),
+        // Gli stessi riquadri pescati sopra: cio' che si vede e' cio' che e'
+        // stato messo in inventario, non una seconda estrazione.
+        other_list_add: premi.slots,
         add_list: {
+          /*
+           * Le due casse bonus. Esistevano gia' nel client (con il loro
+           * prezzo in diamanti) ma erano ferme al materiale fisso
+           * 1714092880, e nessuno le accreditava: erano decorazione.
+           * Ora pescano dalla stessa lista della quest e finiscono in
+           * inventario insieme alla fila principale.
+           *
+           * is_open resta 1, cioe' gia' aperte: il client scala i diamanti
+           * da solo e non esiste nessuna rotta con cui il server possa
+           * verificare il pagamento (/quest/result/end risponde vuoto, come
+           * nell'originale). Meglio regalarle che mostrarle a pagamento e
+           * non riuscire a consegnarle: sarebbe di nuovo il bug di prima.
+           */
           line2: {
             is_open: 1,
-            other_list: [
-              {
-                idx: 1,
-                is_katamari: 0,
-                zeny: 1,
-                value: 1,
-                item_list: {
-                  materials: [{ amount: 2, mst_material_id: 1714092880 }],
-                },
-              },
-              {
-                idx: 2,
-                is_katamari: 0,
-                zeny: 1,
-                value: 1,
-                item_list: {
-                  materials: [{ amount: 2, mst_material_id: 1714092880 }],
-                },
-              },
-              {
-                idx: 3,
-                is_katamari: 0,
-                zeny: 1,
-                value: 1,
-                item_list: {
-                  materials: [{ amount: 2, mst_material_id: 1714092880 }],
-                },
-              },
-              {
-                idx: 4,
-                is_katamari: 0,
-                zeny: 1,
-                value: 1,
-                item_list: {
-                  materials: [{ amount: 2, mst_material_id: 1714092880 }],
-                },
-              },
-            ],
+            other_list: premi.bonus2,
             price: 5,
           },
           line3: {
             is_open: 1,
-            other_list: [
-              {
-                idx: 1,
-                is_katamari: 0,
-                zeny: 1,
-                value: 1,
-                item_list: {
-                  materials: [{ amount: 3, mst_material_id: 1714092880 }],
-                },
-              },
-              {
-                idx: 2,
-                is_katamari: 0,
-                zeny: 1,
-                value: 1,
-                item_list: {
-                  materials: [{ amount: 3, mst_material_id: 1714092880 }],
-                },
-              },
-              {
-                idx: 3,
-                is_katamari: 0,
-                zeny: 1,
-                value: 1,
-                item_list: {
-                  materials: [{ amount: 3, mst_material_id: 1714092880 }],
-                },
-              },
-              {
-                idx: 4,
-                is_katamari: 0,
-                zeny: 1,
-                value: 1,
-                item_list: {
-                  materials: [{ amount: 3, mst_material_id: 1714092880 }],
-                },
-              },
-            ],
+            other_list: premi.bonus3,
             price: 5,
           },
         },

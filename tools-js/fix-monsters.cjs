@@ -119,7 +119,90 @@ const VARIANTI_ELEM = {
   '水忍種': 'fiercewater',        // altra acqua per Nargacuga
   '砂塵種': 'sand', '深海種': 'abyssal', '碧翠種': 'green',
   '銀嶺種': 'silver', '金雷種': 'gold', '獄雷種': 'stygian', '冥晶種': 'crystal',
+  // Confermati da screenshot reali della schermata missione (mostra il boss
+  // gia' risolto dal client, prova diretta e non dedotta):
+  '奇行種': 'aberrant',  // Aberrant Deviljho, evento "断裂群島攻防戦"
+  '魔神化種': 'demonic', // Demonic Seregios, collab Seven Deadly Sins ("聖戦の幕開け")
+  'FFBE種': 'ffbe',      // FFBE Zinogre, collab Final Fantasy Brave Exvius
+  // Secondo giro di screenshot. I primi due hanno il blocco nel foglio col
+  // nome esatto, quindi arrivano davvero a destinazione:
+  '金ぴか種': 'gilded',       // Gilded Diablos - kinpika = "luccicante d'oro"
+  '鋼鎧種': 'steel armor',    // Steel Armor Diablos - collab Fullmetal Alchemist
+  // 魔女種 (majo = strega) e' la collab Madoka Magica. ATTENZIONE: nel foglio
+  // NON esistono ne' "witch nibelsnarf" ne' "witch volvidon" (ci sono solo
+  // Witch Lagombi e Witch Gobul), quindi qui si ottiene il mostro giusto ma
+  // nella sua versione normale. Meglio del mostro sbagliato di adesso.
+  '魔女種': 'witch',
+  // Evangelion: 使徒 (shito) e' l'Angelo. Il foglio ha "Tenth Angel Gore Magala".
+  '第10使徒': 'tenth angel ', '第１０使徒': 'tenth angel ',
 };
+
+/*
+ * Titoli che non nominano MAI il mostro nel testo (solo il nome dell'evento o
+ * il rank): per questi leggiQuest() non troverebbe nessun "base" in MOSTRI, e
+ * l'unico modo per risalire al mostro e' averlo visto con i propri occhi nella
+ * schermata missione. Ogni voce viene da uno screenshot reale.
+ *
+ * Ristretto al livello ESATTO confermato: "断裂群島攻防戦" e "聖戦の幕開け"
+ * sono serie con piu' livelli (初級..超極級), e livelli diversi della stessa
+ * serie possono avere boss diversi — infatti "聖戦の幕開け" ai livelli bassi
+ * mostra gia' rathalos/silver rathalos corretti (nemico 151), solo il livello
+ * 超極級 e' Demonic Seregios. Un match sul solo titolo, senza il livello,
+ * avrebbe rotto quei livelli bassi che oggi vanno bene.
+ */
+// Flag "s" (dotAll) OBBLIGATORIO: i titoli veri hanno un a-capo letterale fra
+// il rank e il nome ("【特級】\n断裂群島攻防戦II"), e senza "s" il punto "."
+// non lo attraversa — la regex non avrebbe mai trovato nulla su dati reali,
+// anche se sembra funzionare su una stringa di prova senza a-capo.
+const SOVRASCRIZIONI_TITOLO = [
+  {
+    re: /(特級|超極級).{0,4}断裂群島攻防戦.{0,4}(Ⅱ|II)|断裂群島攻防戦.{0,4}(Ⅱ|II).{0,20}(特級|超極級)/s,
+    base: 'deviljho', atteso: 'aberrant deviljho',
+  },
+  {
+    re: /超極級.{0,20}聖戦の幕開け|聖戦の幕開け.{0,20}超極級/s,
+    base: 'seregios', atteso: 'demonic seregios',
+  },
+  /*
+   * Secondo giro di screenshot: quattro eventi il cui titolo nomina l'opera o
+   * la festa, mai il mostro. Senza queste righe leggiQuest() non trova nessun
+   * nome base e la quest finisce fra le "senza corrispondenza", cioe' pesca un
+   * mostro qualunque — era esattamente il sintomo segnalato.
+   */
+  {
+    // 【超極級】理想の末路 - collab Fate (ricompense 魔術回路 e 令呪)
+    re: /理想の末路/s,
+    base: 'diablos', atteso: 'gilded diablos',
+  },
+  {
+    // 【極級】業を背負いし鋼 - collab Fullmetal Alchemist. Esisteva gia' la
+    // corrispondenza per id nemico 163, ma non quella per titolo: se la quest
+    // non porta quell'id restava scoperta.
+    re: /業を背負いし鋼/s,
+    base: 'diablos', atteso: 'steel armor diablos',
+  },
+  {
+    // 謹賀新年!お年玉クエスト! - il titolo usa 新年, non 正月, quindi la
+    // tabella TEMI non lo intercettava.
+    re: /お年玉|謹賀新年/s,
+    base: 'plesioth', atteso: 'new year plesioth',
+  },
+  {
+    // 【極級】お菓子の魔女結界 - collab Madoka Magica (ricompense ソウルジェム).
+    // Ha due boss, チャナガブル魔女種 e ウルクスス魔女種: qui se ne puo'
+    // indicare uno solo, si tiene il BOSS1. Il foglio non ha la versione
+    // strega, quindi arrivera' il nibelsnarf normale.
+    re: /お菓子の魔女結界/s,
+    base: 'nibelsnarf', atteso: 'nibelsnarf',
+  },
+  {
+    // 【超極級】使徒、襲来 - collab Evangelion, boss 第10使徒ゴア・マガラ.
+    // Il titolo nomina l'Angelo ma non il mostro; nel foglio la riga esiste
+    // col nome "Tenth Angel Gore Magala".
+    re: /使徒、襲来|使徒襲来/s,
+    base: 'gore magala', atteso: 'tenth angel gore magala',
+  },
+];
 
 // Eventi a tema e collaborazioni: nel foglio hanno un nome tutto loro
 // ("christmas volvidon", "pumpkin uragaan", "unit-01 brachydios"), quindi il
@@ -142,6 +225,42 @@ const TEMI = {
 // questi c'e' l'isola del tutorial: pescarli per una quest evento faceva
 // partire la missione iniziale invece dell'evento. Si escludono.
 const CONTINENTI_EVENTO = /^l(70|75|9\d)$/;
+
+/*
+ * LIVELLO DI DIFFICOLTA', numerico e non piu' binario.
+ *
+ * Prima la scelta del blocco sapeva solo "初級 si/no": una quest 中級 e una
+ * 特級 venivano trattate identiche, quindi un blocco a vita bassissima (o
+ * segnato "(easy)") poteva finire scelto anche per le missioni piu' difficili
+ * — e' il motivo per cui alcuni mostri sembrano avere pochissima vita mentre
+ * altri no.
+ *
+ * "危険度N" nel titolo e' la fonte migliore quando c'e': un numero esplicito
+ * dato dal gioco stesso, non una mia stima. In assenza, la parola di rank
+ * scandisce comunque una scala. mDangerLevel della quest e' l'ultima risorsa,
+ * per i titoli che non hanno ne' l'uno ne' l'altro.
+ *
+ * ATTENZIONE ai limiti: solo il 5,6% dei blocchi nel foglio ha un'annotazione
+ * di vita ("(tick: N)"), scritta a mano da chi l'ha compilato — non e' un dato
+ * del gioco. Per un mostro i cui blocchi non hanno MAI quell'annotazione (es.
+ * "FFBE Zinogre", 14 blocchi, zero annotati), questo livello non puo' aiutare:
+ * lo script sceglierebbe alla cieca comunque, perche' l'informazione sulla
+ * vita reale semplicemente non e' in questa fonte. Per quei casi servirebbe
+ * estrarre le statistiche di spawn vere dai file d'area del gioco, lavoro che
+ * non e' ancora stato fatto.
+ */
+const RANK_PAROLA = { '初級': 1, '中級': 2, '上級': 3, '特級': 4, '極級': 5, '超極級': 6, '絶級': 7 };
+
+function livelloDa(nome, mDangerLevelRaw) {
+  const dr = nome.match(/危険度\s*(\d+)/);
+  if (dr) return Number(dr[1]);
+  let liv = 0;
+  for (const [parola, n] of Object.entries(RANK_PAROLA)) if (nome.includes(parola)) liv = Math.max(liv, n);
+  if (liv) return liv;
+  const md = Number(mDangerLevelRaw);
+  if (Number.isFinite(md) && md > 0) return md;
+  return 0; // sconosciuto: nessuna preferenza forzata ne' in un senso ne' nell'altro
+}
 
 // Le arene non sono l'ambiente naturale: a parita' di mostro si preferisce la
 // mappa vera (Deserted Island, Tundra, Volcano...).
@@ -217,6 +336,33 @@ const ID_MOSTRO = {
                              // リアル・サバイバル" e "サバイバル・ハロウィン".
                              // Prendeva steel uragaan: stessa famiglia, ma qui
                              // il tema sono gli zombie.
+
+  // Confermati da screenshot della schermata missione (2026-09-09). Questi tre
+  // titoli non nominano il mostro: "ダークバット大量出現", "【FT】レア装備20%"
+  // e simili, "【西瓜級】結晶100%祭り" — solo l'id nemico li lega al mostro
+  // vero, e ora lo sappiamo con certezza invece di dedurlo dalla maggioranza.
+  110: 'pumpkin uragaan',           // "ダークバット大量出現１" e serie
+  130: 'watermelon uragaan',        // "【西瓜級】結晶100%祭り" (id specifico
+                                     // del livello "西瓜": "【学園級】結晶100%
+                                     // 祭り" usa l'id 2, diverso, non toccato)
+  157: 'destruction wyvern rathalos', // "FT": "【FT】レア装備20%" e
+                                     // "【FTコラボ 極級】終わりを告げる黒き竜",
+                                     // confermato da due titoli diversi
+
+  134: 'ffbe zinogre',       // FFBE (Final Fantasy Brave Exvius): "ふたりの騎士
+                             // とひとりの少女" - il titolo non nomina mai il
+                             // mostro, solo i premi lo tradivano (神結晶,
+                             // 終焉の預言書). Prima 6 quest su 7 con questo id
+                             // finivano su rathalos per un falso positivo del
+                             // parsing titolo, nessuna prova reale lo sosteneva.
+  147: 'unit-01 brachydios', // Evangelion, serie "ニア・サードインパクト":
+                             // confermato per il livello 初級, oggi mostrava
+                             // nargacuga.
+  156: 'sweet tooth tigrex', // Sanrio: "【サンリオキャラコラボ】挑戦！
+                             // 再・救出大作戦！" - confermato anche dal premio
+                             // クロミのケーキ (Kuromi, personaggio Sanrio).
+                             // Candidato plausibile gia' dalla primissima
+                             // analisi, mai avuto una prova fino a questa foto.
 };
 
 function pulisci(n) {
@@ -232,6 +378,15 @@ function eMostro(n) {
 }
 
 function leggiQuest(nome) {
+  // Controllo prioritario: i titoli che non nominano affatto il mostro. Se non
+  // ci fosse questo controllo, il ciclo su MOSTRI sotto non troverebbe nessun
+  // "base" e la quest resterebbe senza mostro (o, peggio, verrebbe risolta
+  // solo dalla maggioranza sull'id nemico, che per queste serie multi-livello
+  // e' spesso sbagliata sui livelli piu' alti).
+  for (const { re, base, atteso } of SOVRASCRIZIONI_TITOLO) {
+    if (re.test(nome)) return { base, atteso, tema: null, livello: livelloDa(nome) };
+  }
+
   let base = null, lung = 0;
   // il piu' lungo vince: "ドスアピポス" prima di "アピュポス"
   for (const [jp, en] of Object.entries(MOSTRI)) {
@@ -254,7 +409,7 @@ function leggiQuest(nome) {
   for (const [jp, en] of Object.entries(TEMI)) if (nome.includes(jp)) { tema = en; break; }
   if (tema) atteso = `${tema} ${base}`;
 
-  return { base, atteso, tema, facile: nome.includes('初級') };
+  return { base, atteso, tema, livello: livelloDa(nome) };
 }
 
 (async () => {
@@ -290,7 +445,7 @@ function leggiQuest(nome) {
     }
   }
 
-  function scegli(atteso, base, land, facile) {
+  function scegli(atteso, base, land, livello) {
     // Filtro sulla parola chiave finale, non sul nome base intero: la
     // sottospecie di "royal ludroth" si chiama "purple ludroth" e non contiene
     // "royal", quindi filtrando sul nome intero veniva scartata e si finiva
@@ -315,12 +470,30 @@ function leggiQuest(nome) {
       if (land && b.land === land) p += 55;
       if (b.arena) p -= 25;                        // habitat vero meglio dell'arena
       // Versioni depotenziate: hanno pochissima vita e il mostro muore in un
-      // colpo. Vanno scelte solo per le quest 初級, mai per le altre.
+      // colpo. Vanno scelte solo per le quest 初級 (livello 1); per tutte le
+      // altre la penalita' cresce col livello, non e' piu' un valore fisso —
+      // una 特級 o una 絶級 devono evitarle molto piu' di una 中級 qualsiasi.
+      // Il livello sconosciuto (nessuna parola di rank ne' 危険度N nel titolo)
+      // si tratta come 中級: e' il comportamento che il codice aveva PRIMA per
+      // ogni caso "non 初級", quindi non introduce regressioni.
       const easy = /\(easy\)|idle only|very easy|one shot|training quest/.test(n);
-      if (easy && !facile) p -= 90; else if (easy && facile) p += 15;
-      // "(tick: N)" e' la vita: sotto i 1000 il mostro crolla subito
+      if (easy) {
+        if (livello === 1) p += 15;
+        else {
+          const liv = livello >= 2 ? livello : 2;
+          p -= 90 + (liv - 2) * 20;
+        }
+      }
+      // "(tick: N)" e' la vita: sotto i 1000 il mostro crolla subito. Alle
+      // difficolta' piu' alte (livello >= 5) anche una vita "media" non basta
+      // piu' — prima non veniva controllata affatto sopra i 1000.
       const tick = n.match(/tick:?\s*(\d+)/);
-      if (tick && Number(tick[1]) < 1000 && !facile) p -= 45;
+      if (tick && livello !== 1) {
+        const v = Number(tick[1]);
+        const liv = livello >= 2 ? livello : 2;
+        if (v < 1000) p -= 45 + (liv - 2) * 15;
+        else if (v < 3000 && liv >= 5) p -= (liv - 4) * 12;
+      }
       p -= Math.min(n.length / 8, 10);
       if (p > max) { max = p; migliore = b; }
     }
@@ -336,7 +509,7 @@ function leggiQuest(nome) {
   // Le quest della storia (prefisso QUEST) restano escluse: funzionano, e
   // riassegnarle romperebbe 1995 missioni che vanno bene.
   const eventi = await qs.find({ mDefineId: /^(EVENT|TICKE|ETERN|SCORE)/ })
-    .project({ mDefineId: 1, mQuestID: 1, mQuestName: 1, mBossList: 1, mBlocks: 1, mBlocksPrima: 1 }).toArray();
+    .project({ mDefineId: 1, mQuestID: 1, mQuestName: 1, mBossList: 1, mBlocks: 1, mBlocksPrima: 1, mDangerLevel: 1 }).toArray();
 
   // --- passaggio 1: match dal nome, e costruzione della tabella mEnemyID -> mostro
   const voti = new Map();
@@ -380,7 +553,7 @@ function leggiQuest(nome) {
         const id = Number(b?.mEnemyID);
         const uff = ID_MOSTRO[id];
         if (uff) {
-          info = { base: uff.split(' ').pop(), atteso: uff, facile: nome.includes('初級') };
+          info = { base: uff.split(' ').pop(), atteso: uff, livello: livelloDa(nome, q.mDangerLevel) };
           daId++;
           break;
         }
@@ -388,7 +561,7 @@ function leggiQuest(nome) {
       if (!info) {
         for (const b of q.mBossList || []) {
           const t = tabellaId[String(b?.mEnemyID)];
-          if (t) { info = { base: t, atteso: t, facile: nome.includes('初級') }; daId++; break; }
+          if (t) { info = { base: t, atteso: t, livello: livelloDa(nome, q.mDangerLevel) }; daId++; break; }
         }
       }
       // Ultimo ripiego: il mostro dedotto dalle RICOMPENSE della quest. I premi
@@ -398,7 +571,7 @@ function leggiQuest(nome) {
         const mid = daPremi[String(q.mQuestID)];
         const uff = mid && ID_MOSTRO[Number(mid)];
         if (uff) {
-          info = { base: uff.split(' ').pop(), atteso: uff, facile: nome.includes('初級') };
+          info = { base: uff.split(' ').pop(), atteso: uff, livello: livelloDa(nome, q.mDangerLevel) };
           daPremio++;
         }
       }
@@ -411,7 +584,7 @@ function leggiQuest(nome) {
     // puo' capitare e' una mappa meno azzeccata, mai il tutorial.
     const ml = String(q.mDefineId || '').match(/^(?:EVENT|TICKE|ETERN|SCORE)(\d{2})/);
     const land = ml ? `l${ml[1]}` : null;
-    const scelto = scegli(info.atteso, info.base, land, info.facile);
+    const scelto = scegli(info.atteso, info.base, land, info.livello);
     if (!scelto) { senza++; continue; }
 
     const indici = (q.mBossList || []).map((b) => parseInt(b?.mAreaNo, 10)).filter((n) => !isNaN(n));

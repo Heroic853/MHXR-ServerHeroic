@@ -1,0 +1,3007 @@
+[
+ {
+  "i": 0,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 1,
+  "jp": "リオレイア",
+  "en": "Rathian"
+ },
+ {
+  "i": 2,
+  "jp": "リオレウス",
+  "en": "Rathalos"
+ },
+ {
+  "i": 3,
+  "jp": "クルペッコ",
+  "en": "Qurupeco"
+ },
+ {
+  "i": 4,
+  "jp": "ギギネブラ",
+  "en": "Gigginox"
+ },
+ {
+  "i": 5,
+  "jp": "ベリオロス",
+  "en": "Barioth"
+ },
+ {
+  "i": 6,
+  "jp": "ディアブロス",
+  "en": "Diablos"
+ },
+ {
+  "i": 7,
+  "jp": "イビルジョー",
+  "en": "Deviljho"
+ },
+ {
+  "i": 8,
+  "jp": "ボルボロス",
+  "en": "Barroth"
+ },
+ {
+  "i": 9,
+  "jp": "ウラガンキン",
+  "en": "Uragaan"
+ },
+ {
+  "i": 10,
+  "jp": "ジャギィ",
+  "en": "Jaggi"
+ },
+ {
+  "i": 11,
+  "jp": "ジャギィノス",
+  "en": "Jagginos"
+ },
+ {
+  "i": 12,
+  "jp": "ドスジャギィ",
+  "en": "Great Jaggi"
+ },
+ {
+  "i": 13,
+  "jp": "バギィ",
+  "en": "Baggi"
+ },
+ {
+  "i": 14,
+  "jp": "ドスバギィ",
+  "en": "Great Baggi"
+ },
+ {
+  "i": 15,
+  "jp": "ラギアクルス",
+  "en": "Lagiacrus"
+ },
+ {
+  "i": 16,
+  "jp": "ロアルドロス",
+  "en": "Royal Ludroth"
+ },
+ {
+  "i": 17,
+  "jp": "ルドロス",
+  "en": "Ludroth"
+ },
+ {
+  "i": 18,
+  "jp": "チャナガブル",
+  "en": "Nibelsnarf"
+ },
+ {
+  "i": 19,
+  "jp": "アグナコトル",
+  "en": "Agnaktor"
+ },
+ {
+  "i": 20,
+  "jp": "ナバルデウス",
+  "en": "Nabarudeus"
+ },
+ {
+  "i": 21,
+  "jp": "ウロコトル",
+  "en": "Uroktor"
+ },
+ {
+  "i": 22,
+  "jp": "デルクス",
+  "en": "Delex"
+ },
+ {
+  "i": 23,
+  "jp": "エピオス",
+  "en": "Epioth"
+ },
+ {
+  "i": 24,
+  "jp": "アルバトリオン",
+  "en": "Alatreon"
+ },
+ {
+  "i": 25,
+  "jp": "ジエン・モーラン",
+  "en": "Jhen Mohran"
+ },
+ {
+  "i": 26,
+  "jp": "ギィギ",
+  "en": "Giggi"
+ },
+ {
+  "i": 27,
+  "jp": "アプトノス",
+  "en": "Aptonoth"
+ },
+ {
+  "i": 28,
+  "jp": "ポポ",
+  "en": "Popo"
+ },
+ {
+  "i": 29,
+  "jp": "リノプロス",
+  "en": "Rhenoplos"
+ },
+ {
+  "i": 30,
+  "jp": "アイルー",
+  "en": "Melynx"
+ },
+ {
+  "i": 31,
+  "jp": "メラルー",
+  "en": "Melynx"
+ },
+ {
+  "i": 32,
+  "jp": "魚類",
+  "en": "Fish"
+ },
+ {
+  "i": 33,
+  "jp": "オルタロス",
+  "en": "Altaroth"
+ },
+ {
+  "i": 34,
+  "jp": "ケルビ",
+  "en": "Anteka"
+ },
+ {
+  "i": 35,
+  "jp": "ギギネブラの卵塊",
+  "en": "Gigginox's Egg Cluster"
+ },
+ {
+  "i": 36,
+  "jp": "ブナハブラ",
+  "en": "Bnahabra"
+ },
+ {
+  "i": 37,
+  "jp": "ブナハブラ",
+  "en": "Bnahabra"
+ },
+ {
+  "i": 38,
+  "jp": "ブナハブラ",
+  "en": "Bnahabra"
+ },
+ {
+  "i": 39,
+  "jp": "ブナハブラ",
+  "en": "Bnahabra"
+ },
+ {
+  "i": 40,
+  "jp": "岩",
+  "en": "Rock"
+ },
+ {
+  "i": 41,
+  "jp": "ジンオウガ",
+  "en": "Zinogre"
+ },
+ {
+  "i": 42,
+  "jp": "アオアシラ",
+  "en": "Arzuros"
+ },
+ {
+  "i": 43,
+  "jp": "ウルクスス",
+  "en": "Volvidon"
+ },
+ {
+  "i": 44,
+  "jp": "ラングロトラ",
+  "en": "Lagombi"
+ },
+ {
+  "i": 45,
+  "jp": "ドスフロギィ",
+  "en": "Great Wroggi"
+ },
+ {
+  "i": 46,
+  "jp": "ドボルベルク",
+  "en": "Duramboros"
+ },
+ {
+  "i": 47,
+  "jp": "ハプルボッカ",
+  "en": "Nibelsnarf"
+ },
+ {
+  "i": 48,
+  "jp": "フロギィ",
+  "en": "Wroggi"
+ },
+ {
+  "i": 49,
+  "jp": "ズワロポス",
+  "en": "Zuwaropos"
+ },
+ {
+  "i": 50,
+  "jp": "ガーグァ",
+  "en": "Slagtoth"
+ },
+ {
+  "i": 51,
+  "jp": "クルペッコ亜種",
+  "en": "Qurupeco Subspecies"
+ },
+ {
+  "i": 52,
+  "jp": "ギギネブラ亜種",
+  "en": "Gigginox Subspecies"
+ },
+ {
+  "i": 53,
+  "jp": "ベリオロス亜種",
+  "en": "Barioth Subspecies"
+ },
+ {
+  "i": 54,
+  "jp": "ボルボロス亜種",
+  "en": "Barroth Subspecies"
+ },
+ {
+  "i": 55,
+  "jp": "ウラガンキン亜種",
+  "en": "Uragaan Subspecies"
+ },
+ {
+  "i": 56,
+  "jp": "ロアルドロス亜種",
+  "en": "Royal Ludroth Subspecies"
+ },
+ {
+  "i": 57,
+  "jp": "アグナコトル亜種",
+  "en": "Agnaktor Subspecies"
+ },
+ {
+  "i": 58,
+  "jp": "ディアブロス亜種",
+  "en": "Diablos Subspecies"
+ },
+ {
+  "i": 59,
+  "jp": "ナルガクルガ",
+  "en": "Nargacuga"
+ },
+ {
+  "i": 60,
+  "jp": "ナルガクルガ亜種",
+  "en": "Nargacuga Subspecies"
+ },
+ {
+  "i": 61,
+  "jp": "ナルガクルガ希少種",
+  "en": "Nargacuga Rare Species"
+ },
+ {
+  "i": 62,
+  "jp": "リオレイア亜種",
+  "en": "Rathian Subspecies"
+ },
+ {
+  "i": 63,
+  "jp": "リオレイア希少種",
+  "en": "Rathian Rare Species"
+ },
+ {
+  "i": 64,
+  "jp": "リオレウス亜種",
+  "en": "Rathalos Subspecies"
+ },
+ {
+  "i": 65,
+  "jp": "リオレウス希少種",
+  "en": "Rathalos Rare Species"
+ },
+ {
+  "i": 66,
+  "jp": "ガノトトス",
+  "en": "Plesioth"
+ },
+ {
+  "i": 67,
+  "jp": "ガノトトス亜種",
+  "en": "Plesioth Subspecies"
+ },
+ {
+  "i": 68,
+  "jp": "ラギアクルス亜種",
+  "en": "Lagiacrus Subspecies"
+ },
+ {
+  "i": 69,
+  "jp": "ラギアクルス希少種",
+  "en": "Lagiacrus Rare Species"
+ },
+ {
+  "i": 70,
+  "jp": "ナバルデウス亜種",
+  "en": "Nabarudeus Subspecies"
+ },
+ {
+  "i": 71,
+  "jp": "怒り喰らうイビルジョー",
+  "en": "Savage Deviljho"
+ },
+ {
+  "i": 72,
+  "jp": "ジンオウガ亜種",
+  "en": "Zinogre Subspecies"
+ },
+ {
+  "i": 73,
+  "jp": "ドボルベルク亜種",
+  "en": "Duramboros Subspecies"
+ },
+ {
+  "i": 74,
+  "jp": "ブラキディオス",
+  "en": "Brachydios"
+ },
+ {
+  "i": 75,
+  "jp": "グラン・ミラオス",
+  "en": "Gran Miraos"
+ },
+ {
+  "i": 76,
+  "jp": "ブルファンゴ",
+  "en": "Bullfango"
+ },
+ {
+  "i": 77,
+  "jp": "ガウシカ",
+  "en": "Anteka"
+ },
+ {
+  "i": 78,
+  "jp": "ズワロポス",
+  "en": "Zuwaropos"
+ },
+ {
+  "i": 79,
+  "jp": "岩",
+  "en": "Rock"
+ },
+ {
+  "i": 80,
+  "jp": "岩",
+  "en": "Rock"
+ },
+ {
+  "i": 81,
+  "jp": "岩",
+  "en": "Rock"
+ },
+ {
+  "i": 82,
+  "jp": "岩",
+  "en": "Rock"
+ },
+ {
+  "i": 83,
+  "jp": "岩",
+  "en": "Rock"
+ },
+ {
+  "i": 84,
+  "jp": "ウラガンキン輝岩種",
+  "en": "UragaanShiningrock"
+ },
+ {
+  "i": 85,
+  "jp": "ジエン・モーラン亜種",
+  "en": "Jhen Mohran Subspecies"
+ },
+ {
+  "i": 86,
+  "jp": "キリン",
+  "en": "Kirin"
+ },
+ {
+  "i": 87,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 88,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 89,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 90,
+  "jp": "ゴルルー",
+  "en": "Goruru"
+ },
+ {
+  "i": 91,
+  "jp": "メタルー",
+  "en": "Metaroo"
+ },
+ {
+  "i": 92,
+  "jp": "リオレウス豪火種",
+  "en": "RathalosFlame"
+ },
+ {
+  "i": 93,
+  "jp": "ベリオロス凍氷種",
+  "en": "BariothFrozen"
+ },
+ {
+  "i": 94,
+  "jp": "ウラガンキン輝岩種",
+  "en": "UragaanShiningrock"
+ },
+ {
+  "i": 95,
+  "jp": "キリン雷帝種",
+  "en": "KirinThunder Emperor"
+ },
+ {
+  "i": 96,
+  "jp": "ガノトトス激流種",
+  "en": "PlesiothWhitewater"
+ },
+ {
+  "i": 97,
+  "jp": "アグナコトル煉獄種",
+  "en": "AgnaktorPurgatory"
+ },
+ {
+  "i": 98,
+  "jp": "ジンオウガ不死種",
+  "en": "ZinogreImmortal"
+ },
+ {
+  "i": 99,
+  "jp": "ギギネブラ劇毒種",
+  "en": "GigginoxVirulent"
+ },
+ {
+  "i": 100,
+  "jp": "ラングロトラ星黒種",
+  "en": "LagombiStarblack"
+ },
+ {
+  "i": 101,
+  "jp": "リオレイア灼熱種",
+  "en": "RathianScorching Heat"
+ },
+ {
+  "i": 102,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 103,
+  "jp": "岩",
+  "en": "Rock"
+ },
+ {
+  "i": 104,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 105,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 106,
+  "jp": "クシャルダオラ",
+  "en": "Kushala Daora"
+ },
+ {
+  "i": 107,
+  "jp": "錆びたクシャルダオラ",
+  "en": "Rusted Kushala Daora"
+ },
+ {
+  "i": 108,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 109,
+  "jp": "ドボルベルク峰爆種",
+  "en": "DuramborosExplosive Peak"
+ },
+ {
+  "i": 110,
+  "jp": "ウラガンキン南瓜種",
+  "en": "UragaanPumpkin"
+ },
+ {
+  "i": 111,
+  "jp": "イビルジョー奇行種",
+  "en": "DeviljhoAberrant"
+ },
+ {
+  "i": 112,
+  "jp": "ウルクスス魔女種",
+  "en": "VolvidonWitch"
+ },
+ {
+  "i": 113,
+  "jp": "チャナガブル魔女種",
+  "en": "NibelsnarfWitch"
+ },
+ {
+  "i": 114,
+  "jp": "ドスゴルルー",
+  "en": "Great Goruru"
+ },
+ {
+  "i": 115,
+  "jp": "ドスメタルー",
+  "en": "Great Metaroo"
+ },
+ {
+  "i": 116,
+  "jp": "アオアシラ大型個体",
+  "en": "Large Arzuros"
+ },
+ {
+  "i": 117,
+  "jp": "アオアシラ超大型個体",
+  "en": "Giant Arzuros"
+ },
+ {
+  "i": 118,
+  "jp": "ラングロトラ聖夜種",
+  "en": "LagombiWitch"
+ },
+ {
+  "i": 119,
+  "jp": "ガノトトスめで鯛種",
+  "en": "PlesiothNew Year"
+ },
+ {
+  "i": 120,
+  "jp": "ネフ・ガルムド",
+  "en": "Nef-Garmat"
+ },
+ {
+  "i": 121,
+  "jp": "アイルー好きで種",
+  "en": "FelyneFondness"
+ },
+ {
+  "i": 122,
+  "jp": "メラルー好きで種",
+  "en": "MelynxFondness"
+ },
+ {
+  "i": 123,
+  "jp": "結晶",
+  "en": "Crystal"
+ },
+ {
+  "i": 124,
+  "jp": "アピポス",
+  "en": "Apypos"
+ },
+ {
+  "i": 125,
+  "jp": "ドスアピポス",
+  "en": "Great Apypos"
+ },
+ {
+  "i": 126,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 127,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 128,
+  "jp": "暴征翼クシャルダオラ",
+  "en": "Kushala Daora, the Rampaging Wing"
+ },
+ {
+  "i": 129,
+  "jp": "ディアブロス金ぴか種",
+  "en": "DiablosGilded"
+ },
+ {
+  "i": 130,
+  "jp": "ウラガンキン西瓜種",
+  "en": "UragaanWatermelon"
+ },
+ {
+  "i": 131,
+  "jp": "天雷騎キリン",
+  "en": "Kirin, the Heavenly Thunder Knight"
+ },
+ {
+  "i": 132,
+  "jp": "ブラキディオス爆氷種",
+  "en": "BrachydiosIceblast"
+ },
+ {
+  "i": 133,
+  "jp": "第10使徒ゴア・マガラ",
+  "en": "Gore Magala, the 10th Angel"
+ },
+ {
+  "i": 134,
+  "jp": "ジンオウガFFBE種",
+  "en": "ZinogreFfbe"
+ },
+ {
+  "i": 135,
+  "jp": "黒獄卿ゴア・マガラ",
+  "en": "Gore Magala, Lord of the Black Abyss"
+ },
+ {
+  "i": 136,
+  "jp": "ボルボロスあざっ種",
+  "en": "Barroth Bro"
+ },
+ {
+  "i": 137,
+  "jp": "ブナハブラさんく種",
+  "en": "Bnahabra 'Thanks'"
+ },
+ {
+  "i": 138,
+  "jp": "たまニャ～アイルー",
+  "en": "Tama-nya~ Felyne"
+ },
+ {
+  "i": 139,
+  "jp": "かぎニャ～メラルー",
+  "en": "Kagi-nya~ Melynx"
+ },
+ {
+  "i": 140,
+  "jp": "ギギネブラ ヨーガ種",
+  "en": "Gigginox Yoga"
+ },
+ {
+  "i": 141,
+  "jp": "轟暴震ティガレックス",
+  "en": "Tigrex the Roaring Rampage"
+ },
+ {
+  "i": 142,
+  "jp": "翔刃脚セルレギオス",
+  "en": "Seregios the Soaring Blade"
+ },
+ {
+  "i": 143,
+  "jp": "星黒獣ラングロトラ",
+  "en": "Lagombi the Starblack Beast"
+ },
+ {
+  "i": 144,
+  "jp": "ジンオウガFFBE種",
+  "en": "ZinogreFfbe"
+ },
+ {
+  "i": 145,
+  "jp": "廻世主シャガルマガラ",
+  "en": "Shagaru Magala, Lord of Rebirth"
+ },
+ {
+  "i": 146,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 147,
+  "jp": "ブラキディオス初号機",
+  "en": "Brachydios Unit-01"
+ },
+ {
+  "i": 148,
+  "jp": "アピポス",
+  "en": "Apypos"
+ },
+ {
+  "i": 149,
+  "jp": "大首領ドスアピポス",
+  "en": "Great Apypos, the Grand Chief"
+ },
+ {
+  "i": 150,
+  "jp": "ナルガクルガ烈水種",
+  "en": "NargacugaFiercewater"
+ },
+ {
+  "i": 151,
+  "jp": "セルレギオス魔神化種",
+  "en": "SeregiosDemonic"
+ },
+ {
+  "i": 152,
+  "jp": "モルドムント",
+  "en": "Morudomunto"
+ },
+ {
+  "i": 153,
+  "jp": "災凶ギギネブラ劇毒種",
+  "en": "Calamitous Gigginox the Virulent"
+ },
+ {
+  "i": 154,
+  "jp": "ボルボロスあざっ種",
+  "en": "Barroth Bro"
+ },
+ {
+  "i": 155,
+  "jp": "ウラガンキンB.O.W.種",
+  "en": "Uragaan B.O.W."
+ },
+ {
+  "i": 156,
+  "jp": "甘党ティガレックス",
+  "en": "Tigrex the Sweet Tooth"
+ },
+ {
+  "i": 157,
+  "jp": "リオレウス滅竜種",
+  "en": "RathalosDestruction Wyvern"
+ },
+ {
+  "i": 158,
+  "jp": "エオ・ガルディア",
+  "en": "Eo Garudia"
+ },
+ {
+  "i": 159,
+  "jp": "タマミツネ雷泡種",
+  "en": "MizutsuneThunderbubble"
+ },
+ {
+  "i": 160,
+  "jp": "ウラガンキン腐滅種",
+  "en": "Uragaan, the Rotting Doom"
+ },
+ {
+  "i": 161,
+  "jp": "ラージャン閻鬼種",
+  "en": "Rajang, the Hell King"
+ },
+ {
+  "i": 162,
+  "jp": "ティガレックス2号機",
+  "en": "Tigrex Unit-02"
+ },
+ {
+  "i": 163,
+  "jp": "ディアブロス鋼鎧種",
+  "en": "DiablosSteel Armor"
+ },
+ {
+  "i": 164,
+  "jp": "ラギアクルス陸征種",
+  "en": "LagiacrusLandconquest"
+ },
+ {
+  "i": 165,
+  "jp": "激昂したラージャン",
+  "en": "Furious Rajang"
+ },
+ {
+  "i": 166,
+  "jp": "ギギネブラヨーガ種",
+  "en": "GigginoxYoga"
+ },
+ {
+  "i": 167,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 168,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 169,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 170,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 171,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 172,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 173,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 174,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 175,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 176,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 177,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 178,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 179,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 180,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 181,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 182,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 183,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 184,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 185,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 186,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 187,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 188,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 189,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 190,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 191,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 192,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 193,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 194,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 195,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 196,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 197,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 198,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 199,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 200,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 201,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 202,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 203,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 204,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 205,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 206,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 207,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 208,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 209,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 210,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 211,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 212,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 213,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 214,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 215,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 216,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 217,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 218,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 219,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 220,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 221,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 222,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 223,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 224,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 225,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 226,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 227,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 228,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 229,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 230,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 231,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 232,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 233,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 234,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 235,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 236,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 237,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 238,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 239,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 240,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 241,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 242,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 243,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 244,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 245,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 246,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 247,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 248,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 249,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 250,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 251,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 252,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 253,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 254,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 255,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 256,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 257,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 258,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 259,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 260,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 261,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 262,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 263,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 264,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 265,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 266,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 267,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 268,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 269,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 270,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 271,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 272,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 273,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 274,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 275,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 276,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 277,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 278,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 279,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 280,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 281,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 282,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 283,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 284,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 285,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 286,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 287,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 288,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 289,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 290,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 291,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 292,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 293,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 294,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 295,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 296,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 297,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 298,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 299,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 300,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 301,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 302,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 303,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 304,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 305,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 306,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 307,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 308,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 309,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 310,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 311,
+  "jp": "ティガレックス",
+  "en": "Tigrex"
+ },
+ {
+  "i": 312,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 313,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 314,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 315,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 316,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 317,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 318,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 319,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 320,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 321,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 322,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 323,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 324,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 325,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 326,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 327,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 328,
+  "jp": "ゴア・マガラ",
+  "en": "Gore Magala"
+ },
+ {
+  "i": 329,
+  "jp": "シャガルマガラ",
+  "en": "Shagaru Magala"
+ },
+ {
+  "i": 330,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 331,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 332,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 333,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 334,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 335,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 336,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 337,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 338,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 339,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 340,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 341,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 342,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 343,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 344,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 345,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 346,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 347,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 348,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 349,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 350,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 351,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 352,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 353,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 354,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 355,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 356,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 357,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 358,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 359,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 360,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 361,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 362,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 363,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 364,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 365,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 366,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 367,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 368,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 369,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 370,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 371,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 372,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 373,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 374,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 375,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 376,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 377,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 378,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 379,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 380,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 381,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 382,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 383,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 384,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 385,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 386,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 387,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 388,
+  "jp": "セルレギオス",
+  "en": "Seregios"
+ },
+ {
+  "i": 389,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 390,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 391,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 392,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 393,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 394,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 395,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 396,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 397,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 398,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 399,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 400,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 401,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 402,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 403,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 404,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 405,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 406,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 407,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 408,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 409,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 410,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 411,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 412,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 413,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 414,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 415,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 416,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 417,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 418,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 419,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 420,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 421,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 422,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 423,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 424,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 425,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 426,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 427,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 428,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 429,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 430,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 431,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 432,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 433,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 434,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 435,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 436,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 437,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 438,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 439,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 440,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 441,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 442,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 443,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 444,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 445,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 446,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 447,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 448,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 449,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 450,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 451,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 452,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 453,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 454,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 455,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 456,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 457,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 458,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 459,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 460,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 461,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 462,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 463,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 464,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 465,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 466,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 467,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 468,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 469,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 470,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 471,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 472,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 473,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 474,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 475,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 476,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 477,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 478,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 479,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 480,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 481,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 482,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 483,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 484,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 485,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 486,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 487,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 488,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 489,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 490,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 491,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 492,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 493,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 494,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 495,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 496,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 497,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 498,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 499,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 500,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 501,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 502,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 503,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 504,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 505,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 506,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 507,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 508,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 509,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 510,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 511,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 512,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 513,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 514,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 515,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 516,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 517,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 518,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 519,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 520,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 521,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 522,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 523,
+  "jp": "ラージャン",
+  "en": "Rajang"
+ },
+ {
+  "i": 524,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 525,
+  "jp": "オオナズチ",
+  "en": "Chameleos"
+ },
+ {
+  "i": 526,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 527,
+  "jp": "テオ・テスカトル",
+  "en": "Teostra"
+ },
+ {
+  "i": 528,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 529,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 530,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 531,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 532,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 533,
+  "jp": "アカムトルム",
+  "en": "Akantor"
+ },
+ {
+  "i": 534,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 535,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 536,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 537,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 538,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 539,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 540,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 541,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 542,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 543,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 544,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 545,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 546,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 547,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 548,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 549,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 550,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 551,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 552,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 553,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 554,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 555,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 556,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 557,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 558,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 559,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 560,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 561,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 562,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 563,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 564,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 565,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 566,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 567,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 568,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 569,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 570,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 571,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 572,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 573,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 574,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 575,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 576,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 577,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 578,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 579,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 580,
+  "jp": "ディノバルド",
+  "en": "Glavenus"
+ },
+ {
+  "i": 581,
+  "jp": "ライゼクス",
+  "en": "Astalos"
+ },
+ {
+  "i": 582,
+  "jp": "タマミツネ",
+  "en": "Mizutsune"
+ },
+ {
+  "i": 583,
+  "jp": "ガムート",
+  "en": "Gammoth"
+ },
+ {
+  "i": 584,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 585,
+  "jp": "NO_DATA",
+  "en": "NO_DATA"
+ },
+ {
+  "i": 586,
+  "jp": "Invalid Message",
+  "en": "Invalid Message"
+ },
+ {
+  "i": 587,
+  "jp": "鳥竜種",
+  "en": "Bird Wyvern"
+ },
+ {
+  "i": 588,
+  "jp": "飛竜種",
+  "en": "Flying Wyvern"
+ },
+ {
+  "i": 589,
+  "jp": "獣竜種",
+  "en": "Brute Wyvern"
+ },
+ {
+  "i": 590,
+  "jp": "魚竜種",
+  "en": "Piscine Wyvern"
+ },
+ {
+  "i": 591,
+  "jp": "海竜種",
+  "en": "Leviathan"
+ },
+ {
+  "i": 592,
+  "jp": "牙竜種",
+  "en": "Fanged Wyvern"
+ },
+ {
+  "i": 593,
+  "jp": "牙獣種",
+  "en": "Fanged Beast"
+ },
+ {
+  "i": 594,
+  "jp": "古龍種",
+  "en": "Elder Dragon"
+ },
+ {
+  "i": 595,
+  "jp": "獣人種",
+  "en": "Lynian"
+ },
+ {
+  "i": 596,
+  "jp": "草食種",
+  "en": "Herbivore"
+ },
+ {
+  "i": 597,
+  "jp": "甲虫種",
+  "en": "Neopteron"
+ },
+ {
+  "i": 598,
+  "jp": "魚類",
+  "en": "Fish"
+ },
+ {
+  "i": 599,
+  "jp": "Invalid Message",
+  "en": "Invalid Message"
+ },
+ {
+  "i": 600,
+  "jp": "UNKNOWN",
+  "en": "UNKNOWN"
+ }
+]

@@ -1,0 +1,367 @@
+[
+ {
+  "i": 0,
+  "jp": "好きな項目を選んでくださいね。",
+  "en": "Please choose whichever option you like."
+ },
+ {
+  "i": 1,
+  "jp": "%sを\r\nお送りします。",
+  "en": "We'll send you\r\n%s."
+ },
+ {
+  "i": 2,
+  "jp": "行きたいクエストをタッチしてください。",
+  "en": "Please touch the quest you want to go on."
+ },
+ {
+  "i": 3,
+  "jp": "行きたいクエストをタッチしてください。",
+  "en": "Please touch the quest you want to go on."
+ },
+ {
+  "i": 4,
+  "jp": "装備をタッチすると装備を変更できるぞ！",
+  "en": "Touch your equipment to change it!"
+ },
+ {
+  "i": 5,
+  "jp": "ハンターを２人選んで、「討伐」をタッチだ！",
+  "en": "Choose 2 hunters, then touch \"Hunt\"!"
+ },
+ {
+  "i": 6,
+  "jp": "連れて行きたい狩友をタッチだ！",
+  "en": "Touch the Hunting Friend you want to bring along!"
+ },
+ {
+  "i": 7,
+  "jp": "クリア時に持ち帰れるアイテムだ！",
+  "en": "These are items you can bring home when you clear the quest!"
+ },
+ {
+  "i": 8,
+  "jp": "スキル効果や状態異常だ。",
+  "en": "These are skill effects and status ailments."
+ },
+ {
+  "i": 9,
+  "jp": "本当にクエストをリタイアするのか？",
+  "en": "Are you sure you want to retire from the quest?"
+ },
+ {
+  "i": 10,
+  "jp": "状況確認やリタイアが選べるぞ。",
+  "en": "You can check your status or retire from here."
+ },
+ {
+  "i": 11,
+  "jp": "メンバーのスキルを確認できるぞ。",
+  "en": "You can check your members' skills."
+ },
+ {
+  "i": 12,
+  "jp": "あきらめるな！",
+  "en": "Don't give up!"
+ },
+ {
+  "i": 13,
+  "jp": "経験値がたまるとレベルアップするぞ！",
+  "en": "Once you gather enough experience, you'll level up!"
+ },
+ {
+  "i": 14,
+  "jp": "何が出てくるか、ドキドキだ！",
+  "en": "What could it be? So exciting!"
+ },
+ {
+  "i": 15,
+  "jp": "今回の獲得物です。",
+  "en": "Here's what you obtained this time."
+ },
+ {
+  "i": 16,
+  "jp": "今回の獲得ゼニ―です。",
+  "en": "Here's the Zenny you earned this time."
+ },
+ {
+  "i": 17,
+  "jp": "集めてレイドモンスターを探しだせ！",
+  "en": "Gather them and find the Raid Monster!"
+ },
+ {
+  "i": 18,
+  "jp": "ハンターズギルドからの\r\nプレゼントです。",
+  "en": "This is a gift\r\nfrom the Hunter's Guild."
+ },
+ {
+  "i": 19,
+  "jp": "装備を強くしたり、進化させたりできるよ！",
+  "en": "You can strengthen or evolve your equipment!"
+ },
+ {
+  "i": 20,
+  "jp": "武器や防具を装備できるよ！",
+  "en": "You can equip weapons and armor!"
+ },
+ {
+  "i": 21,
+  "jp": "強化したい装備を選択してね！",
+  "en": "Please select the equipment you want to upgrade!"
+ },
+ {
+  "i": 22,
+  "jp": "武器を進化させられるよ！",
+  "en": "You can evolve your weapon!"
+ },
+ {
+  "i": 23,
+  "jp": "持ち物をチェックしよ！",
+  "en": "Let's check your items!"
+ },
+ {
+  "i": 24,
+  "jp": "合成したアイテムはなくなるから注意して！",
+  "en": "Be careful, items used in crafting will be consumed!"
+ },
+ {
+  "i": 25,
+  "jp": "装備を強化するよ！",
+  "en": "Let's upgrade your equipment!"
+ },
+ {
+  "i": 26,
+  "jp": "ここでは狩玉などが購入できます。",
+  "en": "Here you can purchase things like Hunting Orbs."
+ },
+ {
+  "i": 27,
+  "jp": "買いたい数を選んでください。",
+  "en": "Please choose the quantity you want to buy."
+ },
+ {
+  "i": 28,
+  "jp": "ガチャで装備／素材をゲットだよ～！",
+  "en": "Get equipment and materials from the Gacha~!"
+ },
+ {
+  "i": 29,
+  "jp": "狩友ポイントでガチャれるよ！",
+  "en": "You can pull the Gacha with Hunting Friend Points!"
+ },
+ {
+  "i": 30,
+  "jp": "狩玉でガチャれるよ！",
+  "en": "You can pull the Gacha with Hunting Orbs!"
+ },
+ {
+  "i": 31,
+  "jp": "さあ、みんなが待っているぞ！",
+  "en": "Come on, everyone's waiting!"
+ },
+ {
+  "i": 32,
+  "jp": "よく来たな、みんな待ってたぞ！",
+  "en": "Glad you came, everyone's been waiting!"
+ },
+ {
+  "i": 33,
+  "jp": "狩猟団のメンバーを確認できるぞ！",
+  "en": "You can check your Hunting Squad's members!"
+ },
+ {
+  "i": 34,
+  "jp": "狩猟団の成績をチェックしてみよう！",
+  "en": "Let's check your Hunting Squad's results!"
+ },
+ {
+  "i": 35,
+  "jp": "好きな項目を選んでくれ。",
+  "en": "Choose whichever option you like."
+ },
+ {
+  "i": 36,
+  "jp": "他の狩猟団を探すことができるぞ！",
+  "en": "You can search for other Hunting Squads!"
+ },
+ {
+  "i": 37,
+  "jp": "他のハンターの活躍を見てみよう。",
+  "en": "Let's take a look at other hunters' achievements."
+ },
+ {
+  "i": 38,
+  "jp": "狩猟団長だけが使える機能だ。",
+  "en": "This is a feature only the Hunting Squad Leader can use."
+ },
+ {
+  "i": 39,
+  "jp": "ハンターの情報を表示するぞ。",
+  "en": "This shows the hunter's information."
+ },
+ {
+  "i": 40,
+  "jp": "強力なモンスターの気配がするぞ！",
+  "en": "There's a sign of a powerful monster!"
+ },
+ {
+  "i": 41,
+  "jp": "消費する討伐Pを選んでくれ。",
+  "en": "Please choose how many Hunt Points to spend."
+ },
+ {
+  "i": 42,
+  "jp": "モンスターの属性にあった装備を選ぶんだ。",
+  "en": "Choose equipment that matches the monster's element."
+ },
+ {
+  "i": 43,
+  "jp": "友情の証を使えば仲間を呼べるぞ！",
+  "en": "You can use a Proof of Friendship to call in an ally!"
+ },
+ {
+  "i": 44,
+  "jp": "狩りの準備はできているか？",
+  "en": "Are you ready for the hunt?"
+ },
+ {
+  "i": 45,
+  "jp": "連携アイテムは仲間と効果を共有できるぞ！",
+  "en": "Link Items let you share their effects with allies!"
+ },
+ {
+  "i": 46,
+  "jp": "良くやった、この調子でがんばってくれ！",
+  "en": "Well done, keep up the good work!"
+ },
+ {
+  "i": 47,
+  "jp": "惜しかったな、この次はがんばろう！",
+  "en": "So close, let's do better next time!"
+ },
+ {
+  "i": 48,
+  "jp": "力を合わせれば、きっと勝てるはずだ！",
+  "en": "If we join our strength, we're sure to win!"
+ },
+ {
+  "i": 49,
+  "jp": "メンバーの情報を確認できるぞ。",
+  "en": "You can check your members' information."
+ },
+ {
+  "i": 50,
+  "jp": "連携アイテムの使用状況が見られるぞ！",
+  "en": "You can see the usage status of Link Items!"
+ },
+ {
+  "i": 51,
+  "jp": "みんなと協力してパネルを埋めましょう。",
+  "en": "Work together with everyone to fill in the panels."
+ },
+ {
+  "i": 52,
+  "jp": "レアパネルの制限時間に注意です！",
+  "en": "Watch out for the Rare Panel's time limit!"
+ },
+ {
+  "i": 53,
+  "jp": "送った報酬をチェックしてくださいね。",
+  "en": "Please check the rewards you sent."
+ },
+ {
+  "i": 54,
+  "jp": "ミッションを達成して報酬をもらおう！",
+  "en": "Complete missions and receive rewards!"
+ },
+ {
+  "i": 55,
+  "jp": "モンスターの進撃状況に注意です。",
+  "en": "Keep an eye on the monster's advance."
+ },
+ {
+  "i": 56,
+  "jp": "がんばってモンスターを撃退しましょう！",
+  "en": "Do your best to drive off the monster!"
+ },
+ {
+  "i": 57,
+  "jp": "狩友の情報が見られます。",
+  "en": "You can view your Hunting Friends' information."
+ },
+ {
+  "i": 58,
+  "jp": "届いたメールを確認できます。",
+  "en": "You can check mail you've received."
+ },
+ {
+  "i": 59,
+  "jp": "送ったメールを確認できます。",
+  "en": "You can check mail you've sent."
+ },
+ {
+  "i": 60,
+  "jp": "これまで獲得した装備の図鑑です。",
+  "en": "This is a log of the equipment you've obtained so far."
+ },
+ {
+  "i": 61,
+  "jp": "プレイに役立つヘルプを確認できます。",
+  "en": "You can check help that's useful for playing."
+ },
+ {
+  "i": 62,
+  "jp": "ゲームのオプションを設定できます。",
+  "en": "You can configure the game's options."
+ },
+ {
+  "i": 63,
+  "jp": "探したい人のIDを入力してください。",
+  "en": "Please enter the ID of the person you want to search for."
+ },
+ {
+  "i": 64,
+  "jp": "知っているコードを入力してください。",
+  "en": "Please enter a code you know."
+ },
+ {
+  "i": 65,
+  "jp": "メールや図鑑などが確認できます。",
+  "en": "You can check things like mail and the log."
+ },
+ {
+  "i": 66,
+  "jp": "欲しいものを選んでくださいね。",
+  "en": "Please choose what you want."
+ },
+ {
+  "i": 67,
+  "jp": "現在行われているイベントです。",
+  "en": "This is an event currently taking place."
+ },
+ {
+  "i": 68,
+  "jp": "クエストの情報を見れますよ！",
+  "en": "You can view quest information!"
+ },
+ {
+  "i": 69,
+  "jp": "エリザ",
+  "en": "Eliza"
+ },
+ {
+  "i": 70,
+  "jp": "先輩ハンター",
+  "en": "Senior Hunter"
+ },
+ {
+  "i": 71,
+  "jp": "アイルー",
+  "en": "Felyne"
+ },
+ {
+  "i": 72,
+  "jp": "Invalid Message",
+  "en": "Invalid Message"
+ }
+]

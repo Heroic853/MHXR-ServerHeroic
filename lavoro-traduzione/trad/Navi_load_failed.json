@@ -1,0 +1,17 @@
+[
+ {
+  "i": 0,
+  "jp": "<TEX 0>モンスターへのダメージが\r\n小さい時は<COL 004AD1FF>武器を強化</COL>しましょう",
+  "en": "<TEX 0>If your damage to monsters\r\nis low, try <COL 004AD1FF>upgrading your weapon</COL>"
+ },
+ {
+  "i": 1,
+  "jp": "<TEX 0>モンスターへのダメージが\r\n小さい時は<COL 004AD1FF>弱点属性の武器</COL>を\r\n使いましょう",
+  "en": "<TEX 0>If your damage to monsters\r\nis low, try using a <COL 004AD1FF>weapon with\r\nthe monster's weak element</COL>"
+ },
+ {
+  "i": 2,
+  "jp": "<TEX 0>モンスターから受ける\r\nダメージが大きい時は\r\n<COL 004AD1FF>防具を強化</COL>しましょう",
+  "en": "<TEX 0>If you're taking heavy\r\ndamage from monsters,\r\ntry <COL 004AD1FF>upgrading your armor</COL>"
+ }
+]

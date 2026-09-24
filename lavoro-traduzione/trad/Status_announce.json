@@ -1,0 +1,697 @@
+[
+ {
+  "i": 0,
+  "jp": "攻撃力アップ・小",
+  "en": "Attack Power Up (Small)"
+ },
+ {
+  "i": 1,
+  "jp": "攻撃力アップ・中",
+  "en": "Attack Power Up (Medium)"
+ },
+ {
+  "i": 2,
+  "jp": "攻撃力アップ・大",
+  "en": "Attack Power Up (Large)"
+ },
+ {
+  "i": 3,
+  "jp": "攻撃力アップ全体・小",
+  "en": "Attack Power Up (All) (Small)"
+ },
+ {
+  "i": 4,
+  "jp": "攻撃力アップ全体・中",
+  "en": "Attack Power Up (All) (Medium)"
+ },
+ {
+  "i": 5,
+  "jp": "攻撃力アップ全体・大",
+  "en": "Attack Power Up (All) (Large)"
+ },
+ {
+  "i": 6,
+  "jp": "防御力アップ・小",
+  "en": "Defense Power Up (Small)"
+ },
+ {
+  "i": 7,
+  "jp": "防御力アップ・中",
+  "en": "Defense Power Up (Medium)"
+ },
+ {
+  "i": 8,
+  "jp": "防御力アップ・大",
+  "en": "Defense Power Up (Large)"
+ },
+ {
+  "i": 9,
+  "jp": "防御力アップ全体・小",
+  "en": "Defense Power Up (All) (Small)"
+ },
+ {
+  "i": 10,
+  "jp": "防御力アップ全体・中",
+  "en": "Defense Power Up (All) (Medium)"
+ },
+ {
+  "i": 11,
+  "jp": "防御力アップ全体・大",
+  "en": "Defense Power Up (All) (Large)"
+ },
+ {
+  "i": 12,
+  "jp": "ガード率アップ・小",
+  "en": "Guard Rate Up (Small)"
+ },
+ {
+  "i": 13,
+  "jp": "ガード率アップ・中",
+  "en": "Guard Rate Up (Medium)"
+ },
+ {
+  "i": 14,
+  "jp": "ガード率アップ・大",
+  "en": "Guard Rate Up (Large)"
+ },
+ {
+  "i": 15,
+  "jp": "ガード率アップ全体・小",
+  "en": "Guard Rate Up (All) (Small)"
+ },
+ {
+  "i": 16,
+  "jp": "ガード率アップ全体・中",
+  "en": "Guard Rate Up (All) (Medium)"
+ },
+ {
+  "i": 17,
+  "jp": "ガード率アップ全体・大",
+  "en": "Guard Rate Up (All) (Large)"
+ },
+ {
+  "i": 18,
+  "jp": "回避率アップ・小",
+  "en": "Evasion Rate Up (Small)"
+ },
+ {
+  "i": 19,
+  "jp": "回避率アップ・中",
+  "en": "Evasion Rate Up (Medium)"
+ },
+ {
+  "i": 20,
+  "jp": "回避率アップ・大",
+  "en": "Evasion Rate Up (Large)"
+ },
+ {
+  "i": 21,
+  "jp": "回避率アップ全体・小",
+  "en": "Evasion Rate Up (All) (Small)"
+ },
+ {
+  "i": 22,
+  "jp": "回避率アップ全体・中",
+  "en": "Evasion Rate Up (All) (Medium)"
+ },
+ {
+  "i": 23,
+  "jp": "回避率アップ全体・大",
+  "en": "Evasion Rate Up (All) (Large)"
+ },
+ {
+  "i": 24,
+  "jp": "攻撃力＆防御力アップ全体",
+  "en": "Attack & Defense Power Up (All)"
+ },
+ {
+  "i": 25,
+  "jp": "攻撃力＆防御力アップ全体",
+  "en": "Attack & Defense Power Up (All)"
+ },
+ {
+  "i": 26,
+  "jp": "狙われやすさダウン",
+  "en": "Aggro Down"
+ },
+ {
+  "i": 27,
+  "jp": "狙われやすさアップ",
+  "en": "Aggro Up"
+ },
+ {
+  "i": 28,
+  "jp": "狙われやすさ＆防御力アップ",
+  "en": "Aggro & Defense Power Up"
+ },
+ {
+  "i": 29,
+  "jp": "火属性攻撃力アップ・小",
+  "en": "Fire Attack Power Up (Small)"
+ },
+ {
+  "i": 30,
+  "jp": "火属性攻撃力アップ・中",
+  "en": "Fire Attack Power Up (Medium)"
+ },
+ {
+  "i": 31,
+  "jp": "火属性攻撃力アップ・大",
+  "en": "Fire Attack Power Up (Large)"
+ },
+ {
+  "i": 32,
+  "jp": "火属性攻撃力アップ全体・小",
+  "en": "Fire Attack Power Up (All) (Small)"
+ },
+ {
+  "i": 33,
+  "jp": "火属性攻撃力アップ全体・中",
+  "en": "Fire Attack Power Up (All) (Medium)"
+ },
+ {
+  "i": 34,
+  "jp": "火属性攻撃力アップ全体・大",
+  "en": "Fire Attack Power Up (All) (Large)"
+ },
+ {
+  "i": 35,
+  "jp": "水属性攻撃力アップ・小",
+  "en": "Water Attack Power Up (Small)"
+ },
+ {
+  "i": 36,
+  "jp": "水属性攻撃力アップ・中",
+  "en": "Water Attack Power Up (Medium)"
+ },
+ {
+  "i": 37,
+  "jp": "水属性攻撃力アップ・大",
+  "en": "Water Attack Power Up (Large)"
+ },
+ {
+  "i": 38,
+  "jp": "水属性攻撃力アップ全体・小",
+  "en": "Water Attack Power Up (All) (Small)"
+ },
+ {
+  "i": 39,
+  "jp": "水属性攻撃力アップ全体・中",
+  "en": "Water Attack Power Up (All) (Medium)"
+ },
+ {
+  "i": 40,
+  "jp": "水属性攻撃力アップ全体・大",
+  "en": "Water Attack Power Up (All) (Large)"
+ },
+ {
+  "i": 41,
+  "jp": "氷属性攻撃力アップ・小",
+  "en": "Ice Attack Power Up (Small)"
+ },
+ {
+  "i": 42,
+  "jp": "氷属性攻撃力アップ・中",
+  "en": "Ice Attack Power Up (Medium)"
+ },
+ {
+  "i": 43,
+  "jp": "氷属性攻撃力アップ・大",
+  "en": "Ice Attack Power Up (Large)"
+ },
+ {
+  "i": 44,
+  "jp": "氷属性攻撃力アップ全体・小",
+  "en": "Ice Attack Power Up (All) (Small)"
+ },
+ {
+  "i": 45,
+  "jp": "氷属性攻撃力アップ全体・中",
+  "en": "Ice Attack Power Up (All) (Medium)"
+ },
+ {
+  "i": 46,
+  "jp": "氷属性攻撃力アップ全体・大",
+  "en": "Ice Attack Power Up (All) (Large)"
+ },
+ {
+  "i": 47,
+  "jp": "雷属性攻撃力アップ・小",
+  "en": "Thunder Attack Power Up (Small)"
+ },
+ {
+  "i": 48,
+  "jp": "雷属性攻撃力アップ・中",
+  "en": "Thunder Attack Power Up (Medium)"
+ },
+ {
+  "i": 49,
+  "jp": "雷属性攻撃力アップ・大",
+  "en": "Thunder Attack Power Up (Large)"
+ },
+ {
+  "i": 50,
+  "jp": "雷属性攻撃力アップ全体・小",
+  "en": "Thunder Attack Power Up (All) (Small)"
+ },
+ {
+  "i": 51,
+  "jp": "雷属性攻撃力アップ全体・中",
+  "en": "Thunder Attack Power Up (All) (Medium)"
+ },
+ {
+  "i": 52,
+  "jp": "雷属性攻撃力アップ全体・大",
+  "en": "Thunder Attack Power Up (All) (Large)"
+ },
+ {
+  "i": 53,
+  "jp": "土属性攻撃力アップ・小",
+  "en": "Earth Attack Power Up (Small)"
+ },
+ {
+  "i": 54,
+  "jp": "土属性攻撃力アップ・中",
+  "en": "Earth Attack Power Up (Medium)"
+ },
+ {
+  "i": 55,
+  "jp": "土属性攻撃力アップ・大",
+  "en": "Earth Attack Power Up (Large)"
+ },
+ {
+  "i": 56,
+  "jp": "土属性攻撃力アップ全体・小",
+  "en": "Earth Attack Power Up (All) (Small)"
+ },
+ {
+  "i": 57,
+  "jp": "土属性攻撃力アップ全体・中",
+  "en": "Earth Attack Power Up (All) (Medium)"
+ },
+ {
+  "i": 58,
+  "jp": "土属性攻撃力アップ全体・大",
+  "en": "Earth Attack Power Up (All) (Large)"
+ },
+ {
+  "i": 59,
+  "jp": "火属性防御力アップ・小",
+  "en": "Fire Defense Power Up (Small)"
+ },
+ {
+  "i": 60,
+  "jp": "火属性防御力アップ・中",
+  "en": "Fire Defense Power Up (Medium)"
+ },
+ {
+  "i": 61,
+  "jp": "火属性防御力アップ・大",
+  "en": "Fire Defense Power Up (Large)"
+ },
+ {
+  "i": 62,
+  "jp": "火属性防御力アップ全体・小",
+  "en": "Fire Defense Power Up (All) (Small)"
+ },
+ {
+  "i": 63,
+  "jp": "火属性防御力アップ全体・中",
+  "en": "Fire Defense Power Up (All) (Medium)"
+ },
+ {
+  "i": 64,
+  "jp": "火属性防御力アップ全体・大",
+  "en": "Fire Defense Power Up (All) (Large)"
+ },
+ {
+  "i": 65,
+  "jp": "水属性防御力アップ・小",
+  "en": "Water Defense Power Up (Small)"
+ },
+ {
+  "i": 66,
+  "jp": "水属性防御力アップ・中",
+  "en": "Water Defense Power Up (Medium)"
+ },
+ {
+  "i": 67,
+  "jp": "水属性防御力アップ・大",
+  "en": "Water Defense Power Up (Large)"
+ },
+ {
+  "i": 68,
+  "jp": "水属性防御力アップ全体・小",
+  "en": "Water Defense Power Up (All) (Small)"
+ },
+ {
+  "i": 69,
+  "jp": "水属性防御力アップ全体・中",
+  "en": "Water Defense Power Up (All) (Medium)"
+ },
+ {
+  "i": 70,
+  "jp": "水属性防御力アップ全体・大",
+  "en": "Water Defense Power Up (All) (Large)"
+ },
+ {
+  "i": 71,
+  "jp": "氷属性防御力アップ・小",
+  "en": "Ice Defense Power Up (Small)"
+ },
+ {
+  "i": 72,
+  "jp": "氷属性防御力アップ・中",
+  "en": "Ice Defense Power Up (Medium)"
+ },
+ {
+  "i": 73,
+  "jp": "氷属性防御力アップ・大",
+  "en": "Ice Defense Power Up (Large)"
+ },
+ {
+  "i": 74,
+  "jp": "氷属性防御力アップ全体・小",
+  "en": "Ice Defense Power Up (All) (Small)"
+ },
+ {
+  "i": 75,
+  "jp": "氷属性防御力アップ全体・中",
+  "en": "Ice Defense Power Up (All) (Medium)"
+ },
+ {
+  "i": 76,
+  "jp": "氷属性防御力アップ全体・大",
+  "en": "Ice Defense Power Up (All) (Large)"
+ },
+ {
+  "i": 77,
+  "jp": "雷属性防御力アップ・小",
+  "en": "Thunder Defense Power Up (Small)"
+ },
+ {
+  "i": 78,
+  "jp": "雷属性防御力アップ・中",
+  "en": "Thunder Defense Power Up (Medium)"
+ },
+ {
+  "i": 79,
+  "jp": "雷属性防御力アップ・大",
+  "en": "Thunder Defense Power Up (Large)"
+ },
+ {
+  "i": 80,
+  "jp": "雷属性防御力アップ全体・小",
+  "en": "Thunder Defense Power Up (All) (Small)"
+ },
+ {
+  "i": 81,
+  "jp": "雷属性防御力アップ全体・中",
+  "en": "Thunder Defense Power Up (All) (Medium)"
+ },
+ {
+  "i": 82,
+  "jp": "雷属性防御力アップ全体・大",
+  "en": "Thunder Defense Power Up (All) (Large)"
+ },
+ {
+  "i": 83,
+  "jp": "土属性防御力アップ・小",
+  "en": "Earth Defense Power Up (Small)"
+ },
+ {
+  "i": 84,
+  "jp": "土属性防御力アップ・中",
+  "en": "Earth Defense Power Up (Medium)"
+ },
+ {
+  "i": 85,
+  "jp": "土属性防御力アップ・大",
+  "en": "Earth Defense Power Up (Large)"
+ },
+ {
+  "i": 86,
+  "jp": "土属性防御力アップ全体・小",
+  "en": "Earth Defense Power Up (All) (Small)"
+ },
+ {
+  "i": 87,
+  "jp": "土属性防御力アップ全体・中",
+  "en": "Earth Defense Power Up (All) (Medium)"
+ },
+ {
+  "i": 88,
+  "jp": "土属性防御力アップ全体・大",
+  "en": "Earth Defense Power Up (All) (Large)"
+ },
+ {
+  "i": 89,
+  "jp": "一定時間体力回復・小",
+  "en": "HP Regen (Small)"
+ },
+ {
+  "i": 90,
+  "jp": "一定時間体力回復・中",
+  "en": "HP Regen (Medium)"
+ },
+ {
+  "i": 91,
+  "jp": "一定時間体力回復・大",
+  "en": "HP Regen (Large)"
+ },
+ {
+  "i": 92,
+  "jp": "一定時間体力回復全体・小",
+  "en": "HP Regen (All) (Small)"
+ },
+ {
+  "i": 93,
+  "jp": "一定時間体力回復全体・中",
+  "en": "HP Regen (All) (Medium)"
+ },
+ {
+  "i": 94,
+  "jp": "一定時間体力回復全体・大",
+  "en": "HP Regen (All) (Large)"
+ },
+ {
+  "i": 95,
+  "jp": "自動復活効果&体力回復・小",
+  "en": "Auto-Revive & HP Recovery (Small)"
+ },
+ {
+  "i": 96,
+  "jp": "自動復活効果&体力回復・中",
+  "en": "Auto-Revive & HP Recovery (Medium)"
+ },
+ {
+  "i": 97,
+  "jp": "自動復活効果&体力回復・大",
+  "en": "Auto-Revive & HP Recovery (Large)"
+ },
+ {
+  "i": 98,
+  "jp": "ブレス防御・小",
+  "en": "Breath Defense (Small)"
+ },
+ {
+  "i": 99,
+  "jp": "ブレス防御・中",
+  "en": "Breath Defense (Medium)"
+ },
+ {
+  "i": 100,
+  "jp": "ブレス防御・大",
+  "en": "Breath Defense (Large)"
+ },
+ {
+  "i": 101,
+  "jp": "会心率アップ・小",
+  "en": "Affinity Up (Small)"
+ },
+ {
+  "i": 102,
+  "jp": "会心率アップ・中",
+  "en": "Affinity Up (Medium)"
+ },
+ {
+  "i": 103,
+  "jp": "会心率アップ・大",
+  "en": "Affinity Up (Large)"
+ },
+ {
+  "i": 104,
+  "jp": "会心率アップ全体・小",
+  "en": "Affinity Up (All) (Small)"
+ },
+ {
+  "i": 105,
+  "jp": "会心率アップ全体・中",
+  "en": "Affinity Up (All) (Medium)"
+ },
+ {
+  "i": 106,
+  "jp": "会心率アップ全体・大",
+  "en": "Affinity Up (All) (Large)"
+ },
+ {
+  "i": 107,
+  "jp": "攻撃無効",
+  "en": "Attack Nullified"
+ },
+ {
+  "i": 108,
+  "jp": "状態異常無効",
+  "en": "Status Ailment Immunity"
+ },
+ {
+  "i": 109,
+  "jp": "状態異常無効全体",
+  "en": "Status Ailment Immunity (All)"
+ },
+ {
+  "i": 110,
+  "jp": "スキルゲージ回復アップ・小",
+  "en": "Skill Gauge Recovery Up (Small)"
+ },
+ {
+  "i": 111,
+  "jp": "スキルゲージ回復アップ・大",
+  "en": "Skill Gauge Recovery Up (Large)"
+ },
+ {
+  "i": 112,
+  "jp": "最大ダメージ軽減",
+  "en": "Max Damage Reduction"
+ },
+ {
+  "i": 113,
+  "jp": "最大ダメージ軽減全体",
+  "en": "Max Damage Reduction (All)"
+ },
+ {
+  "i": 114,
+  "jp": "攻撃力アップ",
+  "en": "Attack Power Up"
+ },
+ {
+  "i": 115,
+  "jp": "属性攻撃力アップ・火",
+  "en": "Elemental Attack Up (Fire)"
+ },
+ {
+  "i": 116,
+  "jp": "属性攻撃力アップ・水",
+  "en": "Elemental Attack Up (Water)"
+ },
+ {
+  "i": 117,
+  "jp": "属性攻撃力アップ・氷",
+  "en": "Elemental Attack Up (Ice)"
+ },
+ {
+  "i": 118,
+  "jp": "属性攻撃力アップ・雷",
+  "en": "Elemental Attack Up (Thunder)"
+ },
+ {
+  "i": 119,
+  "jp": "属性攻撃力アップ・土",
+  "en": "Elemental Attack Up (Earth)"
+ },
+ {
+  "i": 120,
+  "jp": "スキル効果アップ",
+  "en": "Skill Effect Up"
+ },
+ {
+  "i": 121,
+  "jp": "スキルゲージ回復アップ",
+  "en": "Skill Gauge Recovery Up"
+ },
+ {
+  "i": 122,
+  "jp": "風圧無効",
+  "en": "Wind Pressure Immunity"
+ },
+ {
+  "i": 123,
+  "jp": "聴覚保護",
+  "en": "Hearing Protection"
+ },
+ {
+  "i": 124,
+  "jp": "睡眠無効",
+  "en": "Sleep Immunity"
+ },
+ {
+  "i": 125,
+  "jp": "麻痺無効",
+  "en": "Paralysis Immunity"
+ },
+ {
+  "i": 126,
+  "jp": "振動無効",
+  "en": "Tremor Immunity"
+ },
+ {
+  "i": 127,
+  "jp": "得意属性ダメージアップ・火",
+  "en": "Favored Element Damage Up (Fire)"
+ },
+ {
+  "i": 128,
+  "jp": "得意属性ダメージアップ・水",
+  "en": "Favored Element Damage Up (Water)"
+ },
+ {
+  "i": 129,
+  "jp": "得意属性ダメージアップ・氷",
+  "en": "Favored Element Damage Up (Ice)"
+ },
+ {
+  "i": 130,
+  "jp": "得意属性ダメージアップ・雷",
+  "en": "Favored Element Damage Up (Thunder)"
+ },
+ {
+  "i": 131,
+  "jp": "得意属性ダメージアップ・土",
+  "en": "Favored Element Damage Up (Earth)"
+ },
+ {
+  "i": 132,
+  "jp": "得意属性ダメージアップ",
+  "en": "Favored Element Damage Up"
+ },
+ {
+  "i": 133,
+  "jp": "毒",
+  "en": "Poison"
+ },
+ {
+  "i": 134,
+  "jp": "猛毒",
+  "en": "Severe Poison"
+ },
+ {
+  "i": 135,
+  "jp": "劇毒",
+  "en": "Deadly Poison"
+ },
+ {
+  "i": 136,
+  "jp": "麻痺",
+  "en": "Paralysis"
+ },
+ {
+  "i": 137,
+  "jp": "睡眠",
+  "en": "Sleep"
+ },
+ {
+  "i": 138,
+  "jp": "Invalid Message",
+  "en": "Invalid Message"
+ }
+]

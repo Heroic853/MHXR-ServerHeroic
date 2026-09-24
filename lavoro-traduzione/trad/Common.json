@@ -1,0 +1,932 @@
+[
+ {
+  "i": 0,
+  "jp": "はい",
+  "en": "Yes"
+ },
+ {
+  "i": 1,
+  "jp": "いいえ",
+  "en": "No"
+ },
+ {
+  "i": 2,
+  "jp": "OK",
+  "en": "OK"
+ },
+ {
+  "i": 3,
+  "jp": "キャンセル",
+  "en": "Cancel"
+ },
+ {
+  "i": 4,
+  "jp": "戻る",
+  "en": "Back"
+ },
+ {
+  "i": 5,
+  "jp": "リトライ",
+  "en": "Retry"
+ },
+ {
+  "i": 6,
+  "jp": "諦める",
+  "en": "Give Up"
+ },
+ {
+  "i": 7,
+  "jp": "次へ",
+  "en": "Next"
+ },
+ {
+  "i": 8,
+  "jp": "ハンターLv",
+  "en": "Hunter Lv"
+ },
+ {
+  "i": 9,
+  "jp": "攻撃力",
+  "en": "Attack Power"
+ },
+ {
+  "i": 10,
+  "jp": "防御力",
+  "en": "Defense Power"
+ },
+ {
+  "i": 11,
+  "jp": "攻",
+  "en": "Atk"
+ },
+ {
+  "i": 12,
+  "jp": "防",
+  "en": "Def"
+ },
+ {
+  "i": 13,
+  "jp": "Lv.",
+  "en": "Lv."
+ },
+ {
+  "i": 14,
+  "jp": "コスト",
+  "en": "Cost"
+ },
+ {
+  "i": 15,
+  "jp": "Exp",
+  "en": "Exp"
+ },
+ {
+  "i": 16,
+  "jp": "pt",
+  "en": "pt"
+ },
+ {
+  "i": 17,
+  "jp": "個",
+  "en": "Pcs"
+ },
+ {
+  "i": 18,
+  "jp": "体",
+  "en": "Body"
+ },
+ {
+  "i": 19,
+  "jp": "分",
+  "en": "Min"
+ },
+ {
+  "i": 20,
+  "jp": "狩友P",
+  "en": "Hunting Friend Points"
+ },
+ {
+  "i": 21,
+  "jp": "%02d/%02d ",
+  "en": "%02d/%02d "
+ },
+ {
+  "i": 22,
+  "jp": "%02d:%02d",
+  "en": "%02d:%02d"
+ },
+ {
+  "i": 23,
+  "jp": "×%d",
+  "en": "×%d"
+ },
+ {
+  "i": 24,
+  "jp": "あと %2d:%02d",
+  "en": "%2d:%02d left"
+ },
+ {
+  "i": 25,
+  "jp": "スキルLv",
+  "en": "Skill Lv"
+ },
+ {
+  "i": 26,
+  "jp": "%3d/%3d",
+  "en": "%3d/%3d"
+ },
+ {
+  "i": 27,
+  "jp": "%2d/%2d",
+  "en": "%2d/%2d"
+ },
+ {
+  "i": 28,
+  "jp": "×∞",
+  "en": "×∞"
+ },
+ {
+  "i": 29,
+  "jp": "☆",
+  "en": "☆"
+ },
+ {
+  "i": 30,
+  "jp": "ｚ",
+  "en": "ｚ"
+ },
+ {
+  "i": 31,
+  "jp": "ＨＲ",
+  "en": "ＨＲ"
+ },
+ {
+  "i": 32,
+  "jp": "狩技：",
+  "en": "Hunter Art："
+ },
+ {
+  "i": 33,
+  "jp": "スキル：",
+  "en": "Skill: "
+ },
+ {
+  "i": 34,
+  "jp": ":",
+  "en": ":"
+ },
+ {
+  "i": 35,
+  "jp": "/",
+  "en": "/"
+ },
+ {
+  "i": 36,
+  "jp": "%d/%d",
+  "en": "%d/%d"
+ },
+ {
+  "i": 37,
+  "jp": "▲",
+  "en": "▲"
+ },
+ {
+  "i": 38,
+  "jp": "▼",
+  "en": "▼"
+ },
+ {
+  "i": 39,
+  "jp": "(",
+  "en": "("
+ },
+ {
+  "i": 40,
+  "jp": ")",
+  "en": ")"
+ },
+ {
+  "i": 41,
+  "jp": "+",
+  "en": "+"
+ },
+ {
+  "i": 42,
+  "jp": "狩友",
+  "en": "Hunting Friend"
+ },
+ {
+  "i": 43,
+  "jp": "狩猟団",
+  "en": "Hunting Squad"
+ },
+ {
+  "i": 44,
+  "jp": "討伐P",
+  "en": "Hunt Points"
+ },
+ {
+  "i": 45,
+  "jp": "行動P",
+  "en": "Action Points"
+ },
+ {
+  "i": 46,
+  "jp": "ゼニー",
+  "en": "Zenny"
+ },
+ {
+  "i": 47,
+  "jp": "狩玉",
+  "en": "Hunting Orb"
+ },
+ {
+  "i": 48,
+  "jp": "支給用狩玉",
+  "en": "Free Hunting Orb"
+ },
+ {
+  "i": 49,
+  "jp": "無",
+  "en": "None"
+ },
+ {
+  "i": 50,
+  "jp": "火",
+  "en": "Fire"
+ },
+ {
+  "i": 51,
+  "jp": "水",
+  "en": "Water"
+ },
+ {
+  "i": 52,
+  "jp": "氷",
+  "en": "Ice"
+ },
+ {
+  "i": 53,
+  "jp": "雷",
+  "en": "Thunder"
+ },
+ {
+  "i": 54,
+  "jp": "土",
+  "en": "Earth"
+ },
+ {
+  "i": 55,
+  "jp": "なし",
+  "en": "None"
+ },
+ {
+  "i": 56,
+  "jp": "頭防具",
+  "en": "Head Armor"
+ },
+ {
+  "i": 57,
+  "jp": "上半身防具",
+  "en": "Upper Body Armor"
+ },
+ {
+  "i": 58,
+  "jp": "下半身防具",
+  "en": "Lower Body Armor"
+ },
+ {
+  "i": 59,
+  "jp": "大剣",
+  "en": "Great Sword"
+ },
+ {
+  "i": 60,
+  "jp": "片手剣",
+  "en": "Sword And Shield"
+ },
+ {
+  "i": 61,
+  "jp": "ハンマー",
+  "en": "Hammer"
+ },
+ {
+  "i": 62,
+  "jp": "ランス",
+  "en": "Lance"
+ },
+ {
+  "i": 63,
+  "jp": "ヘヴィボウガン",
+  "en": "Heavy Bowgun"
+ },
+ {
+  "i": 64,
+  "jp": "ミドルボウガン",
+  "en": "Medium Bowgun"
+ },
+ {
+  "i": 65,
+  "jp": "ライトボウガン",
+  "en": "Light Bowgun"
+ },
+ {
+  "i": 66,
+  "jp": "太刀",
+  "en": "Long Sword"
+ },
+ {
+  "i": 67,
+  "jp": "スラッシュアックス",
+  "en": "Switch Axe"
+ },
+ {
+  "i": 68,
+  "jp": "ガンランス",
+  "en": "Gunlance"
+ },
+ {
+  "i": 69,
+  "jp": "弓",
+  "en": "Bow"
+ },
+ {
+  "i": 70,
+  "jp": "双剣",
+  "en": "Dual Blades"
+ },
+ {
+  "i": 71,
+  "jp": "狩猟笛",
+  "en": "Hunting Horn"
+ },
+ {
+  "i": 72,
+  "jp": "NEW",
+  "en": "NEW"
+ },
+ {
+  "i": 73,
+  "jp": "Ｎ",
+  "en": "Ｎ"
+ },
+ {
+  "i": 74,
+  "jp": "Ｎ＋",
+  "en": "Ｎ＋"
+ },
+ {
+  "i": 75,
+  "jp": "Ｒ",
+  "en": "Ｒ"
+ },
+ {
+  "i": 76,
+  "jp": "Ｒ＋",
+  "en": "Ｒ＋"
+ },
+ {
+  "i": 77,
+  "jp": "ＳＲ",
+  "en": "ＳＲ"
+ },
+ {
+  "i": 78,
+  "jp": "ＳＲ＋",
+  "en": "ＳＲ＋"
+ },
+ {
+  "i": 79,
+  "jp": "ＧＲ",
+  "en": "ＧＲ"
+ },
+ {
+  "i": 80,
+  "jp": "ＧＲ＋",
+  "en": "ＧＲ＋"
+ },
+ {
+  "i": 81,
+  "jp": "狩技",
+  "en": "Hunter Art"
+ },
+ {
+  "i": 82,
+  "jp": "冒険者",
+  "en": "Adventurer"
+ },
+ {
+  "i": 83,
+  "jp": "を手に入れた。",
+  "en": "obtained."
+ },
+ {
+  "i": 84,
+  "jp": "ダミーテキスト　ダミーテキスト\r\nダミーテキスト　ダミーテキスト\r\nダミーテキスト　ダミーテキスト\r\nダミーテキスト　ダミーテキスト\r\nダミーテキスト　ダミーテキスト\r\nダミーテキスト　ダミーテキスト\r\nダミーテキスト　ダミーテキスト\r\nダミーテキスト　ダミーテキスト\r\nダミーテキスト　ダミーテキスト\r\nダミーテキスト　ダミーテキスト\r\nダミーテキスト　ダミーテキスト\r\nダミーテキスト　ダミーテキスト\r\nダミーテキスト　ダミーテキスト\r\nダミーテキスト　ダミーテキスト\r\nダミーテキスト　ダミーテキスト\r\nダミーテキスト　ダミーテキスト\r\nダミーテキスト　ダミーテキスト\r\nダミーテキスト　ダミーテキスト\r\nダミーテキスト　ダミーテキスト\r\nダミーテキスト　ダミーテキスト\r\nダミーテキスト　ダミーテキスト\r\nダミーテキスト　ダミーテキスト\r\nダミーテキスト　ダミーテキスト\r\nダミーテキスト　ダミーテキスト\r\nダミーテキスト　ダミーテキスト\r\nダミーテキスト　ダミーテキスト\r\nダミーテキスト　ダミーテキスト\r\nダミーテキスト　ダミーテキスト\r\nダミーテキスト　ダミーテキスト\r\nダミーテキスト　ダミーテキスト\r\nダミーテキスト　ダミーテキスト\r\nダミーテキスト　ダミーテキスト\r\nダミーテキスト　ダミーテキスト\r\nダミーテキスト　ダミーテキスト\r\nダミーテキスト　ダミーテキスト\r\nダミーテキスト　ダミーテキスト",
+  "en": "Dummy text　Dummy text\r\nDummy text　Dummy text\r\nDummy text　Dummy text\r\nDummy text　Dummy text\r\nDummy text　Dummy text\r\nDummy text　Dummy text\r\nDummy text　Dummy text\r\nDummy text　Dummy text\r\nDummy text　Dummy text\r\nDummy text　Dummy text\r\nDummy text　Dummy text\r\nDummy text　Dummy text\r\nDummy text　Dummy text\r\nDummy text　Dummy text\r\nDummy text　Dummy text\r\nDummy text　Dummy text\r\nDummy text　Dummy text\r\nDummy text　Dummy text\r\nDummy text　Dummy text\r\nDummy text　Dummy text\r\nDummy text　Dummy text\r\nDummy text　Dummy text\r\nDummy text　Dummy text\r\nDummy text　Dummy text\r\nDummy text　Dummy text\r\nDummy text　Dummy text\r\nDummy text　Dummy text\r\nDummy text　Dummy text\r\nDummy text　Dummy text\r\nDummy text　Dummy text\r\nDummy text　Dummy text\r\nDummy text　Dummy text\r\nDummy text　Dummy text\r\nDummy text　Dummy text\r\nDummy text　Dummy text\r\nDummy text　Dummy text"
+ },
+ {
+  "i": 85,
+  "jp": "利用規約",
+  "en": "Terms Of Service"
+ },
+ {
+  "i": 86,
+  "jp": "行動P",
+  "en": "Action Points"
+ },
+ {
+  "i": 87,
+  "jp": "討伐P",
+  "en": "Hunt Points"
+ },
+ {
+  "i": 88,
+  "jp": "エリア数",
+  "en": "Area Count"
+ },
+ {
+  "i": 89,
+  "jp": "クエスト数",
+  "en": "Quest Count"
+ },
+ {
+  "i": 90,
+  "jp": "クエスト名",
+  "en": "Quest Name"
+ },
+ {
+  "i": 91,
+  "jp": "＜討伐対象モンスター＞",
+  "en": "<Target Monster>"
+ },
+ {
+  "i": 92,
+  "jp": "消費行動ポイント：%d",
+  "en": "Action Points Used: %d"
+ },
+ {
+  "i": 93,
+  "jp": "クエストエリア数：%d",
+  "en": "QuestArea Count：%d"
+ },
+ {
+  "i": 94,
+  "jp": "対象に有効な属性：%s",
+  "en": "Effective Element: %s"
+ },
+ {
+  "i": 95,
+  "jp": "＜討伐対象ドロップ報酬＞",
+  "en": "<Target Drop Rewards>"
+ },
+ {
+  "i": 96,
+  "jp": "＜限定クエスト条件＞",
+  "en": "<Limited Quest Conditions>"
+ },
+ {
+  "i": 97,
+  "jp": "＜特別効果装備＞",
+  "en": "<Special Effect Equipment>"
+ },
+ {
+  "i": 98,
+  "jp": "１人限定",
+  "en": "1 Player Only"
+ },
+ {
+  "i": 99,
+  "jp": "限定",
+  "en": "Limited"
+ },
+ {
+  "i": 100,
+  "jp": "／",
+  "en": "／"
+ },
+ {
+  "i": 101,
+  "jp": "全員全装備無属性限定",
+  "en": "All Members Must Equip No Element Only"
+ },
+ {
+  "i": 102,
+  "jp": "全員全装備火属性限定",
+  "en": "All Members Must Equip Fire Element Only"
+ },
+ {
+  "i": 103,
+  "jp": "全員全装備水属性限定",
+  "en": "All Members Must Equip Water Element Only"
+ },
+ {
+  "i": 104,
+  "jp": "全員全装備氷属性限定",
+  "en": "All Members Must Equip Ice Element Only"
+ },
+ {
+  "i": 105,
+  "jp": "全員全装備土属性限定",
+  "en": "All Members Must Equip Earth Element Only"
+ },
+ {
+  "i": 106,
+  "jp": "全員全装備雷属性限定",
+  "en": "All Members Must Equip Thunder Element Only"
+ },
+ {
+  "i": 107,
+  "jp": "狩友を連れて行くことはできません。",
+  "en": "You cannot bring a Hunting Friend."
+ },
+ {
+  "i": 108,
+  "jp": "BGM",
+  "en": "BGM"
+ },
+ {
+  "i": 109,
+  "jp": "SE",
+  "en": "SE"
+ },
+ {
+  "i": 110,
+  "jp": "プッシュ通知",
+  "en": "Push Notifications"
+ },
+ {
+  "i": 111,
+  "jp": "BGMのオンオフを設定します。",
+  "en": "Turns BGM on or off."
+ },
+ {
+  "i": 112,
+  "jp": "SEのオンオフを設定します。",
+  "en": "Turns sound effects on or off."
+ },
+ {
+  "i": 113,
+  "jp": "プッシュ通知のオンオフを\r\n設定します。",
+  "en": "Turns push notifications\r\non or off."
+ },
+ {
+  "i": 114,
+  "jp": "ON",
+  "en": "ON"
+ },
+ {
+  "i": 115,
+  "jp": "OFF",
+  "en": "OFF"
+ },
+ {
+  "i": 116,
+  "jp": "ゲームを終了して\r\nタイトルに戻りますか？",
+  "en": "Quit the game and\r\nreturn to the title screen?"
+ },
+ {
+  "i": 117,
+  "jp": "経験値2倍！",
+  "en": "2x Experience!"
+ },
+ {
+  "i": 118,
+  "jp": "ゼニー2倍！",
+  "en": "2x Zenny!"
+ },
+ {
+  "i": 119,
+  "jp": "行動P消費1/2！",
+  "en": "Action Point Cost Halved!"
+ },
+ {
+  "i": 120,
+  "jp": "狩友P獲得2倍！",
+  "en": "2x Hunting Friend Points Earned!"
+ },
+ {
+  "i": 121,
+  "jp": "あと%d日",
+  "en": "%d days left"
+ },
+ {
+  "i": 122,
+  "jp": "あと%d時間",
+  "en": "%d hours left"
+ },
+ {
+  "i": 123,
+  "jp": "あと%d分",
+  "en": "%d minutes left"
+ },
+ {
+  "i": 124,
+  "jp": "最終プレイ：",
+  "en": "Last Played: "
+ },
+ {
+  "i": 125,
+  "jp": "%3d日前",
+  "en": "%3d days ago"
+ },
+ {
+  "i": 126,
+  "jp": "MAX",
+  "en": "MAX"
+ },
+ {
+  "i": 127,
+  "jp": "「%s」は\r\n%sがイベント効果で%d倍！",
+  "en": "\"%s\":\r\n%s is x%d due to event effect!"
+ },
+ {
+  "i": 128,
+  "jp": "<COL B41700FF>%d月%d日%d時から有効</COL>",
+  "en": "<COL B41700FF>Effective from %d/%d at %d:00</COL>"
+ },
+ {
+  "i": 129,
+  "jp": "<COL B41700FF>あと%d時間%d分</COL>",
+  "en": "<COL B41700FF>%d hours %d minutes left</COL>"
+ },
+ {
+  "i": 130,
+  "jp": "%s属性を持つ",
+  "en": "Has %s element"
+ },
+ {
+  "i": 131,
+  "jp": "%sの",
+  "en": "%s"
+ },
+ {
+  "i": 132,
+  "jp": "%sは、",
+  "en": "%s 、"
+ },
+ {
+  "i": 133,
+  "jp": "装備",
+  "en": "Equipment"
+ },
+ {
+  "i": 134,
+  "jp": "全ての装備",
+  "en": "All Equipment"
+ },
+ {
+  "i": 135,
+  "jp": "%sがイベント効果で%d倍！",
+  "en": "%s is x%d due to event effect!"
+ },
+ {
+  "i": 136,
+  "jp": "[%s]",
+  "en": "[%s]"
+ },
+ {
+  "i": 137,
+  "jp": "[%s]を装備で\r\n%sが%d倍！",
+  "en": "Equip [%s]\r\nfor %s x%d!"
+ },
+ {
+  "i": 138,
+  "jp": "[%s]を\r\n全て装備で%sが%d倍！",
+  "en": "Equip all of\r\n[%s] for %s x%d!"
+ },
+ {
+  "i": 139,
+  "jp": "[%s]で",
+  "en": "With [%s]"
+ },
+ {
+  "i": 140,
+  "jp": "[%s]の",
+  "en": "[%s]"
+ },
+ {
+  "i": 141,
+  "jp": "%s装備で\r\n%sが%d倍！",
+  "en": "Equip %s\r\nfor %s x%d!"
+ },
+ {
+  "i": 142,
+  "jp": "武器",
+  "en": "Weapon"
+ },
+ {
+  "i": 143,
+  "jp": "防具",
+  "en": "Armor"
+ },
+ {
+  "i": 144,
+  "jp": "無属性",
+  "en": "No Element"
+ },
+ {
+  "i": 145,
+  "jp": "火属性",
+  "en": "Fire Element"
+ },
+ {
+  "i": 146,
+  "jp": "水属性",
+  "en": "Water Element"
+ },
+ {
+  "i": 147,
+  "jp": "氷属性",
+  "en": "Ice Element"
+ },
+ {
+  "i": 148,
+  "jp": "雷属性",
+  "en": "Thunder Element"
+ },
+ {
+  "i": 149,
+  "jp": "土属性",
+  "en": "Earth Element"
+ },
+ {
+  "i": 150,
+  "jp": "お知らせ",
+  "en": "Notice"
+ },
+ {
+  "i": 151,
+  "jp": "？？？？？？",
+  "en": "？？？？？？"
+ },
+ {
+  "i": 152,
+  "jp": "？？？（武器）",
+  "en": "？？？（Weapon）"
+ },
+ {
+  "i": 153,
+  "jp": "？？？（防具）",
+  "en": "？？？（Armor）"
+ },
+ {
+  "i": 154,
+  "jp": "？？？（素材）",
+  "en": "？？？（Material）"
+ },
+ {
+  "i": 155,
+  "jp": "？？？（強化素材）",
+  "en": "？？？（EnhancedMaterial）"
+ },
+ {
+  "i": 156,
+  "jp": "？？？（進化素材）",
+  "en": "？？？（Evolution Material）"
+ },
+ {
+  "i": 157,
+  "jp": "？？？（頭防具）",
+  "en": "？？？（Head Armor）"
+ },
+ {
+  "i": 158,
+  "jp": "？？？（体防具）",
+  "en": "？？？（ BodyArmor）"
+ },
+ {
+  "i": 159,
+  "jp": "？？？（脚防具）",
+  "en": "？？？（Leg Armor）"
+ },
+ {
+  "i": 160,
+  "jp": "：超希少",
+  "en": "：Very Rare"
+ },
+ {
+  "i": 161,
+  "jp": "：希少",
+  "en": "：Rare"
+ },
+ {
+  "i": 162,
+  "jp": "：少ない",
+  "en": "：Low"
+ },
+ {
+  "i": 163,
+  "jp": "：普通",
+  "en": "：Normal"
+ },
+ {
+  "i": 164,
+  "jp": "：多い",
+  "en": "：High"
+ },
+ {
+  "i": 165,
+  "jp": "：確実",
+  "en": "：Guaranteed"
+ },
+ {
+  "i": 166,
+  "jp": "有効属性",
+  "en": "Effective Element"
+ },
+ {
+  "i": 167,
+  "jp": "NOW LOADING",
+  "en": "NOW LOADING"
+ },
+ {
+  "i": 168,
+  "jp": "狩技印不足のため発動不可",
+  "en": "Not enough Hunter Art Seals to activate"
+ },
+ {
+  "i": 169,
+  "jp": "冒険者は発動できません",
+  "en": "Adventurers cannot activate this"
+ },
+ {
+  "i": 170,
+  "jp": "エクスプロア\r\nイベント通知",
+  "en": "Explore\r\nEvent Notifications"
+ },
+ {
+  "i": 171,
+  "jp": "イベント通知",
+  "en": "Event Notifications"
+ },
+ {
+  "i": 172,
+  "jp": "エクスプロアのイベント通知の\r\nオンオフを設定します。",
+  "en": "Turns Explore event notifications\r\non or off."
+ },
+ {
+  "i": 173,
+  "jp": "カプリンク\r\nプロフィール通知",
+  "en": "CapLink\r\nProfile Notifications"
+ },
+ {
+  "i": 174,
+  "jp": "プロフィール通知",
+  "en": "Profile Notifications"
+ },
+ {
+  "i": 175,
+  "jp": "カプリンク：プロフィール通知の\r\nオンオフを設定します。",
+  "en": "Turns CapLink profile notifications\r\non or off."
+ },
+ {
+  "i": 176,
+  "jp": "カプリンク\r\nゲーム招待通知",
+  "en": "CapLink\r\nGame Invite Notifications"
+ },
+ {
+  "i": 177,
+  "jp": "ゲーム招待通知",
+  "en": "Game Invite Notifications"
+ },
+ {
+  "i": 178,
+  "jp": "カプリンク：ゲーム招待通知の\r\nオンオフを設定します。",
+  "en": "Turns CapLink game invite notifications\r\non or off."
+ },
+ {
+  "i": 179,
+  "jp": "カプリンク\r\nカプトモ通知",
+  "en": "CapLink\r\nCapTomo Notifications"
+ },
+ {
+  "i": 180,
+  "jp": "カプトモ通知",
+  "en": "CapTomo Notifications"
+ },
+ {
+  "i": 181,
+  "jp": "カプリンク：カプトモ通知の\r\nオンオフを設定します。",
+  "en": "Turns CapLink CapTomo notifications\r\non or off."
+ },
+ {
+  "i": 182,
+  "jp": "カプリンク\r\nカプトーク通知",
+  "en": "CapLink\r\nCapTalk Notifications"
+ },
+ {
+  "i": 183,
+  "jp": "カプトーク通知",
+  "en": "CapTalk Notifications"
+ },
+ {
+  "i": 184,
+  "jp": "カプリンク：カプトーク通知の\r\nオンオフを設定します。",
+  "en": "Turns CapLink CapTalk notifications\r\non or off."
+ },
+ {
+  "i": 185,
+  "jp": "Invalid Message",
+  "en": "Invalid Message"
+ }
+]

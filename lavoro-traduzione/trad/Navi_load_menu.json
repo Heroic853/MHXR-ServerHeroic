@@ -1,0 +1,72 @@
+[
+ {
+  "i": 0,
+  "jp": "<TEX 0>欲しい素材がある時は\r\n<COL 004AD1FF>素材のアイコンをタップ</COL>すると\r\n入手可能なクエストに出発できます",
+  "en": "<TEX 0>If there's a material you want,\r\n<COL 004AD1FF>tap the material's icon</COL>\r\nto head to a quest where you can get it"
+ },
+ {
+  "i": 1,
+  "jp": "<TEX 4>アプリをアンインストールすると\r\n今までの記録が消えてしまうので\r\n注意してください",
+  "en": "<TEX 4>Please be careful:\r\nuninstalling the app will erase\r\nall your progress so far"
+ },
+ {
+  "i": 2,
+  "jp": "<TEX 4>電池消費量を抑えるにはＭＥＮＵ\r\nのサウンド／省エネ設定から\r\n<COL 004AD1FF>省エネモード</COL>に設定してください",
+  "en": "<TEX 4>To reduce battery usage, go to\r\nSound/Power Saving Settings in the MENU\r\nand turn on <COL 004AD1FF>Power Saving Mode</COL>"
+ },
+ {
+  "i": 3,
+  "jp": "<TEX 4>タイトル画面の右上のボタンから\r\n新しい端末にデータを\r\n引き継ぐことができます",
+  "en": "<TEX 4>You can transfer your data to a\r\nnew device using the button in the\r\ntop right of the title screen"
+ },
+ {
+  "i": 4,
+  "jp": "<TEX 1>ＨＲが上昇するとハンターの\r\nパラメータが強化されたり\r\n装備ＢＯＸ枠が拡張されたりします",
+  "en": "<TEX 1>Raising your HR strengthens your\r\nhunter's stats and expands the\r\nnumber of equipment box slots"
+ },
+ {
+  "i": 5,
+  "jp": "<TEX 1>島の特定のクエストをクリアすると\r\nハンターをサポートする\r\n<COL 004AD1FF>パートナーを雇用</COL>できます",
+  "en": "<TEX 1>Clearing certain quests on the island\r\nlets you <COL 004AD1FF>hire a partner</COL>\r\nto support your hunter"
+ },
+ {
+  "i": 6,
+  "jp": "<TEX 5>クエストへの招待があると\r\n画面下部の≪イベント≫ボタンに\r\n招待件数が表示されます",
+  "en": "<TEX 5>When you receive a quest invitation,\r\nthe number of invites is shown on the\r\n≪Event≫ button at the bottom of the screen"
+ },
+ {
+  "i": 7,
+  "jp": "<TEX 5>狩友や狩猟団員と一緒に\r\nマルチプレイを行うと報酬に\r\nボーナスが付くことがあります",
+  "en": "<TEX 5>Playing multiplayer together with\r\nHunting Friends or Hunting Squad members\r\ncan sometimes add a bonus to your rewards"
+ },
+ {
+  "i": 8,
+  "jp": "<TEX 1><COL 004AD1FF>ＨＲを上げる</COL>には\r\n<COL 004AD1FF>島のクエスト</COL>へと出発し\r\n発見物を集めましょう",
+  "en": "<TEX 1>To <COL 004AD1FF>raise your HR</COL>,\r\nhead out on <COL 004AD1FF>island quests</COL>\r\nand collect discoveries"
+ },
+ {
+  "i": 9,
+  "jp": "<TEX 0>クエストなどで素材やゼニーを集め\r\n<COL 004AD1FF>装備を強化</COL>しましょう",
+  "en": "<TEX 0>Gather materials and Zenny from quests\r\nand other sources, and\r\n<COL 004AD1FF>upgrade your equipment</COL>"
+ },
+ {
+  "i": 10,
+  "jp": "<TEX 1>ニャン検隊では様々な素材や装備を\r\n獲得できます",
+  "en": "<TEX 1>You can earn a variety of materials\r\nand equipment from the Nyan Recon Squad"
+ },
+ {
+  "i": 11,
+  "jp": "<TEX 0><COL 004AD1FF>探検ナビ・実績の条件</COL>を<COL 004AD1FF>達成</COL>すると\r\n狩玉などの報酬を獲得できます",
+  "en": "<TEX 0>Meeting the <COL 004AD1FF>conditions for Explore Navi Achievements</COL>\r\nlets you <COL 004AD1FF>earn</COL> rewards\r\nlike Hunting Orbs"
+ },
+ {
+  "i": 12,
+  "jp": "<TEX 9>（1）はライトボウガン\r\n（2）はヘビィボウガンを\r\n示しています",
+  "en": "<TEX 9>(1) indicates a Light Bowgun\r\nand (2) indicates a\r\nHeavy Bowgun"
+ },
+ {
+  "i": 13,
+  "jp": "<TEX 10>（1）はスラッシュアックス\r\n（2）はチャージアックスを\r\n示しています",
+  "en": "<TEX 10>(1) indicates a Switch Axe\r\nand (2) indicates a\r\nCharge Axe"
+ }
+]

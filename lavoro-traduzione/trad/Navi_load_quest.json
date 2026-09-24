@@ -1,0 +1,177 @@
+[
+ {
+  "i": 0,
+  "jp": "<TEX 0><COL 004AD1FF>武技発動</COL>には<COL 004AD1FF>武技Ｐが必要</COL>です\r\nモンスターを攻撃することで\r\n武技Ｐが蓄積されます",
+  "en": "<TEX 0>Activating a <COL 004AD1FF>Weapon Art</COL> requires\r\n<COL 004AD1FF>Weapon Art Points</COL>\r\nwhich build up as you attack monsters"
+ },
+ {
+  "i": 1,
+  "jp": "<TEX 0>特定の部位を破壊したい時は\r\nその<COL 004AD1FF>部位をタップ</COL>することで\r\n<COL 004AD1FF>ターゲットを変更</COL>できます",
+  "en": "<TEX 0>If you want to break a specific part,\r\nyou can <COL 004AD1FF>tap that part</COL>\r\nto <COL 004AD1FF>change your target</COL>"
+ },
+ {
+  "i": 2,
+  "jp": "<TEX 0><COL 004AD1FF>防具の技玉を揃える</COL>ことで\r\n武技を発動する準備が整います\r\n必要技玉数は武器毎に違います",
+  "en": "<TEX 0>By <COL 004AD1FF>gathering Art Orbs on your armor</COL>,\r\nyou get ready to activate a Weapon Art\r\nThe number of Art Orbs needed differs by weapon"
+ },
+ {
+  "i": 3,
+  "jp": "<TEX 0>操作パッドを長押しすることで\r\n武器種毎の固有アクションを\r\n使用できます",
+  "en": "<TEX 0>By holding down the control pad,\r\nyou can use an action unique\r\nto each weapon type"
+ },
+ {
+  "i": 4,
+  "jp": "<TEX 0>遠距離武器やハンマー・狩猟笛は\r\n尻尾を切断することができません",
+  "en": "<TEX 0>Ranged weapons, Hammers, and Hunting Horns\r\ncannot sever a monster's tail"
+ },
+ {
+  "i": 5,
+  "jp": "<TEX 0>ガンランスの竜撃砲は\r\nコンボをつなげると\r\n威力が上昇します",
+  "en": "<TEX 0>The Gunlance's Wyvern's Fire\r\ndeals more damage\r\nwhen chained into a combo"
+ },
+ {
+  "i": 6,
+  "jp": "<TEX 0>弓の曲射はモンスターとの\r\n距離によって放たれる矢の本数が\r\n変化します",
+  "en": "<TEX 0>The number of arrows fired by the\r\nBow's Arc Shot changes depending\r\non your distance from the monster"
+ },
+ {
+  "i": 7,
+  "jp": "<TEX 0>片手剣は罠や回復薬など\r\n多種多様なアイテムを\r\n使用できます",
+  "en": "<TEX 0>The Sword And Shield lets you use\r\na wide variety of items,\r\nsuch as traps and potions"
+ },
+ {
+  "i": 8,
+  "jp": "<TEX 0>ハンマーと狩猟笛は\r\n他の武器よりモンスターへ\r\nめまいを起こしやすいです",
+  "en": "<TEX 0>Hammers and Hunting Horns are\r\nmore likely to stun monsters\r\nthan other weapons"
+ },
+ {
+  "i": 9,
+  "jp": "<TEX 0>ランスのカウンター突きは\r\nモンスターの攻撃にタイミングを\r\n合わせると威力が上昇します",
+  "en": "<TEX 0>The Lance's Counter Thrust deals\r\nmore damage when timed\r\nto match the monster's attack"
+ },
+ {
+  "i": 10,
+  "jp": "<TEX 0>太刀は通常攻撃でコンボをつなぐと\r\n気刃連斬を放つことができます",
+  "en": "<TEX 0>Chaining normal attacks with the\r\nLong Sword lets you unleash\r\na Spirit Blade Combo"
+ },
+ {
+  "i": 11,
+  "jp": "<TEX 0>モンスターにめまいを起こすには\r\nハンマーの溜め攻撃が効率的です",
+  "en": "<TEX 0>The Hammer's charged attacks are\r\nan efficient way to\r\nstun monsters"
+ },
+ {
+  "i": 12,
+  "jp": "<TEX 0>双剣は通常攻撃で鬼人ゲージを\r\n蓄積し鬼人乱舞を放つとゲージを\r\n全て消費します",
+  "en": "<TEX 0>Normal attacks with Dual Blades build\r\nup the Demon Gauge, and unleashing\r\nDemon Flurry Rush consumes the entire gauge"
+ },
+ {
+  "i": 13,
+  "jp": "<TEX 0>スラッシュアックスは\r\nスラッシュゲージを溜めて放つ\r\n属性解放突きが強力です",
+  "en": "<TEX 0>The Switch Axe's Element Discharge,\r\nreleased after charging the\r\nSwitch Gauge, is powerful"
+ },
+ {
+  "i": 14,
+  "jp": "<TEX 0>ライトボウガンはリロードすると\r\n一定時間威力と射程距離が\r\n上昇します",
+  "en": "<TEX 0>Reloading a Light Bowgun temporarily\r\nincreases its power\r\nand range"
+ },
+ {
+  "i": 15,
+  "jp": "<TEX 0>チャージアックスの溜め二段斬りと\r\n属性解放斬りを当てることで当てた\r\n部位への与ダメージがアップします",
+  "en": "<TEX 0>Landing the Charge Axe's charged\r\ntwo-hit slash and Element Discharge Slash\r\nincreases damage dealt to the part hit"
+ },
+ {
+  "i": 16,
+  "jp": "<TEX 1><COL 004AD1FF>モンスターの弱点属性</COL>は\r\nクエストを選択する画面で\r\n確認できます",
+  "en": "<TEX 1>You can check a\r\n<COL 004AD1FF>monster's weak element</COL>\r\non the quest selection screen"
+ },
+ {
+  "i": 17,
+  "jp": "<TEX 1><COL 004AD1FF>発見物ごと</COL>に<COL 004AD1FF>出現確率が異なる</COL>ため\r\n見つからなくても何度か\r\n同じクエストに行ってみましょう",
+  "en": "<TEX 1>Since <COL 004AD1FF>each discovery</COL> has a\r\n<COL 004AD1FF>different appearance rate</COL>, try the\r\nsame quest a few times even if you don't find it"
+ },
+ {
+  "i": 18,
+  "jp": "<TEX 1><COL 004AD1FF>発見物ごと</COL>に<COL 004AD1FF>出現確率が異なる</COL>ため\r\n見つからなくても何度か\r\n同じクエストに行ってみましょう",
+  "en": "<TEX 1>Since <COL 004AD1FF>each discovery</COL> has a\r\n<COL 004AD1FF>different appearance rate</COL>, try the\r\nsame quest a few times even if you don't find it"
+ },
+ {
+  "i": 19,
+  "jp": "<TEX 1><COL 004AD1FF>発見物ごと</COL>に<COL 004AD1FF>出現確率が異なる</COL>ため\r\n見つからなくても何度か\r\n同じクエストに行ってみましょう",
+  "en": "<TEX 1>Since <COL 004AD1FF>each discovery</COL> has a\r\n<COL 004AD1FF>different appearance rate</COL>, try the\r\nsame quest a few times even if you don't find it"
+ },
+ {
+  "i": 20,
+  "jp": "<TEX 2>発見物の中には<COL 004AD1FF>昼夜の\r\nいずれか</COL>でしか<COL 004AD1FF>入手できない</COL>\r\nものが存在します",
+  "en": "<TEX 2>Some discoveries can only be\r\n<COL 004AD1FF>obtained during either\r\nday or night</COL>"
+ },
+ {
+  "i": 21,
+  "jp": "<TEX 2>発見物の中には<COL 004AD1FF>昼夜の\r\nいずれか</COL>でしか<COL 004AD1FF>入手できない</COL>\r\nものが存在します",
+  "en": "<TEX 2>Some discoveries can only be\r\n<COL 004AD1FF>obtained during either\r\nday or night</COL>"
+ },
+ {
+  "i": 22,
+  "jp": "<TEX 2>発見物の中には<COL 004AD1FF>昼夜の\r\nいずれか</COL>でしか<COL 004AD1FF>入手できない</COL>\r\nものが存在します",
+  "en": "<TEX 2>Some discoveries can only be\r\n<COL 004AD1FF>obtained during either\r\nday or night</COL>"
+ },
+ {
+  "i": 23,
+  "jp": "<TEX 0><COL 004AD1FF>特効武器を用いる</COL>と通常よりも\r\n大きなダメージを与えられたり\r\n部位を壊しやすくなったりします",
+  "en": "<TEX 0>Using a <COL 004AD1FF>weapon with a special\r\nadvantage</COL> lets you deal more damage\r\nand break parts more easily than usual"
+ },
+ {
+  "i": 24,
+  "jp": "<TEX 0>操虫棍は<COL 004AD1FF>エキスを採取</COL>することで\r\n<COL 004AD1FF>操虫レベルが上がり</COL>ハンターや猟虫\r\nを強くする様々な効果が発動します",
+  "en": "<TEX 0>With the Insect Glaive, <COL 004AD1FF>gathering\r\nextracts</COL> <COL 004AD1FF>raises your Kinsect Level</COL>,\r\ntriggering various effects that strengthen the hunter and Kinsect"
+ },
+ {
+  "i": 25,
+  "jp": "<TEX 0>一部のライトボウガンでは\r\n高い威力や専用の効果などを持つ\r\n<COL 004AD1FF>特殊弾</COL>を使用できます",
+  "en": "<TEX 0>Some Light Bowguns can use\r\n<COL 004AD1FF>Special Ammo</COL> with high power\r\nor unique effects"
+ },
+ {
+  "i": 26,
+  "jp": "<TEX 1>クエストを中断した場合\r\n出発から72時間が過ぎると\r\nクエストを再開できません",
+  "en": "<TEX 1>If you suspend a quest,\r\nyou can no longer resume it once\r\n72 hours have passed since departure"
+ },
+ {
+  "i": 27,
+  "jp": "<TEX 0>アクセルアックスの攻撃やコンボは\r\n<COL 004AD1FF>ハンターとモンスターとの距離</COL>に\r\n応じて変化します",
+  "en": "<TEX 0>The Accel Axe's attacks and combos\r\nchange depending on the\r\n<COL 004AD1FF>distance between hunter and monster</COL>"
+ },
+ {
+  "i": 28,
+  "jp": "<TEX 0>秘技がついている武器は\r\n<COL 004AD1FF>指定したプラス値まで強化</COL>すると\r\n<COL 004AD1FF>秘技を解放</COL>することができます",
+  "en": "<TEX 0>Weapons with a Hidden Art can\r\n<COL 004AD1FF>unlock that Hidden Art</COL> once\r\n<COL 004AD1FF>upgraded to the specified plus value</COL>"
+ },
+ {
+  "i": 29,
+  "jp": "<TEX 0><COL 004AD1FF>プラス強化石</COL>には、\r\n特定の装備種や特定の武器などを\r\n<COL 004AD1FF>限定して強化</COL>できるものもあります",
+  "en": "<TEX 0>Some <COL 004AD1FF>Plus Upgrade Stones</COL>\r\ncan only be used to <COL 004AD1FF>upgrade</COL> certain\r\nequipment types or specific weapons"
+ },
+ {
+  "i": 30,
+  "jp": "<TEX 0><COL 004AD1FF>期間限定</COL>と表示されている<COL 004AD1FF>装備</COL>は\r\n開催中のイベントで\r\n<COL 004AD1FF>期間限定スキル</COL>を発動できます",
+  "en": "<TEX 0><COL 004AD1FF>Equipment</COL> marked as\r\n<COL 004AD1FF>Limited-Time</COL> can activate a\r\n<COL 004AD1FF>Limited-Time Skill</COL> during ongoing events"
+ },
+ {
+  "i": 31,
+  "jp": "<TEX 0><COL 004AD1FF>一部の防具</COL>はプラス値を上げると\r\n新たなスキルである\r\n<COL 004AD1FF>覚醒スキル</COL>を解放できます",
+  "en": "<TEX 0>Raising the plus value on\r\n<COL 004AD1FF>some armor</COL> can unlock a\r\nnew <COL 004AD1FF>Awakened Skill</COL>"
+ },
+ {
+  "i": 32,
+  "jp": "<TEX 0><COL 004AD1FF>運</COL>の数値はクエスト報酬枠を\r\n解放できる確率です\r\n<COL 004AD1FF>100で確定解放</COL>となります",
+  "en": "<TEX 0>The <COL 004AD1FF>Luck</COL> value is the chance\r\nto unlock a quest reward slot\r\n<COL 004AD1FF>100 guarantees it unlocks</COL>"
+ },
+ {
+  "i": 33,
+  "jp": "<TEX 0><COL 004AD1FF>豪運</COL>の数値は、クエスト報酬の\r\n二列目が運で解放された際に\r\n<COL 004AD1FF>三列目が解放</COL>できる確率です",
+  "en": "<TEX 0>The <COL 004AD1FF>Great Luck</COL> value is the chance\r\nfor the <COL 004AD1FF>third row to unlock</COL>\r\nafter the second row of quest rewards unlocks via Luck"
+ },
+ {
+  "i": 34,
+  "jp": "<TEX 0><COL 004AD1FF>装備画面</COL>にある<COL 004AD1FF>スキル検索</COL>では\r\n検索窓に<COL 004AD1FF>スキル名</COL>を入れることで\r\n任意のスキルを検索できます",
+  "en": "<TEX 0>Using <COL 004AD1FF>Skill Search</COL> on the\r\n<COL 004AD1FF>Equipment screen</COL>, you can search for\r\nany skill by entering its <COL 004AD1FF>skill name</COL>"
+ }
+]

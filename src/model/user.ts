@@ -178,7 +178,9 @@ const userSchema = new Schema({
   },
   box: {
     capacity: {
-      eqp_box: { type: Number, default: 100 },
+      // Il corredo iniziale e' di 117 pezzi: con il vecchio limite di 100 un
+      // giocatore nuovo sarebbe nato con la box gia' oltre capienza.
+      eqp_box: { type: Number, default: 200 },
       eqp_set: { type: Number, default: 100 },
       friend_max: { type: Number, default: 100 },
     },

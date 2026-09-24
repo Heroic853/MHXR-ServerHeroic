@@ -41,7 +41,25 @@ export const eventTicketFree = (req: Request, res: Response) => {
 
 export const eventNormalStart = async (req: Request, res: Response) => {
   try {
-    const { mst_quest_id } = req.body as EventStartInput;
+    const { mst_quest_id, multi_room_id } = req.body as EventStartInput;
+
+    /*
+     * L'instance_id e' cio' che lega piu' cacciatori alla STESSA battuta. Qui
+     * era fisso a 0 per tutti: due giocatori della stessa stanza partivano
+     * quindi in due cacce separate e restavano ognuno ad aspettare l'altro —
+     * il caricamento infinito in multiplayer.
+     *
+     * Il client manda gia' multi_room_id (e' nello schema da sempre, nessuno
+     * lo leggeva): usarlo da' a tutti i membri della stanza lo stesso numero,
+     * senza bisogno di interrogare il database.
+     *
+     * In singolo il campo non arriva, resta 0 e la risposta e' identica a
+     * prima: chi gioca da solo non rischia niente.
+     */
+    const instanceId = Number(multi_room_id) > 0 ? Number(multi_room_id) : 0;
+    if (instanceId) {
+      log.info('caccia in gruppo | quest=%s stanza=%d', String(mst_quest_id), instanceId);
+    }
 
     const data = {
       instance_data: {
@@ -61,7 +79,7 @@ export const eventNormalStart = async (req: Request, res: Response) => {
             point: 0,
           },
         ],
-        instance_id: 0,
+        instance_id: instanceId,
         mission_message: 'start',
         mst_quest_id,
         multi_leave_check_time: 0,

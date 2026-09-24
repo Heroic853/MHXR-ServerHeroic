@@ -1,0 +1,202 @@
+{
+ "magic": "ARCC",
+ "versione": 7,
+ "voci": [
+  {
+   "nomeInterno": "GUI\\font\\Common_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\Monster_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\SkillName_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\SkillText_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\BlockMsg_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\Quest_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\Battle_announce_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\Status_announce_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\Navi_common_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\Navi_load_menu_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\Navi_load_quest_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\Navi_load_failed_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\Navi_load_menu_Title_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\Navi_load_quest_Title_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\Navi_load_failed_Title_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\BlockAnnounce_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\SkillStatusName_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\SkillStatusText_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\dialog\\IconName_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\dialog\\Texture_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\dialog\\block\\Block_01001_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\dialog\\block\\Block_01002_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\dialog\\block\\Block_01003_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\dialog\\block\\Block_01004_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\dialog\\Shinhakken_00001_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\dialog\\IslandRelease_00001_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\dialog\\Tansaku_00001_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\dialog\\Tansaku_00002_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\dialog\\Guild_00001_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\Opening_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\MenuCmn_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\ver08_02_00_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\ver08_03_00_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\ver08_03_01_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\ver08_04_00_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\ver08_06_00_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\ver09_00_00_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\ver09_01_00_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\ver09_02_00_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\ver09_03_00_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\EAPI_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\EAPP_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\EN_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\partner\\PartnerKoyou_00000_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\partner\\PartnerKoyou_00001_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\partner\\PartnerKoyou_00002_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\partner\\PartnerKoyou_00003_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\partner\\PartnerKoyou_00004_jpn",
+   "tipo": 606843546
+  },
+  {
+   "nomeInterno": "GUI\\font\\Ozyama_bombText_jpn",
+   "tipo": 606843546
+  }
+ ]
+}

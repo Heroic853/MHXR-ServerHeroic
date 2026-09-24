@@ -4,6 +4,7 @@ import * as questIslandController from './questIsland.controller.js';
 import * as questEventController from './questEvent.controller.js';
 import * as questForestController from './questForest.controller.js';
 import * as questTrainingController from './questTraining.controller.js';
+import * as questKatamariController from './questKatamari.controller.js';
 import { validate } from '../../../middleware/validation.js';
 import {
   IslandStartSchema,
@@ -36,6 +37,13 @@ questRouter.post('/island/end', validate(IslandEndSchema), questIslandController
 //Eternal
 questRouter.post('/eternal/all', validate(SessionOnlySchema), questController.eternalAll);
 questRouter.post('/eternal/start', validate(EternalStartSchema), questController.eternalStart);
+// Mancava del tutto: a fine caccia eterna il client chiama questa rotta, il
+// server rispondeva "404 UNMATCHED" e il gioco restava sulla schermata finale
+// senza consegnare niente. Stesso identico caso gia' risolto per
+// /event/normal/end, quindi stessa cura: islandEnd e' generico
+// (mst_quest_id + clear_time + session_id), segna la quest fra le completate
+// e accredita le ricompense in inventario.
+questRouter.post('/eternal/end', validate(IslandEndSchema), questIslandController.islandEnd);
 //questRouter.post("/eternal/restart", );
 
 //Event
@@ -85,6 +93,17 @@ questRouter.post('/training/end', validate(TrainingEndSchema), questTrainingCont
 
 //questRouter.post("/reward/m16/point", );
 
-questRouter.post('/katamari/content/get', notImplemented.blankResponseEncrypted);
+/*
+ * Era agganciata a blankResponseEncrypted, cioe' rispondeva {}: il fagotto
+ * raccolto durante la caccia compariva al giocatore come "null" perche' il
+ * server non diceva mai cosa contenesse. Ora risponde davvero.
+ *
+ * Niente validate(): non sappiamo ancora con certezza quali campi mandi il
+ * client (la rotta non e' mai stata implementata, non esiste uno schema da cui
+ * dedurli) e uno schema stretto rifiuterebbe la richiesta con un 400. Il
+ * controller registra nei log i campi che riceve: quando si vedra' il nome
+ * vero, si potra' aggiungere lo schema.
+ */
+questRouter.post('/katamari/content/get', questKatamariController.contentGet);
 
 export default questRouter;

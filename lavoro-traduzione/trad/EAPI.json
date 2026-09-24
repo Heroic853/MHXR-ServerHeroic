@@ -1,0 +1,882 @@
+[
+ {
+  "i": 0,
+  "jp": "不明なエラー\r\nエラーの指定が正しくありません",
+  "en": "Unknown error\r\nThe error specification is incorrect"
+ },
+ {
+  "i": 1,
+  "jp": "成功",
+  "en": "Success"
+ },
+ {
+  "i": 2,
+  "jp": "APIが見つかりません\r\n存在しないAPIを呼び出しています",
+  "en": "API not found\r\nCalling a non-existent API"
+ },
+ {
+  "i": 3,
+  "jp": "サーバー内部エラー",
+  "en": "Internal server error"
+ },
+ {
+  "i": 4,
+  "jp": "データベースへの保存に\r\n失敗しました",
+  "en": "Failed to save\r\nto the database"
+ },
+ {
+  "i": 5,
+  "jp": "データが見つかりませんでした",
+  "en": "Data not found"
+ },
+ {
+  "i": 6,
+  "jp": "リクエストパラメータが\r\n正しくありません",
+  "en": "Request parameters\r\nare incorrect"
+ },
+ {
+  "i": 7,
+  "jp": "ただいまメンテナンス中です\r\n\r\nメンテナンス画面に移動します",
+  "en": "Currently under maintenance\r\n\r\nMoving to the maintenance screen"
+ },
+ {
+  "i": 8,
+  "jp": "ログインに失敗しました",
+  "en": "Login failed"
+ },
+ {
+  "i": 9,
+  "jp": "認証に失敗しました",
+  "en": "Authentication failed"
+ },
+ {
+  "i": 10,
+  "jp": "サーバーに接続できません",
+  "en": "Cannot connect to the server"
+ },
+ {
+  "i": 11,
+  "jp": "認証に失敗しました",
+  "en": "Authentication failed"
+ },
+ {
+  "i": 12,
+  "jp": "サーバーに接続できません\r\n時間をおいて再度試して下さい",
+  "en": "Cannot connect to the server\r\nPlease wait a while and try again"
+ },
+ {
+  "i": 13,
+  "jp": "サーバーに接続できません\r\n時間をおいて再度試して下さい",
+  "en": "Cannot connect to the server\r\nPlease wait a while and try again"
+ },
+ {
+  "i": 14,
+  "jp": "新しいバージョンが\r\nリリースされているため、\r\nタイトルに移動します",
+  "en": "A new version has been\r\nreleased, so you will be\r\nreturned to the title screen"
+ },
+ {
+  "i": 15,
+  "jp": "新しいデータが\r\nリリースされました。\r\n更新のためタイトルに移動します",
+  "en": "New data has been\r\nreleased.\r\nReturning to the title screen to update"
+ },
+ {
+  "i": 16,
+  "jp": "通信に失敗しました。\r\n時間を置いて解決しない場合は、\r\nお手数ですが、\r\nメニューからお問い合わせください",
+  "en": "Communication failed.\r\nIf waiting doesn't resolve the issue,\r\nsorry for the trouble, but\r\nplease contact us from the menu"
+ },
+ {
+  "i": 17,
+  "jp": "通信に失敗しました。\r\n時間を置いて解決しない場合は、\r\nお手数ですが、\r\nメニューからお問い合わせください",
+  "en": "Communication failed.\r\nIf waiting doesn't resolve the issue,\r\nsorry for the trouble, but\r\nplease contact us from the menu"
+ },
+ {
+  "i": 18,
+  "jp": "通信に失敗しました。\r\n時間を置いて解決しない場合は、\r\nお手数ですが、\r\nメニューからお問い合わせください",
+  "en": "Communication failed.\r\nIf waiting doesn't resolve the issue,\r\nsorry for the trouble, but\r\nplease contact us from the menu"
+ },
+ {
+  "i": 19,
+  "jp": "通信に失敗しました。\r\n時間を置いて解決しない場合は、\r\nお手数ですが、\r\nメニューからお問い合わせください",
+  "en": "Communication failed.\r\nIf waiting doesn't resolve the issue,\r\nsorry for the trouble, but\r\nplease contact us from the menu"
+ },
+ {
+  "i": 20,
+  "jp": "通信に失敗しました。\r\n時間を置いて解決しない場合は、\r\nお手数ですが、\r\nメニューからお問い合わせください",
+  "en": "Communication failed.\r\nIf waiting doesn't resolve the issue,\r\nsorry for the trouble, but\r\nplease contact us from the menu"
+ },
+ {
+  "i": 21,
+  "jp": "不適切な文言が含まれています。\r\n別の文言を入力してください",
+  "en": "Contains inappropriate wording.\r\nPlease enter different wording"
+ },
+ {
+  "i": 22,
+  "jp": "チュートリアル情報取得に\r\n失敗しました",
+  "en": "Failed to retrieve\r\ntutorial information"
+ },
+ {
+  "i": 23,
+  "jp": "チュートリアル情報取得に\r\n失敗しました",
+  "en": "Failed to retrieve\r\ntutorial information"
+ },
+ {
+  "i": 24,
+  "jp": "チュートリアル情報取得に\r\n失敗しました",
+  "en": "Failed to retrieve\r\ntutorial information"
+ },
+ {
+  "i": 25,
+  "jp": "チュートリアル情報取得に\r\n失敗しました",
+  "en": "Failed to retrieve\r\ntutorial information"
+ },
+ {
+  "i": 26,
+  "jp": "チュートリアル情報取得に\r\n失敗しました",
+  "en": "Failed to retrieve\r\ntutorial information"
+ },
+ {
+  "i": 27,
+  "jp": "チュートリアル情報取得に\r\n失敗しました",
+  "en": "Failed to retrieve\r\ntutorial information"
+ },
+ {
+  "i": 28,
+  "jp": "アカウント作成に失敗しました。\r\n時間を置いても解決しない場合は、\r\nお手数ですが、\r\nメニューからお問い合わせください",
+  "en": "Account creation failed.\r\nIf waiting doesn't resolve the issue,\r\nsorry for the trouble, but\r\nplease contact us from the menu"
+ },
+ {
+  "i": 29,
+  "jp": "アカウント作成に失敗しました。\r\n時間を置いても解決しない場合は、\r\nお手数ですが、\r\nメニューからお問い合わせください",
+  "en": "Account creation failed.\r\nIf waiting doesn't resolve the issue,\r\nsorry for the trouble, but\r\nplease contact us from the menu"
+ },
+ {
+  "i": 30,
+  "jp": "アカウント作成に失敗しました。\r\n時間を置いても解決しない場合は、\r\nお手数ですが、\r\nメニューからお問い合わせください",
+  "en": "Account creation failed.\r\nIf waiting doesn't resolve the issue,\r\nsorry for the trouble, but\r\nplease contact us from the menu"
+ },
+ {
+  "i": 31,
+  "jp": "アカウント作成に失敗しました。\r\n時間を置いても解決しない場合は、\r\nお手数ですが、\r\nメニューからお問い合わせください",
+  "en": "Account creation failed.\r\nIf waiting doesn't resolve the issue,\r\nsorry for the trouble, but\r\nplease contact us from the menu"
+ },
+ {
+  "i": 32,
+  "jp": "ログインに失敗しました。\r\n時間を置いても解決しない場合は、\r\nお手数ですが、\r\nメニューからお問い合わせください",
+  "en": "Login failed.\r\nIf waiting doesn't resolve the issue,\r\nsorry for the trouble, but\r\nplease contact us from the menu"
+ },
+ {
+  "i": 33,
+  "jp": "データは引き継ぎ済みです。\r\n本端末より、データを\r\n引き継ぐことはできません",
+  "en": "The data has already been transferred.\r\nYou cannot transfer data\r\nfrom this device"
+ },
+ {
+  "i": 34,
+  "jp": "お使いの端末で\r\n不正なプレイデータを\r\n確認致しましたので\r\nご利用を停止させて頂いております。\r\n\r\nご了承ください。",
+  "en": "We have detected\r\ninvalid play data\r\non your device,\r\nso your access has been suspended.\r\n\r\nWe appreciate your understanding."
+ },
+ {
+  "i": 35,
+  "jp": "データ引き継ぎで入力された\r\n・パスワード\r\n・引き継ぎナンバー\r\nのいずれかに誤りがあります。",
+  "en": "One of the following entered for\r\ndata transfer is incorrect:\r\n- Password\r\n- Transfer Number"
+ },
+ {
+  "i": 36,
+  "jp": "プレゼントボックスエラー",
+  "en": "Present Box Error"
+ },
+ {
+  "i": 37,
+  "jp": "プレゼントデータエラー",
+  "en": "Present Data Error"
+ },
+ {
+  "i": 38,
+  "jp": "プレゼントはすでに\r\n受け取り済みです。\r\nプレゼントは一度しか\r\n受け取ることができません",
+  "en": "This present has already\r\nbeen received.\r\nPresents can only be\r\nreceived once"
+ },
+ {
+  "i": 39,
+  "jp": "プレゼント情報取得に失敗しました",
+  "en": "Failed to retrieve present information"
+ },
+ {
+  "i": 40,
+  "jp": "狩玉の所持数限界を超えるため\r\n受け取ることができませんでした。\r\n\r\n受け取る個数分\r\n狩玉を消費した後に\r\n再度受け取りを行ってください。\r\n\r\nプレゼントボックスを更新するため\r\nタイトル画面に戻ります",
+  "en": "Could not be received because it\r\nwould exceed your maximum Hunting Orbs.\r\n\r\nPlease use enough Hunting Orbs\r\nto make room for the amount\r\nyou're about to receive, then try again.\r\n\r\nReturning to the title screen\r\nto refresh the Present Box"
+ },
+ {
+  "i": 41,
+  "jp": "プレゼント情報取得に失敗しました",
+  "en": "Failed to retrieve present information"
+ },
+ {
+  "i": 42,
+  "jp": "プレゼント情報取得に失敗しました",
+  "en": "Failed to retrieve present information"
+ },
+ {
+  "i": 43,
+  "jp": "クエストエラー",
+  "en": "Quest Error"
+ },
+ {
+  "i": 44,
+  "jp": "クエスト情報取得に失敗しました",
+  "en": "Failed to retrieve quest information"
+ },
+ {
+  "i": 45,
+  "jp": "クエスト情報取得に失敗しました",
+  "en": "Failed to retrieve quest information"
+ },
+ {
+  "i": 46,
+  "jp": "クエスト情報取得に失敗しました",
+  "en": "Failed to retrieve quest information"
+ },
+ {
+  "i": 47,
+  "jp": "選択されたクエストは\r\n開催時間外であるか、\r\nもしくは存在しません",
+  "en": "The selected quest is\r\neither outside its available time,\r\nor does not exist"
+ },
+ {
+  "i": 48,
+  "jp": "クエスト情報取得に失敗しました",
+  "en": "Failed to retrieve quest information"
+ },
+ {
+  "i": 49,
+  "jp": "すでにクエスト進行中です",
+  "en": "A quest is already in progress"
+ },
+ {
+  "i": 50,
+  "jp": "クエストが解放されていません",
+  "en": "This quest has not been unlocked"
+ },
+ {
+  "i": 51,
+  "jp": "事前課金に失敗しました",
+  "en": "Pre-purchase failed"
+ },
+ {
+  "i": 52,
+  "jp": "装備ＢＯＸがいっぱいです\r\n装備を売却するか\r\n装備ＢＯＸ枠を増やしてください",
+  "en": "Your Equipment Box is full\r\nPlease sell some equipment or\r\nincrease your Equipment Box slots"
+ },
+ {
+  "i": 53,
+  "jp": "特殊条件を満たしていないので\r\n出発できません",
+  "en": "You cannot depart because\r\nyou do not meet the special conditions"
+ },
+ {
+  "i": 54,
+  "jp": "クエストチケットが不足しています",
+  "en": "Not enough Quest Tickets"
+ },
+ {
+  "i": 55,
+  "jp": "アイテムが不足しています",
+  "en": "Not enough items"
+ },
+ {
+  "i": 56,
+  "jp": "クエストの再開に必要なデータの\r\n有効期限が過ぎてしまったため\r\nクエストを再開できません。",
+  "en": "The data needed to resume the quest\r\nhas expired,\r\nso the quest cannot be resumed."
+ },
+ {
+  "i": 57,
+  "jp": "ゲームデータが更新されたため、\r\n中断データが削除されました。",
+  "en": "Because the game data was updated,\r\nthe suspended data has been deleted."
+ },
+ {
+  "i": 58,
+  "jp": "マルチプレイ中に\r\n不正な値が検出されたため\r\n今回のクエストクリア情報は\r\n記録されませんでした",
+  "en": "An invalid value was detected\r\nduring multiplayer,\r\nso this quest's clear information\r\nwas not recorded"
+ },
+ {
+  "i": 59,
+  "jp": "すでに狩友になっています",
+  "en": "You are already Hunting Friends"
+ },
+ {
+  "i": 60,
+  "jp": "すでに狩友となっているため\r\nリクエストは破棄されました",
+  "en": "The request was discarded because\r\nyou are already Hunting Friends"
+ },
+ {
+  "i": 61,
+  "jp": "狩友が見つかりませんでした",
+  "en": "Hunting Friend not found"
+ },
+ {
+  "i": 62,
+  "jp": "自分自身に狩友申請を\r\n送ることはできません",
+  "en": "You cannot send a\r\nHunting Friend request to yourself"
+ },
+ {
+  "i": 63,
+  "jp": "自分自身を狩友解除を\r\nすることはできません",
+  "en": "You cannot remove\r\nyourself as a Hunting Friend"
+ },
+ {
+  "i": 64,
+  "jp": "申請したいハンターの狩友申請が\r\nいっぱいなので送れませんでした",
+  "en": "Could not send the request because\r\nthat hunter's Hunting Friend requests are full"
+ },
+ {
+  "i": 65,
+  "jp": "申請したいハンターには\r\nすでに狩友申請を行っているので\r\n送れませんでした",
+  "en": "Could not send the request because\r\nyou have already sent a Hunting Friend\r\nrequest to that hunter"
+ },
+ {
+  "i": 66,
+  "jp": "自分の狩友枠がいっぱいのため\r\n承認できませんでした",
+  "en": "Could not approve because\r\nyour Hunting Friend slots are full"
+ },
+ {
+  "i": 67,
+  "jp": "相手の狩友枠がいっぱいのため\r\n承認が拒否されました",
+  "en": "The approval was rejected because\r\nthe other player's Hunting Friend slots are full"
+ },
+ {
+  "i": 68,
+  "jp": "狩友申請が消失していたため、\r\n実行できませんでした",
+  "en": "Could not proceed because\r\nthe Hunting Friend request no longer exists"
+ },
+ {
+  "i": 69,
+  "jp": "ボックスエラー",
+  "en": "Box Error"
+ },
+ {
+  "i": 70,
+  "jp": "ＢＯＸ情報の取得に失敗しました",
+  "en": "Failed to retrieve Box information"
+ },
+ {
+  "i": 71,
+  "jp": "課金アイテムエラー",
+  "en": "Paid Item Error"
+ },
+ {
+  "i": 72,
+  "jp": "課金アイテム情報の取得に\r\n失敗しました",
+  "en": "Failed to retrieve\r\npaid item information"
+ },
+ {
+  "i": 73,
+  "jp": "狩玉が足りません",
+  "en": "Not enough Hunting Orbs"
+ },
+ {
+  "i": 74,
+  "jp": "装備エラー",
+  "en": "Equipment Error"
+ },
+ {
+  "i": 75,
+  "jp": "選択した装備の情報取得に\r\n失敗しました",
+  "en": "Failed to retrieve information\r\nfor the selected equipment"
+ },
+ {
+  "i": 76,
+  "jp": "選択した装備の情報取得に\r\n失敗しました",
+  "en": "Failed to retrieve information\r\nfor the selected equipment"
+ },
+ {
+  "i": 77,
+  "jp": "選択した装備の情報取得に\r\n失敗しました",
+  "en": "Failed to retrieve information\r\nfor the selected equipment"
+ },
+ {
+  "i": 78,
+  "jp": "選択した装備は\r\nすでにＬｖ.が最大です\r\nこれ以上強化できません",
+  "en": "The selected equipment\r\nis already at max Level\r\nand cannot be upgraded further"
+ },
+ {
+  "i": 79,
+  "jp": "装備強化に失敗しました",
+  "en": "Equipment upgrade failed"
+ },
+ {
+  "i": 80,
+  "jp": "必要なゼニーが足りません",
+  "en": "Not enough Zenny"
+ },
+ {
+  "i": 81,
+  "jp": "必要な素材の数が足りません",
+  "en": "Not enough of the required material"
+ },
+ {
+  "i": 82,
+  "jp": "必要な素材が素材ＢＯＸに\r\n存在しません",
+  "en": "The required material is not\r\nin your Material Box"
+ },
+ {
+  "i": 83,
+  "jp": "選択した装備が\r\n装備ＢＯＸに存在しません",
+  "en": "The selected equipment is not\r\nin your Equipment Box"
+ },
+ {
+  "i": 84,
+  "jp": "お気に入りに設定しているか、\r\n装備セットに登録している装備が\r\n素材に含まれています",
+  "en": "The materials include equipment that is\r\neither marked as a favorite or\r\nregistered in an equipment set"
+ },
+ {
+  "i": 85,
+  "jp": "必要なゼニーが足りません",
+  "en": "Not enough Zenny"
+ },
+ {
+  "i": 86,
+  "jp": "プラス値の強化に失敗しました",
+  "en": "Plus-value upgrade failed"
+ },
+ {
+  "i": 87,
+  "jp": "選択した装備が\r\n装備ＢＯＸに存在しません",
+  "en": "The selected equipment is not\r\nin your Equipment Box"
+ },
+ {
+  "i": 88,
+  "jp": "装備中の装備は売却できません",
+  "en": "You cannot sell equipment that is currently equipped"
+ },
+ {
+  "i": 89,
+  "jp": "オトモエラー",
+  "en": "Palico Error"
+ },
+ {
+  "i": 90,
+  "jp": "オトモ情報の取得に失敗しました",
+  "en": "Failed to retrieve Palico information"
+ },
+ {
+  "i": 91,
+  "jp": "サブスキル数が上限に達しています",
+  "en": "The number of sub-skills has reached its limit"
+ },
+ {
+  "i": 92,
+  "jp": "オトモの追加に失敗しました",
+  "en": "Failed to add Palico"
+ },
+ {
+  "i": 93,
+  "jp": "素材エラー",
+  "en": "Material Error"
+ },
+ {
+  "i": 94,
+  "jp": "売却しようとした素材が\r\n素材ＢＯＸに存在しません",
+  "en": "The material you tried to sell\r\nis not in your Material Box"
+ },
+ {
+  "i": 95,
+  "jp": "売却しようとした素材の\r\n素材数が足りていません",
+  "en": "You do not have enough of the\r\nmaterial you tried to sell"
+ },
+ {
+  "i": 96,
+  "jp": "素材売却に失敗しました",
+  "en": "Material sale failed"
+ },
+ {
+  "i": 97,
+  "jp": "消費アイテムエラー",
+  "en": "Consumable Item Error"
+ },
+ {
+  "i": 98,
+  "jp": "消費アイテム情報の取得に\r\n失敗しました",
+  "en": "Failed to retrieve\r\nconsumable item information"
+ },
+ {
+  "i": 99,
+  "jp": "消費アイテムの追加に失敗しました",
+  "en": "Failed to add consumable item"
+ },
+ {
+  "i": 100,
+  "jp": "消費アイテムが足りません",
+  "en": "Not enough consumable items"
+ },
+ {
+  "i": 101,
+  "jp": "実績エラー",
+  "en": "Achievement Error"
+ },
+ {
+  "i": 102,
+  "jp": "報酬を受け取ることが\r\nできませんでした\r\n<COL FEEB4EFF><SIZE 25>受け取り期限を過ぎたものが</COL></SIZE>\r\n<COL FEEB4EFF><SIZE 25>含まれています</COL></SIZE>\r\n\r\n探検ナビ更新のため\r\nタイトルに戻ります",
+  "en": "Could not receive\r\nthe reward\r\n<COL FEEB4EFF><SIZE 25>Some rewards had</COL></SIZE>\r\n<COL FEEB4EFF><SIZE 25>passed their claim deadline</COL></SIZE>\r\n\r\nReturning to the title screen\r\nto update the Explore Navi"
+ },
+ {
+  "i": 103,
+  "jp": "この実績の報酬は\r\nすでに受け取っています",
+  "en": "You have already received\r\nthe reward for this achievement"
+ },
+ {
+  "i": 104,
+  "jp": "報酬の受け取りに失敗しました",
+  "en": "Failed to receive reward"
+ },
+ {
+  "i": 105,
+  "jp": "カプリンクとの同期に\r\n失敗しました",
+  "en": "Failed to sync\r\nwith CapLink"
+ },
+ {
+  "i": 106,
+  "jp": "輝石エラー",
+  "en": "Glowstone Error"
+ },
+ {
+  "i": 107,
+  "jp": "レベルアップに必要な\r\n輝石が足りません",
+  "en": "Not enough Glowstones\r\nrequired to level up"
+ },
+ {
+  "i": 108,
+  "jp": "アクティビティエラー",
+  "en": "Activity Error"
+ },
+ {
+  "i": 109,
+  "jp": "交換期限が過ぎているため、\r\n交換することができません",
+  "en": "Cannot exchange because\r\nthe exchange deadline has passed"
+ },
+ {
+  "i": 110,
+  "jp": "現在は交換できません",
+  "en": "Cannot exchange right now"
+ },
+ {
+  "i": 111,
+  "jp": "ユーザーエラー",
+  "en": "User Error"
+ },
+ {
+  "i": 112,
+  "jp": "装備セットに登録されている装備が\r\n装備ＢＯＸに存在しません",
+  "en": "Equipment registered in the\r\nequipment set is not in your Equipment Box"
+ },
+ {
+  "i": 113,
+  "jp": "装備セットの取得に失敗しました",
+  "en": "Failed to retrieve equipment set"
+ },
+ {
+  "i": 114,
+  "jp": "装備セットの取得に失敗しました",
+  "en": "Failed to retrieve equipment set"
+ },
+ {
+  "i": 115,
+  "jp": "装備セット番号が正しくありません",
+  "en": "The equipment set number is incorrect"
+ },
+ {
+  "i": 116,
+  "jp": "武器がセットされていません",
+  "en": "No weapon is equipped"
+ },
+ {
+  "i": 117,
+  "jp": "狩猟団エラー",
+  "en": "Hunting Squad Error"
+ },
+ {
+  "i": 118,
+  "jp": "狩猟団に所属していないのに\r\n退団しようとしました",
+  "en": "Tried to leave the Hunting Squad\r\nwhile not a member"
+ },
+ {
+  "i": 119,
+  "jp": "メンバーが見つかりませんでした",
+  "en": "Member not found"
+ },
+ {
+  "i": 120,
+  "jp": "権限が無い処理を行おうとしました",
+  "en": "Attempted an action without permission"
+ },
+ {
+  "i": 121,
+  "jp": "申請数が上限に達しています。\r\nまた、勧誘申請および加入申請は\r\n3日経つと自動で取り下げられます",
+  "en": "The number of requests has reached its limit.\r\nAlso, invitation and join requests\r\nare automatically withdrawn after 3 days"
+ },
+ {
+  "i": 122,
+  "jp": "すでに狩猟団に所属しています",
+  "en": "Already a member of a Hunting Squad"
+ },
+ {
+  "i": 123,
+  "jp": "検索にヒットしませんでした\r\n条件を変えて検索してください",
+  "en": "No search results found\r\nPlease change your search criteria"
+ },
+ {
+  "i": 124,
+  "jp": "同じメンバーを\r\n登録しようとしました",
+  "en": "Tried to register\r\nthe same member"
+ },
+ {
+  "i": 125,
+  "jp": "承認しようとしたリクエストは\r\n存在しません",
+  "en": "The request you tried to approve\r\ndoes not exist"
+ },
+ {
+  "i": 126,
+  "jp": "狩猟団ＩＤが不正です",
+  "en": "The Hunting Squad ID is invalid"
+ },
+ {
+  "i": 127,
+  "jp": "狩猟団員が3人以下のため\r\n除名できません",
+  "en": "Cannot expel a member because\r\nthe Hunting Squad has 3 or fewer members"
+ },
+ {
+  "i": 128,
+  "jp": "受信ボックスが満タンです\r\n受信できるまで\r\nしばらくお待ちください",
+  "en": "Your inbox is full\r\nPlease wait a while\r\nuntil you can receive more"
+ },
+ {
+  "i": 129,
+  "jp": "対象ユーザーは\r\nすでに別の狩猟団に所属しています",
+  "en": "That user is already\r\na member of another Hunting Squad"
+ },
+ {
+  "i": 130,
+  "jp": "対象ユーザーは\r\nすでにこの狩猟団に所属しています",
+  "en": "That user is already\r\na member of this Hunting Squad"
+ },
+ {
+  "i": 131,
+  "jp": "狩猟団の団員数が\r\n定員に達しています",
+  "en": "This Hunting Squad's member count\r\nhas reached its limit"
+ },
+ {
+  "i": 132,
+  "jp": "狩猟団移籍直後の為\r\n移籍制限がかかっています",
+  "en": "A transfer restriction is in effect\r\nbecause you just switched Hunting Squads"
+ },
+ {
+  "i": 133,
+  "jp": "狩猟団が変わりました",
+  "en": "Your Hunting Squad has changed"
+ },
+ {
+  "i": 134,
+  "jp": "入力された狩猟団ＩＤは\r\n存在しません。\r\n正しい狩猟団ＩＤを確認後\r\n入力してください",
+  "en": "The entered Hunting Squad ID\r\ndoes not exist.\r\nPlease confirm the correct Hunting Squad ID\r\nand enter it again"
+ },
+ {
+  "i": 135,
+  "jp": "狩猟団メンバーが3人以下の時は\r\n除名が行えません",
+  "en": "Cannot expel a member when the\r\nHunting Squad has 3 or fewer members"
+ },
+ {
+  "i": 136,
+  "jp": "狩猟カーニバル中は\r\nメンバーの退団および除名、\r\n狩猟団に所属中のプレイヤーへの\r\n勧誘は行えません",
+  "en": "During the Hunting Carnival, you cannot\r\nhave members leave or be expelled,\r\nor invite players who are already\r\nin a Hunting Squad"
+ },
+ {
+  "i": 137,
+  "jp": "オートコースの効果期間中のため\r\n購入することができません。\r\n\r\nオートコースを\r\n使用できるようにするため\r\nタイトル画面に戻ります",
+  "en": "Cannot purchase because\r\nthe Auto Course is still active.\r\n\r\nReturning to the title screen\r\nso the Auto Course can be used"
+ },
+ {
+  "i": 138,
+  "jp": "チケットの購入期限が\r\n過ぎているため購入できません",
+  "en": "Cannot purchase because\r\nthe ticket's purchase deadline has passed"
+ },
+ {
+  "i": 139,
+  "jp": "購入に必要なゼニーが\r\n不足しています",
+  "en": "Not enough Zenny\r\nrequired for this purchase"
+ },
+ {
+  "i": 140,
+  "jp": "購入に必要な狩玉が不足しています",
+  "en": "Not enough Hunting Orbs required for this purchase"
+ },
+ {
+  "i": 141,
+  "jp": "残り購入回数を超えています",
+  "en": "Exceeded the remaining number of purchases"
+ },
+ {
+  "i": 142,
+  "jp": "通信に失敗しました",
+  "en": "Communication failed"
+ },
+ {
+  "i": 143,
+  "jp": "部屋が見つかりませんでした",
+  "en": "Room not found"
+ },
+ {
+  "i": 144,
+  "jp": "サーバーへの接続に失敗しました",
+  "en": "Failed to connect to the server"
+ },
+ {
+  "i": 145,
+  "jp": "部屋が見つかりませんでした",
+  "en": "Room not found"
+ },
+ {
+  "i": 146,
+  "jp": "入室に失敗しました",
+  "en": "Failed to enter the room"
+ },
+ {
+  "i": 147,
+  "jp": "通信に失敗しました",
+  "en": "Communication failed"
+ },
+ {
+  "i": 148,
+  "jp": "部屋が満員なので\r\n入室できませんでした",
+  "en": "Could not enter because\r\nthe room is full"
+ },
+ {
+  "i": 149,
+  "jp": "部屋の作成に失敗しました。\r\nお手数ですが、\r\n新しく部屋を作り直してください。\r\nエラーが続く場合は、\r\nメニューからお問い合わせください",
+  "en": "Failed to create the room.\r\nSorry for the trouble, but\r\nplease create a new room.\r\nIf the error continues,\r\nplease contact us from the menu"
+ },
+ {
+  "i": 150,
+  "jp": "ホストがまだ部屋に入室していません。\r\nホストの入室後リトライしてください",
+  "en": "The host has not entered the room yet.\r\nPlease retry after the host enters"
+ },
+ {
+  "i": 151,
+  "jp": "出発ロビーまで進んでいるため\r\n部屋に入室できませんでした",
+  "en": "Could not enter the room because\r\nit has already progressed to the departure lobby"
+ },
+ {
+  "i": 152,
+  "jp": "まだホストが部屋にいないため\r\n入室できません。\r\n少し待った後に再度お試しください\r\n\r\n<COL FEEB4EFF><SIZE 25>※ホストが離脱している場合</COL></SIZE>\r\n<COL FEEB4EFF><SIZE 25>再出発はできません</COL></SIZE>",
+  "en": "Cannot enter because\r\nthe host is not in the room yet.\r\nPlease wait a moment and try again\r\n\r\n<COL FEEB4EFF><SIZE 25>* If the host has left,</COL></SIZE>\r\n<COL FEEB4EFF><SIZE 25>you cannot depart again</COL></SIZE>"
+ },
+ {
+  "i": 153,
+  "jp": "サポートしていないＯＳです",
+  "en": "This OS is not supported"
+ },
+ {
+  "i": 154,
+  "jp": "課金処理に失敗しました",
+  "en": "Payment processing failed"
+ },
+ {
+  "i": 155,
+  "jp": "課金処理に失敗しました",
+  "en": "Payment processing failed"
+ },
+ {
+  "i": 156,
+  "jp": "課金処理に失敗しました",
+  "en": "Payment processing failed"
+ },
+ {
+  "i": 157,
+  "jp": "すでに完了しています",
+  "en": "Already completed"
+ },
+ {
+  "i": 158,
+  "jp": "期間外のため\r\n探検することができません",
+  "en": "Cannot explore because\r\nit is outside the available period"
+ },
+ {
+  "i": 159,
+  "jp": "入力されたコードは\r\n正しくありません",
+  "en": "The entered code\r\nis incorrect"
+ },
+ {
+  "i": 160,
+  "jp": "コードの照合に失敗しました",
+  "en": "Code verification failed"
+ },
+ {
+  "i": 161,
+  "jp": "有効期間が終了しています",
+  "en": "The valid period has ended"
+ },
+ {
+  "i": 162,
+  "jp": "入力処理がロックされています\r\n翌日に再度お試しください",
+  "en": "Input has been locked\r\nPlease try again the next day"
+ },
+ {
+  "i": 163,
+  "jp": "入力可能回数を超えています",
+  "en": "Exceeded the number of allowed attempts"
+ },
+ {
+  "i": 164,
+  "jp": "入力されたコードは\r\nすでに使用されています",
+  "en": "The entered code\r\nhas already been used"
+ },
+ {
+  "i": 165,
+  "jp": "アイテム付与に失敗しました",
+  "en": "Failed to grant item"
+ },
+ {
+  "i": 166,
+  "jp": "カプリンクエラー",
+  "en": "CapLink Error"
+ },
+ {
+  "i": 167,
+  "jp": "カプリンクはメンテナンス中です",
+  "en": "CapLink is under maintenance"
+ },
+ {
+  "i": 168,
+  "jp": "入力されたＣＯＧ ＩＤ\r\nもしくはパスワードに\r\n誤りがあります。\r\n正しいＣＯＧ ＩＤと\r\nパスワードを確認後\r\n入力してください",
+  "en": "The entered COG ID\r\nor password\r\nis incorrect.\r\nPlease confirm the correct COG ID\r\nand password\r\nand enter them again"
+ },
+ {
+  "i": 169,
+  "jp": "データを引き継ぐことが\r\nできません。古い端末で\r\n引き継ぎ準備が行われていないか、\r\n古い端末とは異なる\r\nカプリンクアカウントが\r\n入力されています",
+  "en": "Cannot transfer data.\r\nEither transfer was not prepared\r\non the old device, or\r\na different CapLink account\r\nthan the one on the old device\r\nwas entered"
+ },
+ {
+  "i": 170,
+  "jp": "データを引き継ぐことが\r\nできません。古い端末で\r\n引き継ぎ準備を行ってください",
+  "en": "Cannot transfer data.\r\nPlease prepare the transfer\r\non the old device"
+ },
+ {
+  "i": 171,
+  "jp": "入力内容に誤りがあります\r\n正しい内容をご確認ください",
+  "en": "There is an error in what was entered\r\nPlease check that it is correct"
+ },
+ {
+  "i": 172,
+  "jp": "クエストに出発するための\r\n探索燃料が不足しています",
+  "en": "Not enough Exploration Fuel\r\nto depart on the quest"
+ },
+ {
+  "i": 173,
+  "jp": "選択されたクエストは\r\n開催時間外であるか、\r\nもしくは存在しません",
+  "en": "The selected quest is\r\neither outside its available time,\r\nor does not exist"
+ },
+ {
+  "i": 174,
+  "jp": "イベント期間が終了しました\r\nタイトルに移動します",
+  "en": "The event period has ended\r\nReturning to the title screen"
+ },
+ {
+  "i": 175,
+  "jp": "装備ＢＯＸ枠を51個以上\r\n超えた数の交換はできません。\r\n交換個数を変更するか、\r\n装備ＢＯＸを整理してください",
+  "en": "Cannot exchange more than\r\n51 Equipment Box slots at once.\r\nPlease change the exchange amount or\r\norganize your Equipment Box"
+ }
+]

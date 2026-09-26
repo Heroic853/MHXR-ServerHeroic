@@ -16,7 +16,7 @@ vi.mock('../../../middleware/logger', () => ({
 import User from '../../../model/user.js';
 import { encryptAndSend } from '../../../services/crypto/encryptionHelpers.js';
 import { ERROR_CODE, ERROR_CATEGORY } from '../../../constants/error.codes.js';
-import { get, otomoGet, equipLevelup, storageInfo, sale, favoriteSet } from './box.controller.js';
+import { get, otomoGet, partnerGet, equipLevelup, storageInfo, sale, favoriteSet } from './box.controller.js';
 
 function mockReqRes(body: Record<string, unknown> = {}) {
   const req = { body, ip: '127.0.0.1', get: vi.fn() } as unknown as Request;
@@ -94,6 +94,45 @@ describe('box.controller', () => {
       await otomoGet(req, res);
 
       expect(encryptAndSend).toHaveBeenCalledWith({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG, 'Box not found');
+    });
+  });
+
+  describe('partnerGet', () => {
+    it('returns partners from user box', async () => {
+      const mockPartners = [{ partner_id: 'PT_001', mst_partner_id: 507850012 }];
+      vi.mocked(User.findOne).mockResolvedValue({
+        box: { partners: mockPartners },
+      } as never);
+
+      const { req, res } = mockReqRes({ session_id: 'sess-1' });
+
+      await partnerGet(req, res);
+
+      expect(encryptAndSend).toHaveBeenCalledWith(
+        expect.objectContaining({ partners: mockPartners }),
+        res,
+        req,
+      );
+    });
+
+    it('returns error when box is missing', async () => {
+      vi.mocked(User.findOne).mockResolvedValue({ box: null } as never);
+
+      const { req, res } = mockReqRes({ session_id: 'sess-1' });
+
+      await partnerGet(req, res);
+
+      expect(encryptAndSend).toHaveBeenCalledWith({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG, 'Box not found');
+    });
+
+    it('returns NOT_AUTHENTICATED when the session is unknown', async () => {
+      vi.mocked(User.findOne).mockResolvedValue(null);
+
+      const { req, res } = mockReqRes({ session_id: 'bad' });
+
+      await partnerGet(req, res);
+
+      expect(encryptAndSend).toHaveBeenCalledWith({}, res, req, ERROR_CODE.NOT_AUTHENTICATED);
     });
   });
 

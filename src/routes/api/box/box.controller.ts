@@ -104,6 +104,34 @@ export const otomoGet = async (req: Request, res: Response) => {
   }
 };
 
+// Analoga a otomoGet sopra: la "get" per i gatti Partner (nekojara) non
+// era mai stata scritta (box.router.ts la aveva solo commentata), quindi il
+// client non poteva nemmeno elencare quali Partner possiede il giocatore —
+// box.partners esiste gia' sul modello (vedi model/user.ts) e viene
+// popolato da tutorial/quest, semplice passthrough di dati reali, nessun id
+// inventato.
+export const partnerGet = async (req: Request, res: Response) => {
+  try {
+    const { session_id } = req.body as BoxGetInput;
+    const filter = { current_session: session_id };
+
+    const doc = await User.findOne(filter);
+    if (!doc) {
+      return encryptAndSend({}, res, req, ERROR_CODE.NOT_AUTHENTICATED); //Not authenticated
+    }
+    if (!doc.box) {
+      return encryptAndSend({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG, 'Box not found');
+    }
+    const data = {
+      partners: doc.box.partners,
+    };
+    encryptAndSend(data, res, req);
+  } catch (error) {
+    log.error('Error in partnerGet:', error);
+    encryptAndSend({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG, 'Get partner box failed');
+  }
+};
+
 export const equipCapacityInfo = (req: Request, res: Response) => {
   const data = {
     max: 10000,

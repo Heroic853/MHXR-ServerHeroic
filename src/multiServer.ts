@@ -64,6 +64,40 @@ function ensureRoom(roomNumber: number): RoomState {
   return room;
 }
 
+/**
+ * Manda a tutti nella stanza il pacchetto che fa partire davvero la caccia.
+ * Stessa identica costruzione del pacchetto gia' usata dall'evento "match"
+ * (mai rimossa: resta per compatibilita' se mai un client lo mandasse da
+ * solo), estratta qui perche' ora la chiama anche l'evento "entry" appena
+ * tutti risultano pronti, senza aspettare nessun segnale in piu' dal client.
+ */
+function broadcastMatchStart(
+  io: Server,
+  room: RoomState,
+  header: ReturnType<typeof parseHeader>['header'],
+) {
+  const entryBitmask = Buffer.alloc(2);
+  let bitmask = 0;
+  for (const [, playerId] of room.memberPlayerIds) {
+    if (playerId < 16) bitmask |= (1 << playerId);
+  }
+  entryBitmask.writeUInt16LE(bitmask, 0);
+
+  const matchOkHeader = createHeader({
+    roomNumber: header.roomNumber,
+    playerId: header.playerId,
+    seq: header.seq,
+    unk2: header.unk2,
+    emitTypeHex: header.emitTypeHex,
+    flag1: header.flag1,
+    pktlen: 2,
+    flag2: header.flag2,
+  });
+  const matchOkData = Buffer.concat([matchOkHeader, entryBitmask]);
+
+  io.to(String(header.roomNumber)).emit("match_ok", matchOkData);
+  console.log(`[Match] Auto-started room ${header.roomNumber} (all ready) with bitmask=0x${bitmask.toString(16)}`);
+}
 
 async function authenticateUser(socket: Socket, sessionId: string): Promise<string | null> {
   try {
@@ -767,6 +801,17 @@ export function onConnect(io: Server, socket: Socket) {
      
       if (isReady && readyCount === totalCount && totalCount > 0) {
         console.log(`[Entry] All ${totalCount} players ready in room ${header.roomNumber}`);
+        /*
+         * Non basta scriverlo nel log: prima si aspettava un evento "match"
+         * separato mandato dal client (pensato per un bottone "inizia"
+         * distinto), ma verificato con l'utente che nel gioco vero non
+         * esiste — tutti pronti e' gia' il segnale per partire. Senza
+         * questo, il client restava in attesa di una risposta che non
+         * arrivava mai e si disconnetteva da solo (osservato in log reale:
+         * "[Entry] All 2 players ready" seguito subito da un
+         * "client namespace disconnect", mai un "match" di mezzo).
+         */
+        broadcastMatchStart(io, room, header);
       }
 
       logDebug(`Entry operation in room ${header.roomNumber} by ${socket.id}, isReady=${isReady}`);

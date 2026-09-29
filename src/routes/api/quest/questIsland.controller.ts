@@ -17,6 +17,7 @@ import { readFile } from 'fs/promises';
 import QuestSheet from '../../../model/questSheet.js';
 import { blocchiPerAvvio } from '../../../services/blocchiQuest.js';
 import { campiTesoro, tesoroDelBlocco } from '../../../services/tesoriIsole.js';
+import { mappaProgressiva, missioniCompletate } from '../../../services/progressioneStoria.js';
 import { aggiungiKaridama, saldoKaridama, KARIDAMA_A_MISSIONE, KARIDAMA_PRINCIPALE } from '../../../services/karidamaService.js';
 import type { IslandStartInput, IslandEndInput, IslandMapAllInput } from './quest.schema.js';
 
@@ -804,8 +805,10 @@ export const islandMapAll = async (req: Request, res: Response) => {
     }
 
     const plainDoc = doc.toObject();
+    // Tutorial finito: la mappa completa, oppure (solo per gli account con
+    // progressione_storia, per ora in prova) quella ridotta a cio' che hanno aperto.
     const oceanPlain = plainDoc.tutorial_step == 0xffff
-      ? full_island
+      ? (plainDoc.progressione_storia ? mappaProgressiva(full_island, missioniCompletate(plainDoc.cleared_quests)) : full_island)
       : plainDoc.ocean_list;
     const clearedPlain = plainDoc.cleared_quests;
 

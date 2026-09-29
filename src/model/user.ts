@@ -57,6 +57,8 @@ export interface IUser extends Document {
   ultimo_ip?: string;
   // Voci del 探検ナビ gia' riscattate (services/navigazioneService.ts).
   navigazioni_riscattate?: number[];
+  // Mappa della storia con la progressione vera (services/progressioneStoria.ts); per ora solo in prova.
+  progressione_storia?: boolean;
   comment?: string;
   tutorial_flags: number[];
   model_info?: ModelInfo;
@@ -177,6 +179,7 @@ const userSchema = new Schema({
   ultimo_accesso: Date,
   ultimo_ip: String,
   navigazioni_riscattate: { type: [Number], default: [] },
+  progressione_storia: { type: Boolean, default: false },
   current_session: String,
   comment: String,
   tutorial_flags: [Number],

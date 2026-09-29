@@ -259,6 +259,8 @@ const userSchema = new Schema({
   },
   nyanken_cooldown: {
     mst_nyanken_id: { type: Number, default: 0 },
+    // Spedizione gia' pagata in 狩玉 e non ancora conclusa (vedi nyanken start).
+    pagata: { type: Boolean, default: false },
     last_draw_time: { type: Number, default: 0 },
   },
   equipment_id_counter: { type: Number, default: 0 },

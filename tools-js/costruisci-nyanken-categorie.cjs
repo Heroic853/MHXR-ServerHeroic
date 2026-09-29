@@ -90,6 +90,8 @@ const BANNER = {
       mst_nyanken_id: edizioni[0].mQuestHash,
       nome: c.nome,
       mst_banner_id: b ? b.mBannerID : 0,
+      // Costo in 狩玉 dalla tabella del gioco (mCurrencyType 0 = 狩玉).
+      costo: Number(edizioni[0].mCurrencyAmmount) || 0,
       ordine: idx + 1,
       filtro: c.filtro,
     };

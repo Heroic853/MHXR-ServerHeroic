@@ -3,6 +3,7 @@
     "mst_nyanken_id": 2022298312,
     "nome": "秘境探検クエスト",
     "mst_banner_id": 9116,
+    "costo": 15,
     "ordine": 1,
     "filtro": {
       "tipo": "tutti"
@@ -12,6 +13,7 @@
     "mst_nyanken_id": 3958392737,
     "nome": "火属性装備クエスト",
     "mst_banner_id": 201017,
+    "costo": 15,
     "ordine": 2,
     "filtro": {
       "tipo": "armi",
@@ -22,6 +24,7 @@
     "mst_nyanken_id": 3969745848,
     "nome": "水属性装備クエスト",
     "mst_banner_id": 201005,
+    "costo": 15,
     "ordine": 3,
     "filtro": {
       "tipo": "armi",
@@ -32,6 +35,7 @@
     "mst_nyanken_id": 43246228,
     "nome": "土属性装備クエスト",
     "mst_banner_id": 200047,
+    "costo": 15,
     "ordine": 4,
     "filtro": {
       "tipo": "armi",
@@ -42,6 +46,7 @@
     "mst_nyanken_id": 1972687362,
     "nome": "雷属性装備クエスト",
     "mst_banner_id": 200055,
+    "costo": 15,
     "ordine": 5,
     "filtro": {
       "tipo": "armi",
@@ -52,6 +57,7 @@
     "mst_nyanken_id": 2633463607,
     "nome": "氷属性装備クエスト",
     "mst_banner_id": 200017,
+    "costo": 15,
     "ordine": 6,
     "filtro": {
       "tipo": "armi",
@@ -62,6 +68,7 @@
     "mst_nyanken_id": 3893427978,
     "nome": "新武器クエスト",
     "mst_banner_id": 200051,
+    "costo": 15,
     "ordine": 7,
     "filtro": {
       "tipo": "armi"
@@ -71,6 +78,7 @@
     "mst_nyanken_id": 2669137820,
     "nome": "新防具クエスト",
     "mst_banner_id": 200052,
+    "costo": 15,
     "ordine": 8,
     "filtro": {
       "tipo": "armature"
@@ -80,6 +88,7 @@
     "mst_nyanken_id": 2641993666,
     "nome": "★6★7武器確定クエスト",
     "mst_banner_id": 201244,
+    "costo": 15,
     "ordine": 9,
     "filtro": {
       "tipo": "armi",
@@ -93,6 +102,7 @@
     "mst_nyanken_id": 52234849,
     "nome": "★6★7防具確定クエスト",
     "mst_banner_id": 201245,
+    "costo": 15,
     "ordine": 10,
     "filtro": {
       "tipo": "armature",
@@ -106,6 +116,7 @@
     "mst_nyanken_id": 262722061,
     "nome": "禁断の狩場クエスト",
     "mst_banner_id": 9116,
+    "costo": 15,
     "ordine": 11,
     "filtro": {
       "tipo": "tutti"
@@ -115,6 +126,7 @@
     "mst_nyanken_id": 102669862,
     "nome": "限定討伐クエスト",
     "mst_banner_id": 200025,
+    "costo": 15,
     "ordine": 12,
     "filtro": {
       "tipo": "tutti"
@@ -124,6 +136,7 @@
     "mst_nyanken_id": 1897508528,
     "nome": "1周限定!限定討伐クエスト",
     "mst_banner_id": 200025,
+    "costo": 15,
     "ordine": 13,
     "filtro": {
       "tipo": "tutti"

@@ -15,6 +15,7 @@ import catalogoRicompense from '../../../json/catalogo-ricompense.json' with { t
 import { readFile } from 'fs/promises';
 
 import QuestSheet from '../../../model/questSheet.js';
+import { aggiungiKaridama, saldoKaridama, KARIDAMA_A_MISSIONE, KARIDAMA_PRINCIPALE } from '../../../services/karidamaService.js';
 import type { IslandStartInput, IslandEndInput, IslandMapAllInput } from './quest.schema.js';
 
 interface BlockListItem {
@@ -620,6 +621,9 @@ export const islandEnd = async (req: Request, res: Response) => {
       const c = accreditaPremi(doc.box as unknown as BoxPremi, premi.vinti);
       augite = daiAugite(doc.box.monument as { augite?: VoceAugite[] } | undefined);
       if (augite) log.info('輝石 | %s riceve %d x tipo %d', doc.character_name ?? '?', augite.amount, augite.mst_monument_type_id);
+      // 狩玉 guadagnati giocando (niente microtransazioni): servono per il gacha dei gatti.
+      aggiungiKaridama(doc.box as { payments?: { mst_payment_id?: number | null; amount?: number | null }[] }, KARIDAMA_A_MISSIONE);
+      log.info('狩玉 | %s riceve %d, saldo %d', doc.character_name ?? '?', KARIDAMA_A_MISSIONE, saldoKaridama(doc.box.payments));
       update.box = doc.box;
       log.info(
         'ricompense accreditate | quest=%s materiali=%d crescita=%d limitati=%d equipaggiamenti=%d',
@@ -691,9 +695,13 @@ export const islandEnd = async (req: Request, res: Response) => {
     ],
     // Finestra dopo i premi. Prima mostrava 6 materiali finti mai accreditati;
     // ora i 輝石 davvero dati, nello stesso formato della storia (story.controller).
-    pop_list: augite
-      ? [{ pop_id: 1, item_list: { monument: { augite: [augite], hr: 0, mlv: { atk: 0, def: 0, hp: 0, sp: 0 } } } }]
-      : [],
+    pop_list: [{
+      pop_id: 1,
+      item_list: {
+        ...(augite ? { monument: { augite: [augite], hr: 0, mlv: { atk: 0, def: 0, hp: 0, sp: 0 } } } : {}),
+        payments: [{ mst_payment_id: KARIDAMA_PRINCIPALE, amount: KARIDAMA_A_MISSIONE }],
+      },
+    }],
     ranking_num: 1, //unk
     rewards: {
       luck_value: 4,

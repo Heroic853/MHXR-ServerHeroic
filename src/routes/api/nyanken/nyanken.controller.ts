@@ -6,6 +6,7 @@ import User from '../../../model/user.js';
 import poolEquip from '../../../json/nyanken-equip.json' with { type: 'json' };
 import categorieJson from '../../../json/nyanken-categorie.json' with { type: 'json' };
 import type { NyankenInput } from './nyanken.schema.js';
+import { spendiKaridama, saldoKaridama } from '../../../services/karidamaService.js';
 
 const log = createLogger('nyanken');
 
@@ -37,6 +38,7 @@ interface Categoria {
   mst_nyanken_id: number;
   nome: string;
   mst_banner_id: number;
+  costo?: number;
   ordine: number;
   filtro: { tipo: string; elemento?: number; rarita?: number[] };
 }
@@ -130,7 +132,7 @@ async function consegnaPremi(sessionId: string, idRichiesto?: unknown) {
   if (pezzi.length) {
     await User.updateOne({ _id: doc._id }, {
       $push: { 'box.equipments': { $each: pezzi } },
-      $set: { 'nyanken_cooldown.last_draw_time': Date.now() },
+      $set: { 'nyanken_cooldown.last_draw_time': Date.now(), 'nyanken_cooldown.pagata': false },
     });
   }
   log.info('spedizione | %s riceve %d pezzi da %s (box %d/%d)%s', doc.character_name ?? '?', pezzi.length, categoria.nome,
@@ -161,9 +163,26 @@ export const start = async (req: Request, res: Response) => {
     const idSpedizione = (categoria ?? CATEGORIA_BASE).mst_nyanken_id;
     const idRisposta = Number.isFinite(Number(mst_nyanken_id)) && Number(mst_nyanken_id) > 0 ? Number(mst_nyanken_id) : idSpedizione;
     log.info('spedizione | %s parte: chiesto %s -> %s', doc.character_name ?? '?', String(mst_nyanken_id), categoria ? categoria.nome : 'NON in lista, uso ' + CATEGORIA_BASE.nome);
-    await User.updateOne({ _id: doc._id }, { $set: { 'nyanken_cooldown.mst_nyanken_id': idSpedizione } });
+
+    // Costo in 狩玉 dalla tabella del gioco (15 per quasi tutte). Si paga una volta
+    // per spedizione: il gioco chiama start anche 2-3 volte di fila (log 29/09),
+    // quindi finche' non arriva il risultato la stessa spedizione non si ripaga.
+    const costo = (categoria ?? CATEGORIA_BASE).costo ?? 0;
+    const giaPagata = Boolean(doc.nyanken_cooldown?.pagata) && Number(doc.nyanken_cooldown?.mst_nyanken_id) === idSpedizione;
+    const $set: Record<string, unknown> = { 'nyanken_cooldown.mst_nyanken_id': idSpedizione, 'nyanken_cooldown.pagata': true };
+    if (!giaPagata && costo > 0) {
+      const box = doc.box as unknown as { payments?: { mst_payment_id?: number | null; amount?: number | null }[] };
+      if (!spendiKaridama(box, costo)) {
+        // Niente crash e niente 404: un messaggio normale, il gioco continua.
+        log.info('spedizione | %s non ha abbastanza 狩玉 (%d su %d)', doc.character_name ?? '?', saldoKaridama(box.payments), costo);
+        return encryptAndSend({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG,
+          `狩玉が足りません (Not enough karidama: ${saldoKaridama(box.payments)}/${costo})`);
+      }
+      $set['box.payments'] = box.payments;
+    }
+    await User.updateOne({ _id: doc._id }, { $set });
     encryptAndSend({
-      currency_ammount: 0,
+      currency_ammount: costo,
       discount_currency_ammount: 0,
       mst_nyanken_id: idRisposta,
       rare_appear_time: 0,
@@ -330,7 +349,8 @@ export const QuestList = (req: Request, res: Response) => {
   const questDataList = CATEGORIE.map((c) => ({
     beginner_flag: 0,
     close: 0,
-    currency_ammount: 0,
+    // Costo vero in 狩玉 (tabella del gioco): prima 0, e il prezzo non si vedeva.
+    currency_ammount: c.costo ?? 0,
     currency_type: 0,
     discount_currency_ammount: 0,
     end: 0,

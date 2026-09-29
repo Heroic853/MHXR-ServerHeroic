@@ -212,11 +212,42 @@ describe('nyanken: premi filtrati per spedizione', () => {
     expect((pool as Voce[]).some((v) => /^AD_[A-Z]+000$/.test(v.n))).toBe(false);
   });
 
-  it('start saves only an expedition that is in the list', async () => {
-    vi.mocked(User.findOne).mockResolvedValue(utente() as never);
+  const conKaridama = (amount: number, pagata = false, id = 0) => ({
+    _id: 'u1', character_name: 'Heroic69', nyanken_cooldown: { mst_nyanken_id: id, pagata },
+    box: { equipments: [], capacity: { eqp_box: 200 }, payments: [{ mst_payment_id: 1573159746, amount }] },
+  });
+
+  it('start saves only an expedition that is in the list, and charges its 15 karidama', async () => {
+    vi.mocked(User.findOne).mockResolvedValue(conKaridama(20) as never);
     vi.mocked(User.updateOne).mockResolvedValue({} as never);
     const { req, res } = mockReqRes({ session_id: 's1', mst_nyanken_id: 123456 });
     await start(req, res);
-    expect(User.updateOne).toHaveBeenCalledWith({ _id: 'u1' }, { $set: { 'nyanken_cooldown.mst_nyanken_id': 2022298312 } });
+    expect(User.updateOne).toHaveBeenCalledWith({ _id: 'u1' }, {
+      $set: { 'nyanken_cooldown.mst_nyanken_id': 2022298312, 'nyanken_cooldown.pagata': true, 'box.payments': [{ mst_payment_id: 1573159746, amount: 5 }] },
+    });
+    expect(encryptAndSend).toHaveBeenCalledWith(expect.objectContaining({ currency_ammount: 15 }), res, req);
+  });
+
+  it('with too few karidama answers with a normal error dialog (no crash, no 404) and charges nothing', async () => {
+    vi.mocked(User.findOne).mockResolvedValue(conKaridama(3) as never);
+    const { req, res } = mockReqRes({ session_id: 's1', mst_nyanken_id: 2022298312 });
+    await start(req, res);
+    expect(User.updateOne).not.toHaveBeenCalled();
+    expect(encryptAndSend).toHaveBeenCalledWith({}, res, req, ERROR_CODE.GENERIC_ERROR, 2, expect.stringContaining('3/15'));
+  });
+
+  it('a repeated start for the same expedition is not charged twice', async () => {
+    vi.mocked(User.findOne).mockResolvedValue(conKaridama(20, true, 2022298312) as never);
+    vi.mocked(User.updateOne).mockResolvedValue({} as never);
+    const { req, res } = mockReqRes({ session_id: 's1', mst_nyanken_id: 2022298312 });
+    await start(req, res);
+    expect(User.updateOne).toHaveBeenCalledWith({ _id: 'u1' }, { $set: { 'nyanken_cooldown.mst_nyanken_id': 2022298312, 'nyanken_cooldown.pagata': true } });
+  });
+
+  it('questlist shows the real cost of each expedition', () => {
+    const { req, res } = mockReqRes({});
+    QuestList(req, res);
+    const [data] = vi.mocked(encryptAndSend).mock.calls.at(-1)!;
+    for (const q of (data as { questDataList: { currency_ammount: number }[] }).questDataList) expect(q.currency_ammount).toBe(15);
   });
 });

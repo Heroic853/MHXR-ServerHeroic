@@ -5,6 +5,7 @@ import { createLogger } from '../../../middleware/logger.js';
 import User from '../../../model/user.js';
 import { calcMstId as _calcMstId } from '../../../services/defineService.js';
 import prezziVendita from '../../../json/prezzi-vendita.json' with { type: 'json' };
+import { KARIDAMA_IDS } from '../../../services/karidamaService.js';
 import type { BoxGetInput, StorageGetInput, EquipLevelupInput, EquipAwakeInput, PotentialupAutoSetInput, SaleInput, FavoriteSetInput, MonumentLevelupInput } from './box.schema.js';
 const log = createLogger('box');
 
@@ -214,14 +215,10 @@ export const paymentLimitGet = (req: Request, res: Response) => {
 // Tipi di valuta premium noti, con la quantita' di partenza usata quando
 // l'utente non ne possiede affatto. Serve tenerli tutti nella risposta: il
 // client si aspetta l'elenco completo, non solo quelli che il giocatore ha.
-const PAYMENT_DEFAULTS = [
-  { amount: 50, mst_payment_id: 1573159746 },
-  { amount: 25, mst_payment_id: 3301823224 },
-  { amount: 5, mst_payment_id: 3016417902 },
-  { amount: 3, mst_payment_id: 766408653 },
-  { amount: 2, mst_payment_id: 1521043291 },
-  { amount: 1, mst_payment_id: 3282048737 },
-];
+// Tutti e 6 i tipi di 狩玉 (item_payment), il client si aspetta l'elenco completo.
+// Quantita' 0 se il giocatore non ne ha: prima qui c'erano 50/25/5/3/2/1 finti,
+// mostrati in gioco ma inesistenti (il gacha poi li rifiutava).
+const PAYMENT_DEFAULTS: { amount: number; mst_payment_id: number }[] = KARIDAMA_IDS.map((id) => ({ amount: 0, mst_payment_id: Number(id) }));
 
 export const PaymentGet = async (req: Request, res: Response) => {
   try {

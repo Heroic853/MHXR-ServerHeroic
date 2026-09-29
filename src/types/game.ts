@@ -306,6 +306,7 @@ export interface GuildInfo {
 export interface NyankenCooldown {
   mst_nyanken_id: number;
   last_draw_time: number;
+  pagata?: boolean;
 }
 
 // --- Selected partner ---

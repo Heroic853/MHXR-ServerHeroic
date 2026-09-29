@@ -106,6 +106,63 @@ describe('account.controller', () => {
       );
     });
 
+    const utenteOk = {
+      uu_id: 'test-uuid',
+      secret_id: 'test-secret',
+      game_id: 'GAME1234',
+      user_id: 'USER123',
+      tutorial_step: 210,
+      model_info: { gender: 0 },
+    };
+    const corpoOk = { uu_id: 'test-uuid', secret_id: 'test-secret', session_id: 'sess-1' };
+
+    it('saves last-access date and IP on a successful login', async () => {
+      vi.mocked(User.findOne).mockResolvedValue(utenteOk as never);
+      vi.mocked(User.findOneAndUpdate).mockResolvedValue(utenteOk);
+      vi.mocked(User.updateOne).mockResolvedValue({} as never);
+      const { req, res } = mockReqRes(corpoOk);
+      (req as unknown as { ip: string }).ip = '::ffff:93.40.1.2';
+
+      await loginAccount(req, res);
+      await vi.waitFor(() => expect(User.updateOne).toHaveBeenCalled());
+
+      expect(User.updateOne).toHaveBeenCalledWith(
+        { uu_id: 'test-uuid' },
+        { $set: { ultimo_accesso: expect.any(Date), ultimo_ip: '93.40.1.2' } },
+      );
+    });
+
+    it('still logs the player in when saving the last access fails', async () => {
+      vi.mocked(User.findOne).mockResolvedValue(utenteOk as never);
+      vi.mocked(User.findOneAndUpdate).mockResolvedValue(utenteOk);
+      vi.mocked(User.updateOne).mockRejectedValue(new Error('DB giu'));
+      const { req, res } = mockReqRes(corpoOk);
+
+      await loginAccount(req, res);
+
+      expect(encryptAndSend).toHaveBeenCalledWith(expect.objectContaining({ game_id: 'GAME1234' }), res, req);
+    });
+
+    it('still logs the player in when updateOne throws synchronously', async () => {
+      vi.mocked(User.findOne).mockResolvedValue(utenteOk as never);
+      vi.mocked(User.findOneAndUpdate).mockResolvedValue(utenteOk);
+      vi.mocked(User.updateOne).mockImplementation(() => { throw new Error('boom'); });
+      const { req, res } = mockReqRes(corpoOk);
+
+      await loginAccount(req, res);
+
+      expect(encryptAndSend).toHaveBeenCalledWith(expect.objectContaining({ game_id: 'GAME1234' }), res, req);
+    });
+
+    it('does not record an access when the login fails', async () => {
+      vi.mocked(User.findOne).mockResolvedValue(null);
+      const { req, res } = mockReqRes(corpoOk);
+
+      await loginAccount(req, res);
+
+      expect(User.updateOne).not.toHaveBeenCalled();
+    });
+
     it('returns 4004 when user not found', async () => {
       vi.mocked(User.findOne).mockResolvedValue(null);
 

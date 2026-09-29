@@ -61,6 +61,25 @@ function codice(lunghezza = 8) {
   return t;
 }
 
+// Formato leggibile, ora locale di chi legge il terminale — non UTC secco.
+const dataOra = (d) => d instanceof Date
+  ? d.toLocaleString('it-IT', { dateStyle: 'short', timeStyle: 'medium' })
+  : '?';
+
+// Da quanto tempo, in parole ("3 giorni fa", "12 minuti fa"): piu' veloce da
+// leggere di due date da sottrarre a mente.
+function daQuanto(d) {
+  if (!(d instanceof Date)) return '?';
+  const secondi = Math.floor((Date.now() - d.getTime()) / 1000);
+  if (secondi < 60) return `${secondi} secondi fa`;
+  const minuti = Math.floor(secondi / 60);
+  if (minuti < 60) return `${minuti} minuti fa`;
+  const ore = Math.floor(minuti / 60);
+  if (ore < 24) return `${ore} ore fa`;
+  const giorni = Math.floor(ore / 24);
+  return `${giorni} giorni fa`;
+}
+
 (async () => {
   await mongoose.connect(`mongodb://${DB_USER}:${DB_PASSWORD}@${DB_IP}:${DB_PORT}`, { dbName: DB_NAME });
   const users = mongoose.connection.db.collection('users');
@@ -69,6 +88,7 @@ function codice(lunghezza = 8) {
   const elenco = await users.find(filtro).project({
     character_name: 1, login_id: 1, user_id: 1, game_id: 1, uu_id: 1,
     transfer: 1, 'box.equipments': 1, 'box.materials': 1, 'box.zeny': 1,
+    ultimo_accesso: 1, ultimo_ip: 1,
   }).toArray();
 
   if (!elenco.length) {
@@ -81,7 +101,7 @@ function codice(lunghezza = 8) {
     console.log('='.repeat(72));
     console.log('ACCOUNT NEL DATABASE');
     console.log('='.repeat(72));
-    console.log('personaggio        game_id    trasferimento   equip  materiali');
+    console.log('personaggio        game_id    trasferimento   equip  materiali  creato il');
     for (const u of elenco) {
       const t = u.transfer || {};
       const pronto = t.migration_id && t.migration_pass ? 'PRONTO' : 'NON IMPOSTATO';
@@ -89,7 +109,8 @@ function codice(lunghezza = 8) {
         `${String(u.character_name || '(senza nome)').padEnd(18)} ` +
         `${String(u.game_id || '?').padEnd(10)} ${pronto.padEnd(15)} ` +
         `${String((u.box?.equipments || []).length).padStart(5)}  ` +
-        `${String((u.box?.materials || []).length).padStart(9)}`,
+        `${String((u.box?.materials || []).length).padStart(9)}  ` +
+        `${dataOra(u._id.getTimestamp())}`,
       );
     }
     console.log('\nPer i dettagli di uno:  --utente=NOME');
@@ -110,6 +131,26 @@ function codice(lunghezza = 8) {
   console.log(`  equipaggiamenti: ${(u.box?.equipments || []).length}`);
   console.log(`  materiali      : ${(u.box?.materials || []).length} tipi`);
   console.log(`  zeny           : ${u.box?.zeny ?? 0}`);
+  console.log('');
+
+  /*
+   * Ultimo accesso e IP stanno sull'account stesso (ultimo_accesso/ultimo_ip),
+   * scritti dal server a ogni login riuscito (registraAccesso in
+   * services/accountService.ts, dal 28/09/2026).
+   *
+   * Prima si cercavano nella collection "sessions", ma quella tiene le chiavi
+   * di cifratura per tipo di telefono (User-Agent), non per giocatore: i campi
+   * game_id/account_id restano sempre vuoti, quindi non trovava mai nessuno.
+   */
+  console.log('  --- accesso ---');
+  console.log(`  creato il      : ${dataOra(u._id.getTimestamp())} (${daQuanto(u._id.getTimestamp())})`);
+  if (u.ultimo_accesso instanceof Date) {
+    console.log(`  ultimo accesso : ${dataOra(u.ultimo_accesso)} (${daQuanto(u.ultimo_accesso)})`);
+    console.log(`  ip             : ${u.ultimo_ip || '?'}`);
+  } else {
+    console.log('  ultimo accesso : non ancora registrato (non ha piu\' fatto login dal 28/09/2026)');
+    console.log('  ip             : non ancora registrato');
+  }
   console.log('');
   console.log('  --- stato del trasferimento ---');
   if (t.migration_id && t.migration_pass) {

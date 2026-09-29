@@ -104,7 +104,11 @@ const updateMonument = (
 ) => {
   log.debug('old monumnet', monument);
 
-  monument.augite.push(augiteObj);
+  // Somma allo stesso tipo di 輝石 invece di aggiungere una riga doppia: la
+  // pietra HR (box.controller leveupAuto) legge una sola riga per tipo.
+  const gia = monument.augite.find((a) => a.mst_augite_id === augiteObj.mst_augite_id);
+  if (gia) gia.amount = (gia.amount ?? 0) + (augiteObj.amount ?? 0);
+  else monument.augite.push(augiteObj);
   log.debug('augite added successfully to box.');
   monument.hr = monument.hr + hr;
   monument.mlv.atk = monument.mlv.atk + atk;

@@ -21,6 +21,7 @@ import type {
   OtomoTeam,
   ModelInfo,
   GuildInfo,
+  FriendInfo,
   NyankenCooldown,
   SelectedPartner,
 } from '../types/game.js';
@@ -51,6 +52,9 @@ export interface IUser extends Document {
   tutorial_step?: number;
   character_name?: string;
   current_session?: string;
+  // Solo per l'amministratore (tools-js/recupera-account.cjs): mai mandati al gioco.
+  ultimo_accesso?: Date;
+  ultimo_ip?: string;
   comment?: string;
   tutorial_flags: number[];
   model_info?: ModelInfo;
@@ -72,6 +76,7 @@ export interface IUser extends Document {
   nyanken_cooldown?: NyankenCooldown;
   equipment_id_counter?: number;
   guild_info?: GuildInfo;
+  friend_info?: FriendInfo;
 }
 const equipPieceSchema = new Schema({
   created: Number,
@@ -165,6 +170,10 @@ const userSchema = new Schema({
   game_id: String,
   tutorial_step: Number,
   character_name: String,
+  // Ultimo login riuscito e da quale IP (scritti da registraAccesso in
+  // accountService). Facoltativi: gli account vecchi semplicemente non li hanno.
+  ultimo_accesso: Date,
+  ultimo_ip: String,
   current_session: String,
   comment: String,
   tutorial_flags: [Number],
@@ -282,6 +291,44 @@ const userSchema = new Schema({
           _id: { type: String, required: true },
           created: { type: Number, default: 0 },
           gid: { type: String, required: true },
+          uid: { type: String, required: true },
+        },
+      ],
+      default: [],
+    },
+  },
+  // "狩友" (Hunting Friend): relazione 1 a 1, stessa forma di guild_info.send/
+  // receive sopra ma senza gid (qui non c'e' nessun gruppo). list = amicizie
+  // confermate, receive = richieste ricevute in attesa, send = richieste
+  // inviate in attesa (tenuta anche qui, non solo sull'altro utente, per non
+  // dover interrogare tutti gli altri account solo per sapere "ho gia'
+  // mandato una richiesta a questo?").
+  friend_info: {
+    list: {
+      type: [
+        {
+          _id: false,
+          uid: { type: String, required: true },
+          created: { type: Number, default: 0 },
+        },
+      ],
+      default: [],
+    },
+    receive: {
+      type: [
+        {
+          _id: { type: String, required: true },
+          created: { type: Number, default: 0 },
+          uid: { type: String, required: true },
+        },
+      ],
+      default: [],
+    },
+    send: {
+      type: [
+        {
+          _id: { type: String, required: true },
+          created: { type: Number, default: 0 },
           uid: { type: String, required: true },
         },
       ],

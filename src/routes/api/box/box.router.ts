@@ -18,7 +18,7 @@ boxRouter.post('/payment/limit/get', validate(SessionOnlySchema), boxController.
 
 boxRouter.post('/otomo/get', validate(SessionOnlySchema), boxController.otomoGet);
 // boxRouter.post("/otomo/skill/remove", );
-// boxRouter.post("/partner/get", );
+boxRouter.post('/partner/get', validate(SessionOnlySchema), boxController.partnerGet);
 boxRouter.post('/partner/levelup', notImplemented.blankResponseEncrypted);
 boxRouter.post('/material/sell', notImplemented.blankResponseEncrypted);
 

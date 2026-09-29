@@ -390,111 +390,80 @@ export const partnerGet = async (req: Request, res: Response) => {
     encryptAndSend({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG, 'Get partner failed');
   }
 };
-export const searchId = (req: Request, res: Response) => {
+type UserDoc = NonNullable<Awaited<ReturnType<typeof User.findOne>>>;
+
+const EQUIP_SLOTS = ['arm', 'body', 'head', 'leg', 'secret_weapon', 'waist', 'weapon'] as const;
+
+/*
+ * Il pezzo equipaggiato in uno slot del set SELEZIONATO. Il set (EquipSet)
+ * tiene solo il riferimento equipment_id; le statistiche vere (hash/livello/
+ * potenziale/skill) stanno nel pezzo posseduto dentro box.equipments, quindi
+ * vanno cercate li'. Slot vuoto o pezzo non trovato = tutto a zero (stesso
+ * significato di NO_EQUIP altrove nel progetto), mai un hash inventato.
+ */
+const buildEquipInfo = (doc: UserDoc, slot: (typeof EQUIP_SLOTS)[number]) => {
+  const selectedSet = doc.equipset?.equip_sets?.find(
+    (s) => s.index === doc.equipset?.selected_equip_set_index,
+  );
+  const equipmentId = selectedSet?.[slot]?.equipment_id;
+  const owned = equipmentId ? doc.box?.equipments?.find((e) => e.equipment_id === equipmentId) : undefined;
+  return {
+    equip_info: {
+      hash: owned?.mst_equipment_id ?? 0,
+      level: owned?.elv ?? 0,
+      potential: owned?.potential ?? 0,
+      skill_level: owned?.slv ?? 0,
+    },
+  };
+};
+
+/*
+ * Scheda di un giocatore trovato dalla ricerca. "friend_at" e "is_friend"
+ * sono relativi a chi cerca (viewer): se non si riesce a risalire a chi sta
+ * cercando (session_id assente/non valido), si risponde comunque con "non
+ * amici" invece di far fallire tutta la ricerca — non e' un dato critico
+ * quanto un hash sbagliato.
+ */
+const buildPlayerDetail = (doc: UserDoc, viewer: UserDoc | null) => {
+  const friendEntry = viewer?.friend_info?.list?.find((f) => f.uid === doc.user_id);
+  const equip = Object.fromEntries(
+    EQUIP_SLOTS.map((slot) => [`equip_${slot}`, buildEquipInfo(doc, slot)]),
+  ) as Record<`equip_${(typeof EQUIP_SLOTS)[number]}`, ReturnType<typeof buildEquipInfo>>;
+
+  return {
+    comment: doc.comment ?? '',
+    created: 0,
+    ...equip,
+    is_awake: 0,
+    is_enable: 1,
+    friend_at: friendEntry?.created ?? 0,
+    game_id: doc.game_id ?? '',
+    guild_info: {
+      gid: doc.guild_info?.gid ?? '',
+      is_guild: doc.guild_info?.is_guild ?? 0,
+      is_same: viewer?.guild_info?.gid && viewer.guild_info.gid === doc.guild_info?.gid ? 1 : 0,
+      member_type: doc.guild_info?.member_type ?? 0,
+      name: doc.guild_info?.name ?? '',
+      rank: doc.guild_info?.rank ?? 0,
+    },
+    is_captomo: 0,
+    is_friend: friendEntry ? 1 : 0,
+    last_access_at: 0,
+    login_freq: 0,
+  };
+};
+
+export const searchId = async (req: Request, res: Response) => {
   try {
-    const { uids: _uids } = req.body as SearchUserIdInput;
-    //TODO search by uid loop over then produce below...
+    const { uids, session_id } = req.body as SearchUserIdInput & { session_id?: unknown };
+    const viewer = typeof session_id === 'string' ? await User.findOne({ current_session: session_id }) : null;
+
+    const ids = (uids ?? []).filter((u): u is string => typeof u === 'string');
+    const found = ids.length ? await User.find({ user_id: { $in: ids } }) : [];
+
     const data = {
-      capacity_eqp_set: 1,
-
-      player_details: [
-        {
-          comment: '<string>',
-          created: 12345,
-
-          equip_arm: {
-            equip_info: {
-              hash: 3325982510,
-              level: 1,
-              potential: 1,
-              skill_level: 1,
-            },
-          },
-
-          equip_body: {
-            equip_info: {
-              hash: 1801022340,
-              level: 1,
-              potential: 1,
-              skill_level: 1,
-            },
-          },
-
-          equip_head: {
-            equip_info: {
-              hash: 69277598,
-              level: 1,
-              potential: 1,
-              skill_level: 1,
-            },
-          },
-
-          equip_leg: {
-            equip_info: {
-              hash: 3353202438,
-              level: 1,
-              potential: 1,
-              skill_level: 1,
-            },
-          },
-
-          equip_secret_weapon: {
-            equip_info: {
-              hash: 2006810019,
-              level: 1,
-              potential: 1,
-              skill_level: 1,
-            },
-          },
-
-          // equip_talisman: {
-          //   equip_info: {
-          //     hash: 1701921942,
-          //     level: 1,
-          //     potential: 1,
-          //     skill_level: 1,
-          //   },
-          // },
-
-          is_awake: 0,
-          is_enable: 0,
-
-          equip_waist: {
-            equip_info: {
-              hash: 62957325,
-              level: 1,
-              potential: 1,
-              skill_level: 1,
-            },
-          },
-
-          equip_weapon: {
-            equip_info: {
-              hash: 2006810019,
-              level: 1,
-              potential: 1,
-              skill_level: 1,
-            },
-          },
-
-          friend_at: 1,
-          game_id: '<string>',
-
-          guild_info: {
-            gid: '<string>',
-            is_guild: 1,
-            is_same: 1,
-            member_type: 1,
-            name: '<string>',
-            rank: 1,
-          },
-
-          is_captomo: 1,
-          is_friend: 1,
-          last_access_at: 12,
-          login_freq: 1,
-        },
-      ],
+      capacity_eqp_set: viewer?.equipset?.capacity_eqp_set ?? 1,
+      player_details: found.map((doc) => buildPlayerDetail(doc, viewer)),
     };
     encryptAndSend(data, res, req);
   } catch (error) {
@@ -502,109 +471,36 @@ export const searchId = (req: Request, res: Response) => {
     encryptAndSend({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG, 'Search by ID failed');
   }
 };
-export const gameId = (req: Request, res: Response) => {
+
+export const gameId = async (req: Request, res: Response) => {
   try {
-    const { gameIds: _gameIds } = req.body as SearchGameIdInput;
-    //TODO search by gameIds loop over then produce below...
+    const { gameIds, session_id } = req.body as SearchGameIdInput & { session_id?: unknown };
+    const viewer = typeof session_id === 'string' ? await User.findOne({ current_session: session_id }) : null;
+
+    const ids = (gameIds ?? []).filter((g): g is string => typeof g === 'string');
+    const found = ids.length ? await User.find({ game_id: { $in: ids } }) : [];
+
     const data = {
-      capacity_eqp_set: 3,
-      player_details: [
-        {
-          comment: 'test',
-          created: 0,
-          equip_arm: {
-            equip_info: {
-              hash: 794677787,
-              level: 0,
-              potential: 0,
-              skill_level: 0,
-            },
-          },
-          equip_body: {
-            equip_info: {
-              hash: 2184892081,
-              level: 0,
-              potential: 0,
-              skill_level: 0,
-            },
-          },
-          equip_head: {
-            equip_info: {
-              hash: 3980571307,
-              level: 0,
-              potential: 0,
-              skill_level: 0,
-            },
-          },
-          equip_leg: {
-            equip_info: {
-              hash: 784230963,
-              level: 0,
-              potential: 0,
-              skill_level: 0,
-            },
-          },
-          equip_secret_weapon: {
-            equip_info: {
-              hash: 133663020,
-              level: 0,
-              potential: 0,
-              skill_level: 0,
-            },
-          },
-          // equip_talisman: {
-          //   equip_info: {
-          //     hash: 1701921942,
-          //     level: 0,
-          //     potential: 0,
-          //     skill_level: 0,
-          //   },
-          // },
-          is_awake: 1,
-          is_enable: 1,
-          equip_waist: {
-            equip_info: {
-              hash: 3936551480,
-              level: 0,
-              potential: 0,
-              skill_level: 0,
-            },
-          },
-          equip_weapon: {
-            equip_info: {
-              hash: 133663020,
-              level: 0,
-              potential: 0,
-              skill_level: 0,
-            },
-          },
-          friend_at: 1,
-          game_id: 'abcdef1234567890',
-          guild_info: {
-            gid: '5f8e7a2b9a1b3c1d2e3f4a5b',
-            is_guild: 1,
-            is_same: 1,
-            member_type: 1,
-            name: 'Guild of Heroes',
-            rank: 54,
-          },
-          is_captomo: 1,
-          is_friend: 1,
-          last_access_at: 1,
-          login_freq: 1,
-          player_id: 'abcdef1234567890',
-          player_name: 'test',
-          player_rank: 1,
-          player_rank_point: 1,
-          player_s_flag: 1,
-          player_search_rank: 1,
-          player_skin_hash: 1,
-          player_skin_level: 1,
-          player_skin_potential: 1,
-          player_skin_skill_level: 1,
-          player_total_score: 1,
-        },
-      ],
+      capacity_eqp_set: viewer?.equipset?.capacity_eqp_set ?? 1,
+      // Stessa scheda di searchId, con in piu' i campi "player_*" che il
+      // client usa solo per la scheda di ricerca-per-codice (searchId non li
+      // ha mai avuti nella cattura originale). Le stat non tracciate da
+      // questo server (rank_point/s_flag/search_rank/skin_*/total_score) restano
+      // a zero: e' un "non calcolato ancora", non un valore inventato.
+      player_details: found.map((doc) => ({
+        ...buildPlayerDetail(doc, viewer),
+        player_id: doc.game_id ?? '',
+        player_name: doc.character_name ?? '',
+        player_rank: doc.box?.monument?.hr ?? 0,
+        player_rank_point: 0,
+        player_s_flag: 0,
+        player_search_rank: 0,
+        player_skin_hash: 0,
+        player_skin_level: 0,
+        player_skin_potential: 0,
+        player_skin_skill_level: 0,
+        player_total_score: 0,
+      })),
     };
 
     encryptAndSend(data, res, req);

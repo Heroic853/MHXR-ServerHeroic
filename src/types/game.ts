@@ -252,6 +252,29 @@ export interface ModelInfo {
   skin: number;
 }
 
+// --- Friend (狩友, "Hunting Friend") ---
+//
+// Stessa forma di GuildRequestEntry/GuildInfo sotto (send/receive per le
+// richieste in sospeso), senza il campo gid perche' qui non c'e' nessun
+// gruppo: e' una relazione 1 a 1 fra due utenti.
+
+export interface FriendEntry {
+  uid: string;
+  created: number;
+}
+
+export interface FriendRequestEntry {
+  _id: string;
+  created: number;
+  uid: string;
+}
+
+export interface FriendInfo {
+  list: FriendEntry[];
+  receive: FriendRequestEntry[];
+  send: FriendRequestEntry[];
+}
+
 // --- Guild ---
 
 export interface GuildRequestEntry {

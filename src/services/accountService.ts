@@ -73,6 +73,24 @@ export async function createUser(
   return newUser;
 }
 
+/**
+ * Segna data e IP dell'ultimo accesso riuscito, per recupera-account.cjs.
+ *
+ * Volutamente "spara e dimentica": NON va aspettata dal login e non lancia
+ * mai. Qualunque errore qui (DB lento, modello mockato nei test, ecc.) finisce
+ * in un avviso nel log: il giocatore entra comunque. Perdere una riga di
+ * registro e' accettabile, bloccare il login no.
+ */
+export function registraAccesso(uuId: unknown, ip: string | undefined, onErrore?: (e: unknown) => void): void {
+  if (typeof uuId !== 'string' || !uuId) return;
+  const pulito = typeof ip === 'string' ? ip.replace(/^::ffff:/, '').slice(0, 64) : undefined;
+  // Promise.resolve().then(): anche un errore sincrono di updateOne diventa un
+  // rifiuto gestito dal .catch, invece di risalire fino al login.
+  void Promise.resolve()
+    .then(() => User.updateOne({ uu_id: uuId }, { $set: { ultimo_accesso: new Date(), ultimo_ip: pulito } }))
+    .catch((e: unknown) => onErrore?.(e));
+}
+
 export async function loginUser(
   uuId: string,
   secretId: string,

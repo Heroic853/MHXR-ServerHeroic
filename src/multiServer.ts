@@ -1,7 +1,7 @@
 import type { Event, Server, Socket } from "socket.io";
 import Room from "./model/room.js";
 import User from "./model/user.js";
-import { parseHeader, createHeader, createChatPacket, createMaintenancePacket } from "./multiUtils.js";
+import { parseHeader, createHeader, createChatPacket, createMaintenancePacket, createHostChangePacket } from "./multiUtils.js";
 
 
 type RoomState = {
@@ -64,40 +64,6 @@ function ensureRoom(roomNumber: number): RoomState {
   return room;
 }
 
-/**
- * Manda a tutti nella stanza il pacchetto che fa partire davvero la caccia.
- * Stessa identica costruzione del pacchetto gia' usata dall'evento "match"
- * (mai rimossa: resta per compatibilita' se mai un client lo mandasse da
- * solo), estratta qui perche' ora la chiama anche l'evento "entry" appena
- * tutti risultano pronti, senza aspettare nessun segnale in piu' dal client.
- */
-function broadcastMatchStart(
-  io: Server,
-  room: RoomState,
-  header: ReturnType<typeof parseHeader>['header'],
-) {
-  const entryBitmask = Buffer.alloc(2);
-  let bitmask = 0;
-  for (const [, playerId] of room.memberPlayerIds) {
-    if (playerId < 16) bitmask |= (1 << playerId);
-  }
-  entryBitmask.writeUInt16LE(bitmask, 0);
-
-  const matchOkHeader = createHeader({
-    roomNumber: header.roomNumber,
-    playerId: header.playerId,
-    seq: header.seq,
-    unk2: header.unk2,
-    emitTypeHex: header.emitTypeHex,
-    flag1: header.flag1,
-    pktlen: 2,
-    flag2: header.flag2,
-  });
-  const matchOkData = Buffer.concat([matchOkHeader, entryBitmask]);
-
-  io.to(String(header.roomNumber)).emit("match_ok", matchOkData);
-  console.log(`[Match] Auto-started room ${header.roomNumber} (all ready) with bitmask=0x${bitmask.toString(16)}`);
-}
 
 async function authenticateUser(socket: Socket, sessionId: string): Promise<string | null> {
   try {
@@ -721,23 +687,30 @@ export function onConnect(io: Server, socket: Socket) {
       }
 
       
-      const requesterSlot = room.memberPlayerIds.get(socket.id) ?? header.playerId;  
-      const hostSlot = 0;  
-      const responsePayload = Buffer.alloc(4);
-      responsePayload.writeInt32LE(hostSlot, 0);  
-      const responseHeader = createHeader({
+      const requesterSlot = room.memberPlayerIds.get(socket.id) ?? header.playerId;
+      // Il capo stanza vero per il server: lo stesso socket che "terminate"
+      // controlla con isHost(). Di solito e' il posto 0 (il primo a entrare).
+      const hostSlot = (room.hostSocketId ? room.memberPlayerIds.get(room.hostSocketId) : undefined) ?? 0;
+      /*
+       * Letto dal codice del gioco (libMHS.so, Ghidra):
+       * - il gioco manda tutti i messaggi di stanza sul canale 3 (flag1),
+       *   TRANNE host_change_request, che parte sul canale 0;
+       * - la risposta host_change la ascolta solo sul canale 3 e ne prende il
+       *   capo stanza dal playerId dell'intestazione.
+       * Prima qui si copiava flag1 dalla domanda (0): il gioco ignorava la
+       * risposta, nessuno diventava capo stanza, e senza capo stanza
+       * reqMatch/terminate non partono (richiedono host == se stesso), quindi
+       * la caccia non partiva mai (log 28/09: host_change_request ogni 4 s da
+       * entrambi i giocatori, mai un "match"). Dettagli in createHostChangePacket.
+       */
+      const hostChangePkt = createHostChangePacket({
         roomNumber: header.roomNumber,
-        playerId: hostSlot,
+        hostSlot,
         seq: header.seq,
         unk2: header.unk2,
-        emitTypeHex: header.emitTypeHex,
-        flag1: header.flag1,
-        pktlen: responsePayload.length,
-        flag2: header.flag2,
       });
-      const hostChangePkt = Buffer.concat([responseHeader, responsePayload]);
       socket.emit("host_change", hostChangePkt);
-      logDebug(`[HostChange] Sent host_change hostSlot=0 (requesterSlot=${requesterSlot}) room=${header.roomNumber} hex=${hostChangePkt.toString('hex')}`);
+      logDebug(`[HostChange] Sent host_change hostSlot=${hostSlot} (requesterSlot=${requesterSlot}) room=${header.roomNumber} hex=${hostChangePkt.toString('hex')}`);
     } catch (e) {
       console.error("host_change_request failed", e);
       socket.emit("host_change_ng", data);
@@ -801,17 +774,6 @@ export function onConnect(io: Server, socket: Socket) {
      
       if (isReady && readyCount === totalCount && totalCount > 0) {
         console.log(`[Entry] All ${totalCount} players ready in room ${header.roomNumber}`);
-        /*
-         * Non basta scriverlo nel log: prima si aspettava un evento "match"
-         * separato mandato dal client (pensato per un bottone "inizia"
-         * distinto), ma verificato con l'utente che nel gioco vero non
-         * esiste — tutti pronti e' gia' il segnale per partire. Senza
-         * questo, il client restava in attesa di una risposta che non
-         * arrivava mai e si disconnetteva da solo (osservato in log reale:
-         * "[Entry] All 2 players ready" seguito subito da un
-         * "client namespace disconnect", mai un "match" di mezzo).
-         */
-        broadcastMatchStart(io, room, header);
       }
 
       logDebug(`Entry operation in room ${header.roomNumber} by ${socket.id}, isReady=${isReady}`);
@@ -1102,19 +1064,17 @@ export function onConnect(io: Server, socket: Socket) {
           socket.to(String(header.roomNumber)).emit("data", broadcastData);
         }
 
+        /*
+         * Qui prima si mandava ai non-capi un terminate_ok "di iniziativa" appena
+         * il capo mandava l'info 3/3. Tolto: nel gioco (onSessionEvent caso 0x0e)
+         * terminate fa setMatch(false) e, a partita avviata, reqGameEnd(). Arrivando
+         * 33 ms dopo match_ok, all'ospite toglieva il match prima che partisse:
+         * l'ospite restava fermo e il capo lo aspettava all'infinito (log 29/09,
+         * stanza 1000). Il terminate vero lo chiede il capo con l'evento
+         * "terminate" (gestito sopra) e viene girato a tutti da li'.
+         */
         if (subType === 3 && isHost(socket, header.roomNumber)) {
-          const terminateOkHeader = createHeader({
-            roomNumber: header.roomNumber,
-            playerId: 0,
-            seq: header.seq,
-            unk2: 0,
-            emitTypeHex: 0,   
-            flag1: 0x03,      
-            pktlen: 0,
-            flag2: 0,
-          });
-          socket.to(String(header.roomNumber)).emit("terminate_ok", terminateOkHeader);
-          logDebug(`[Data] sendLobbyEnd detected (infoType=3 subType=3): sent terminate_ok to non-host players in room ${header.roomNumber}`);
+          logDebug(`[Data] info 3/3 dal capo stanza room=${header.roomNumber}: inoltrata agli altri, nessun terminate_ok di iniziativa`);
         }
 
         break;

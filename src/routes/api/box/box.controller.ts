@@ -104,6 +104,34 @@ export const otomoGet = async (req: Request, res: Response) => {
   }
 };
 
+// Analoga a otomoGet sopra: la "get" per i gatti Partner (nekojara) non
+// era mai stata scritta (box.router.ts la aveva solo commentata), quindi il
+// client non poteva nemmeno elencare quali Partner possiede il giocatore —
+// box.partners esiste gia' sul modello (vedi model/user.ts) e viene
+// popolato da tutorial/quest, semplice passthrough di dati reali, nessun id
+// inventato.
+export const partnerGet = async (req: Request, res: Response) => {
+  try {
+    const { session_id } = req.body as BoxGetInput;
+    const filter = { current_session: session_id };
+
+    const doc = await User.findOne(filter);
+    if (!doc) {
+      return encryptAndSend({}, res, req, ERROR_CODE.NOT_AUTHENTICATED); //Not authenticated
+    }
+    if (!doc.box) {
+      return encryptAndSend({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG, 'Box not found');
+    }
+    const data = {
+      partners: doc.box.partners,
+    };
+    encryptAndSend(data, res, req);
+  } catch (error) {
+    log.error('Error in partnerGet:', error);
+    encryptAndSend({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG, 'Get partner box failed');
+  }
+};
+
 export const equipCapacityInfo = (req: Request, res: Response) => {
   const data = {
     max: 10000,
@@ -443,42 +471,25 @@ export const leveupAuto = async (req: Request, res: Response) => {
     if (!doc.box?.monument?.mlv) {
       return encryptAndSend({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG, 'Monument data not found');
     }
-    let targetIndex;
-    switch (type) {
-      case 'hp': {
-        // Increment HP
-        doc.box.monument.mlv.hp = doc.box.monument.mlv.hp + 1;
-        // Increase HR
-        doc.box.monument.hr = doc.box.monument.hr + 1;
-        // Find the index of the augite item
-        targetIndex = doc.box.monument.augite.findIndex(
-          (item) => item.mst_augite_id === 2047024966,
-        );
-
-        // Replace the item in the array
-        const augiteItem = targetIndex !== -1 ? doc.box.monument.augite[targetIndex] : undefined;
-        if (augiteItem) {
-          augiteItem.amount = Math.max((augiteItem.amount ?? 0) - 10, 0);
-        }
-
-        break;
-      }
-      case 'atk':
-        doc.box.monument.mlv.atk = doc.box.monument.mlv.atk + 1;
-        // Increase HR
-        doc.box.monument.hr = doc.box.monument.hr + 1;
-        break;
-      case 'def':
-        doc.box.monument.mlv.def = doc.box.monument.mlv.def + 1;
-        // Increase HR
-        doc.box.monument.hr = doc.box.monument.hr + 1;
-        break;
-      case 'sp':
-        doc.box.monument.mlv.sp = doc.box.monument.mlv.sp + 1;
-        // Increase HR
-        doc.box.monument.hr = doc.box.monument.hr + 1;
-        break;
+    /*
+     * Ogni livello consuma 10 輝石 del tipo giusto (la schermata mostra "x N / 10").
+     * ID dalla tabella del gioco item_augite. Prima solo 'hp' li consumava e
+     * atk/def/sp salivano gratis a ogni chiamata.
+     */
+    const AUGITE_PER_TIPO: Record<string, number> = { atk: 2483912298, def: 218378192, hp: 2047024966, sp: 3831991013 };
+    const NECESSARI = 10;
+    const idAugite = AUGITE_PER_TIPO[String(type)];
+    const mlv = doc.box.monument.mlv as Record<string, number>;
+    if (idAugite === undefined || !(String(type) in mlv)) {
+      return encryptAndSend({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG, 'Unknown monument type');
     }
+    const voce = (doc.box.monument.augite ?? []).find((item) => item.mst_augite_id === idAugite);
+    if (!voce || (voce.amount ?? 0) < NECESSARI) {
+      return encryptAndSend({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG, 'Not enough augite');
+    }
+    voce.amount = (voce.amount ?? 0) - NECESSARI;
+    mlv[String(type)] = (mlv[String(type)] ?? 0) + 1;
+    doc.box.monument.hr = doc.box.monument.hr + 1;
     const update = { box: doc.box };
 
     await User.findByIdAndUpdate(doc.id, update);

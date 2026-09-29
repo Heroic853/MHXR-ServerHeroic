@@ -8,6 +8,7 @@ import { logger } from './middleware/logger.js';
 import { createLogger } from './middleware/logger.js';
 import winston from 'winston';
 import { decryptAndParse } from './services/crypto/encryptionHelpers.js';
+import { giocatoreMiddleware, rigaLog } from './middleware/giocatore.js';
 
 const log = createLogger('app');
 
@@ -61,6 +62,8 @@ app.use((req, res, next) => {
     next();
   }
 });
+// Prima del logger: il messaggio si compone a fine risposta, ma cosi' il nome e' gia' pronto.
+app.use((req, res, next) => void giocatoreMiddleware(req, res, next));
 app.use(
   expressWinston.logger({
     transports: [new winston.transports.Console()],
@@ -74,7 +77,8 @@ app.use(
       }),
     ),
     meta: true,
-    expressFormat: true,
+    // msg al posto di expressFormat (che lo ignorerebbe): stessa riga + [personaggio].
+    msg: rigaLog,
     colorize: true,
 
     dynamicMeta: (req, _res) => {

@@ -11,20 +11,30 @@ vi.mock('../model/events/index', () => {
   MockEvent.countDocuments = vi.fn();
   MockEvent.prototype.save = mockEventSave;
 
+  // Funzione normale e non vi.fn(): resetAllMocks nel beforeEach azzererebbe
+  // la risposta finta e renewEventDeadlines leggerebbe modifiedCount da undefined.
+  const collection = () => ({ updateMany: async () => ({ modifiedCount: 0 }) });
+
   return {
     Event: MockEvent,
     AssualtEvents: {
       countDocuments: vi.fn(),
       create: vi.fn(),
+      collection: collection(),
     },
     ScoreEvents: {
       countDocuments: vi.fn(),
       create: vi.fn(),
+      collection: collection(),
     },
     TicketEvents: {
       countDocuments: vi.fn(),
       create: vi.fn(),
+      collection: collection(),
     },
+    TourEvents: { collection: collection() },
+    StandingEvents: { collection: collection() },
+    M16Events: { collection: collection() },
   };
 });
 

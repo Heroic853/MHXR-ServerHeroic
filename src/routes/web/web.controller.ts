@@ -1,5 +1,4 @@
 import { fileURLToPath } from 'node:url';
-import { readFile } from 'node:fs/promises';
 import { Request, Response } from 'express';
 import path from 'path';
 
@@ -20,36 +19,13 @@ const __dirname = import.meta.dirname ?? fileURLToPath(new URL('.', import.meta.
 const SITO = (process.env.SITE_URL || 'https://heroic853.github.io/Heroic853SiteV1/mhxr-feedback').trim();
 
 /*
- * Dove punta invece la pagina di ripiego qui sotto (getWebContent, il
- * catch-all /web/*): quella mostra prima una nostra card HTML dentro la
- * webview del gioco, col bottone che manda alla guida completa del sito
- * (istruzioni + problemi comuni + link per aprire un ticket vero) — un
- * indirizzo diverso da SITO sopra, apposta: cambia solo qui, non tocca
- * /web/notice/index e /web/schedule/index.
- */
-const SITO_GUIDA = (process.env.SITE_GUIDE_URL || 'https://heroic853.github.io/Heroic853SiteV1/mhxr-guide').trim();
-
-/*
- * La pagina di ripiego per tutte le pagine web interne del gioco. Contiene il
- * segnaposto {{SITO}}, sostituito qui con SITO_GUIDA: cosi' l'indirizzo vive
- * in un posto solo (SITE_GUIDE_URL nel .env) e non va aggiornato anche
- * nell'HTML.
- *
- * Si legge a ogni richiesta e non si tiene in cache: succede una volta ogni
- * tanto, quando il giocatore apre una webview, e in cambio si puo' correggere
- * il file senza riavviare il server.
+ * Tutte le altre pagine web interne del gioco (catch-all /web/*: guide armi,
+ * premi dei gatti, ecc.) vanno dritte alla stessa pagina di SITO. Prima qui
+ * si mostrava una nostra card HTML (web-content.html) con un bottone verso la
+ * guida: tolta su richiesta, il giocatore deve arrivare subito al sito.
  */
 export const getWebContent = (req: Request, res: Response) => {
-  const filePath = path.join(__dirname, '..', '..', 'public', 'web-res', 'web-content.html');
-  readFile(filePath, 'utf-8')
-    .then((html) => {
-      res.type('html').send(html.replaceAll('{{SITO}}', SITO_GUIDA));
-    })
-    .catch(() => {
-      // Se il file mancasse, meglio mandare il giocatore sul sito che dargli un
-      // errore dentro la webview del gioco.
-      res.redirect(SITO_GUIDA);
-    });
+  res.redirect(SITO);
 };
 export const getNoticeIndexOld = (req: Request, res: Response) => {
   const filePath = path.join(__dirname, '..', '..', 'public', 'web-res', 'notice-index-old.html');

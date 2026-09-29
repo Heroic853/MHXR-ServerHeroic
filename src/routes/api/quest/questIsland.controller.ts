@@ -315,6 +315,35 @@ export const islandStart = async (req: Request, res: Response) => {
 const MATERIALE_DI_RIPIEGO = 1714092880; // verificato: e' un materiale vero
 
 /*
+ * I 5 輝石 (augite) della pietra HR, dalla tabella del gioco
+ * rsdnt_property.arc :: item_augite (mAugiteID, mItemNo). mst_monument_type_id
+ * e' mItemNo: coincide col 体力の輝石 gia' salvato dalla storia (id 2047024966, tipo 3).
+ * Nei dati del gioco non c'e' da dove arrivassero in origine; per scelta del
+ * gestore del server (29/09) se ne da' un po' a ogni fine missione.
+ */
+export const AUGITE = [
+  { mst_augite_id: 2483912298, mst_monument_type_id: 1 }, // 攻撃の輝石
+  { mst_augite_id: 218378192, mst_monument_type_id: 2 }, // 防御の輝石
+  { mst_augite_id: 2047024966, mst_monument_type_id: 3 }, // 体力の輝石
+  { mst_augite_id: 3831991013, mst_monument_type_id: 4 }, // 武技Pの輝石
+  { mst_augite_id: 2472589939, mst_monument_type_id: 5 }, // 自動の輝石
+] as const;
+
+type VoceAugite = { amount?: number | null; mst_augite_id?: number | null; mst_monument_type_id?: number | null };
+
+/** 1-3 輝石 di un tipo a caso, sommati a quelli gia' posseduti (mai doppioni di tipo). */
+export function daiAugite(monument: { augite?: VoceAugite[] } | undefined | null) {
+  const tipo = AUGITE[Math.floor(Math.random() * AUGITE.length)]!;
+  const premio = { amount: 1 + Math.floor(Math.random() * 3), ...tipo };
+  if (!monument) return null;
+  if (!Array.isArray(monument.augite)) monument.augite = [];
+  const gia = monument.augite.find((a) => Number(a.mst_augite_id) === tipo.mst_augite_id);
+  if (gia) gia.amount = Number(gia.amount ?? 0) + premio.amount;
+  else monument.augite.push({ ...premio });
+  return premio;
+}
+
+/*
  * SMISTAMENTO DELLE RICOMPENSE PER FAMIGLIA.
  *
  * mRewardItemList non dice di che tipo sia un premio: c'e' un campo
@@ -586,8 +615,11 @@ export const islandEnd = async (req: Request, res: Response) => {
 
     const update: Record<string, unknown> = { cleared_quests: cleared_quests };
 
+    let augite: ReturnType<typeof daiAugite> = null;
     if (doc.box) {
       const c = accreditaPremi(doc.box as unknown as BoxPremi, premi.vinti);
+      augite = daiAugite(doc.box.monument as { augite?: VoceAugite[] } | undefined);
+      if (augite) log.info('輝石 | %s riceve %d x tipo %d', doc.character_name ?? '?', augite.amount, augite.mst_monument_type_id);
       update.box = doc.box;
       log.info(
         'ricompense accreditate | quest=%s materiali=%d crescita=%d limitati=%d equipaggiamenti=%d',
@@ -657,15 +689,11 @@ export const islandEnd = async (req: Request, res: Response) => {
       //   mst_partner_id:0
       // }
     ],
-    pop_list: [
-      //Pops after quest reward screen
-      {
-        pop_id: 1,
-        item_list: {
-          materials: [{ amount: 6, mst_material_id: 1714092880 }],
-        },
-      },
-    ],
+    // Finestra dopo i premi. Prima mostrava 6 materiali finti mai accreditati;
+    // ora i 輝石 davvero dati, nello stesso formato della storia (story.controller).
+    pop_list: augite
+      ? [{ pop_id: 1, item_list: { monument: { augite: [augite], hr: 0, mlv: { atk: 0, def: 0, hp: 0, sp: 0 } } } }]
+      : [],
     ranking_num: 1, //unk
     rewards: {
       luck_value: 4,

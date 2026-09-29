@@ -19,47 +19,38 @@ interface BlockListItem {
   repop_list: { amount: number; serial_no: number }[];
 }
 
-export const eventTicketFree = (req: Request, res: Response) => {
-  const data = {
-    infos: [
-      {
-        free_group_id: 1,
-        max_free_count: 10,
-        remain_free_count: 10,
-        text: 'TICKET FREE',
-      },
-    ],
-    quests: [
-      {
-        free_group_id: 1,
-        mst_quest_id: 2546022365,
-      },
-    ],
-  };
-  encryptAndSend(data, res, req);
+/*
+ * Quest ticket giocabili senza comprare il ticket: il client chiede qui quali
+ * quest appartengono a un "gruppo gratuito". Prima ce n'era una sola, fissa;
+ * ora tutte quelle presenti in ticketevents, cioe' gli stessi id che il gioco
+ * gia' riceve dalla lista eventi — nessun id nuovo. Il contatore gratuito non
+ * viene mai scalato dal server, quindi resta sempre pieno.
+ */
+export const eventTicketFree = async (req: Request, res: Response) => {
+  try {
+    const questIds = (await TicketEvents.distinct('mst_quest_id')) as number[];
+    const data = {
+      infos: [
+        {
+          free_group_id: 1,
+          max_free_count: 10,
+          remain_free_count: 10,
+          text: 'FREE',
+        },
+      ],
+      quests: questIds.map((mst_quest_id) => ({ free_group_id: 1, mst_quest_id })),
+    };
+    encryptAndSend(data, res, req);
+  } catch (error) {
+    log.error('Error in eventTicketFree:', error);
+    encryptAndSend({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG, 'Ticket free list failed');
+  }
 };
 
 export const eventNormalStart = async (req: Request, res: Response) => {
   try {
-    const { mst_quest_id, multi_room_id } = req.body as EventStartInput;
+    const { mst_quest_id } = req.body as EventStartInput;
 
-    /*
-     * L'instance_id e' cio' che lega piu' cacciatori alla STESSA battuta. Qui
-     * era fisso a 0 per tutti: due giocatori della stessa stanza partivano
-     * quindi in due cacce separate e restavano ognuno ad aspettare l'altro —
-     * il caricamento infinito in multiplayer.
-     *
-     * Il client manda gia' multi_room_id (e' nello schema da sempre, nessuno
-     * lo leggeva): usarlo da' a tutti i membri della stanza lo stesso numero,
-     * senza bisogno di interrogare il database.
-     *
-     * In singolo il campo non arriva, resta 0 e la risposta e' identica a
-     * prima: chi gioca da solo non rischia niente.
-     */
-    const instanceId = Number(multi_room_id) > 0 ? Number(multi_room_id) : 0;
-    if (instanceId) {
-      log.info('caccia in gruppo | quest=%s stanza=%d', String(mst_quest_id), instanceId);
-    }
 
     const data = {
       instance_data: {
@@ -79,7 +70,7 @@ export const eventNormalStart = async (req: Request, res: Response) => {
             point: 0,
           },
         ],
-        instance_id: instanceId,
+        instance_id: 0,
         mission_message: 'start',
         mst_quest_id,
         multi_leave_check_time: 0,
@@ -131,7 +122,6 @@ export const eventTicketStart = async (req: Request, res: Response) => {
   try {
     const { mst_quest_id } = req.body as EventStartInput;
     const startedQuest = mst_quest_id;
-
     const quest = await QuestSheet.findOne({ mQuestID: String(startedQuest) });
     const data = {
       instance_data: {
@@ -200,7 +190,6 @@ export const eventScoreStart = async (req: Request, res: Response) => {
   try {
     const { mst_quest_id } = req.body as EventStartInput;
     const startedQuest = mst_quest_id;
-
     const quest = await QuestSheet.findOne({ mQuestID: String(startedQuest) });
     const data = {
       instance_data: {

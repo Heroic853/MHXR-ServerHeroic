@@ -1,3 +1,40 @@
+import { EMIT_TYPE, FLAG1, DEFAULT_FLAG2 } from './constants/multiplayer.js';
+
+/**
+ * Risposta a "host_change_request": dice al gioco chi e' il capo stanza.
+ *
+ * Il gioco (nNetwork::MHiSession::onSessionEvent, caso HOST_CHANGE) prende il
+ * nuovo capo stanza dal byte 4 dell'intestazione (playerId), e riceve questo
+ * evento solo sul canale di sessione (flag1 = FLAG1.SESSION = 3). La domanda
+ * invece arriva sul canale 0: copiare il suo flag1 nella risposta la rendeva
+ * invisibile al gioco, e nessuno diventava mai capo stanza.
+ */
+export function createHostChangePacket({
+  roomNumber,
+  hostSlot,
+  seq,
+  unk2,
+}: {
+  roomNumber: number;
+  hostSlot: number;
+  seq: number;
+  unk2: number;
+}) {
+  const payload = Buffer.alloc(4);
+  payload.writeInt32LE(hostSlot, 0);
+  const header = createHeader({
+    roomNumber,
+    playerId: hostSlot,
+    seq,
+    unk2,
+    emitTypeHex: EMIT_TYPE.HOST_CHANGE,
+    flag1: FLAG1.SESSION,
+    pktlen: payload.length,
+    flag2: DEFAULT_FLAG2,
+  });
+  return Buffer.concat([header, payload]);
+}
+
 export function createHeader({
   roomNumber,
   playerId,

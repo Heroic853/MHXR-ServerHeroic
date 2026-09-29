@@ -1,4 +1,6 @@
-import { Event, AssualtEvents, ScoreEvents, TicketEvents } from '../model/events/index.js';
+import {
+  Event, AssualtEvents, ScoreEvents, TicketEvents, TourEvents, StandingEvents, M16Events,
+} from '../model/events/index.js';
 import QuestSheet from '../model/questSheet.js';
 
 import normalTutorialQuestSheets from '../json/questDB/normal.extended.complete.json' with { type: 'json' };
@@ -34,7 +36,44 @@ interface Logger {
   error: (message: string, error?: unknown) => void;
 }
 
-const THIRTY_DAYS_MS = 30 * 24 * 60 * 60 * 1000;
+// Era 30 giorni (valore di upstream): al primo avvio (14/08) assault, score e
+// ticket nascevano con scadenza 13/09, e da quel giorno il gioco li mostrava
+// tutti come "現在非開催です" (non in corso). 10 anni e' lo stesso orizzonte
+// gia' usato da seed-events.cjs per tour/standing/m16, verificato funzionante.
+// Il client riceve i secondi rimanenti come intero, quindi non si puo' mettere
+// un valore davvero infinito: la durata "infinita" la da' renewEventDeadlines.
+const EVENT_DURATION_MS = 3650 * 24 * 60 * 60 * 1000;
+
+/*
+ * Rinnovo a ogni avvio: qualunque evento che scade entro un anno viene
+ * riportato a 10 anni da adesso. Tocca solo le date, mai id/quest/banner.
+ * E' cio' che rende gli eventi di fatto permanenti: basta che il server venga
+ * riavviato almeno una volta ogni 9 anni.
+ */
+async function renewEventDeadlines(log: Logger): Promise<void> {
+  const now = Date.now();
+  const soglia = new Date(now + 365 * 24 * 60 * 60 * 1000);
+  const fine = new Date(now + EVENT_DURATION_MS);
+
+  const piani = [
+    { nome: 'assault', model: AssualtEvents, campi: ['end_remain', 'disappear_remain'] },
+    { nome: 'score', model: ScoreEvents, campi: ['end_remain'] },
+    { nome: 'ticket', model: TicketEvents, campi: ['end_remain', 'buy_end_remain'] },
+    { nome: 'tour', model: TourEvents, campi: ['end_remain'] },
+    { nome: 'standing', model: StandingEvents, campi: ['end_remain'] },
+    { nome: 'm16', model: M16Events, campi: ['end_remain', 'disappear_remain'] },
+  ] as const;
+
+  for (const p of piani) {
+    for (const campo of p.campi) {
+      const r = await (p.model as typeof AssualtEvents).collection.updateMany(
+        { [campo]: { $lt: soglia } },
+        { $set: { [campo]: fine } },
+      );
+      if (r.modifiedCount > 0) log.info(`Event deadlines renewed: ${p.nome}.${campo} x${r.modifiedCount}`);
+    }
+  }
+}
 
 async function seedEvents(log: Logger): Promise<void> {
   const count = await Event.countDocuments({});
@@ -61,8 +100,8 @@ async function seedAssaultEvents(log: Logger): Promise<void> {
     for (const event of allEvents) {
       await AssualtEvents.create({
         appear_remain: Date.now(),
-        disappear_remain: Date.now() + THIRTY_DAYS_MS,
-        end_remain: Date.now() + THIRTY_DAYS_MS,
+        disappear_remain: Date.now() + EVENT_DURATION_MS,
+        end_remain: Date.now() + EVENT_DURATION_MS,
         start_remain: Date.now(),
         ...event,
       });
@@ -79,7 +118,7 @@ async function seedScoreEvents(log: Logger): Promise<void> {
   if (count == 0) {
     for (const coevEvent of coevEvents) {
       await ScoreEvents.create({
-        end_remain: Date.now() + THIRTY_DAYS_MS,
+        end_remain: Date.now() + EVENT_DURATION_MS,
         start_remain: Date.now(),
         ...coevEvent,
       });
@@ -96,10 +135,10 @@ async function seedTicketEvents(log: Logger): Promise<void> {
   if (count == 0) {
     for (const ticketEvent of ticketEvents) {
       await TicketEvents.create({
-        buy_end_remain: Date.now() + THIRTY_DAYS_MS,
-        buy_start_remain: Date.now() + THIRTY_DAYS_MS,
+        buy_end_remain: Date.now() + EVENT_DURATION_MS,
+        buy_start_remain: Date.now(),
         clear_time: 0,
-        end_remain: Date.now() + THIRTY_DAYS_MS,
+        end_remain: Date.now() + EVENT_DURATION_MS,
         start_remain: Date.now(),
         ...ticketEvent,
       });
@@ -132,4 +171,5 @@ export async function seedDatabase(log: Logger): Promise<void> {
   await seedScoreEvents(log);
   await seedTicketEvents(log);
   await seedQuestSheets(log);
+  await renewEventDeadlines(log);
 }

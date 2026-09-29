@@ -77,14 +77,19 @@ describe('quest.controller', () => {
   });
 
   describe('eventTicketFree', () => {
-    it('returns ticket free info', () => {
+    it('lists every ticket quest from the database as free', async () => {
+      vi.mocked(TicketEvents.distinct).mockResolvedValue([111, 222] as never);
       const { req, res } = mockReqRes({});
-      eventTicketFree(req, res);
+      await eventTicketFree(req, res);
       expect(encryptAndSend).toHaveBeenCalledWith(
         expect.objectContaining({
           infos: expect.arrayContaining([
             expect.objectContaining({ free_group_id: 1, max_free_count: 10 }),
           ]),
+          quests: [
+            { free_group_id: 1, mst_quest_id: 111 },
+            { free_group_id: 1, mst_quest_id: 222 },
+          ],
         }),
         res,
         req,

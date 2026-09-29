@@ -8,6 +8,7 @@ import {
   processMigrationAuth,
   createUser,
   loginUser,
+  registraAccesso,
 } from '../../../services/accountService.js';
 import type { MigrationReadyInput, MigrationAuthInput, RegistInput, LoginInput } from './account.schema.js';
 const log = createLogger('account');
@@ -128,6 +129,8 @@ export const registerAccount = async (req: Request, res: Response) => {
     const { uu_id, secret_id, session_id } = req.body as RegistInput;
 
     const newUser = await createUser(uu_id, secret_id, session_id ?? '');
+    // Primo accesso di questo giocatore. Senza await: vedi registraAccesso.
+    registraAccesso(uu_id, req.ip ?? req.socket?.remoteAddress, (e) => log.warn('primo accesso non registrato:', e));
 
     const responseData = {
       game_id: newUser.game_id,
@@ -168,6 +171,8 @@ export const loginAccount = async (req: Request, res: Response) => {
     }
 
     const doc = result.user;
+    // Senza await, apposta: vedi registraAccesso. Il login non la aspetta.
+    registraAccesso(uu_id, req.ip ?? req.socket?.remoteAddress, (e) => log.warn('ultimo accesso non registrato:', e));
 
     let login = {
       auto_course_remain_time: 3600,

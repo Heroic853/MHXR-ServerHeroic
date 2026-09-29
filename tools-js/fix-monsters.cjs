@@ -19,6 +19,20 @@
 const fs = require('fs');
 const mongoose = require('mongoose');
 
+/*
+ * DISATTIVATO (28/09/2026). Questo script sceglie i blocchi da mst_block_ids,
+ * un foglio compilato a mano in inglese con errori (es. Volvidon e Lagombi
+ * invertiti, righe "Pink Rathian" che nel gioco sono altro). Le quest evento
+ * ora hanno i blocchi ricavati dai file del gioco (blockBuild + mBossList
+ * originale): rilanciarlo li sovrascriverebbe con quelli sbagliati.
+ * I blocchi precedenti a quella correzione sono salvati in mBlocksPreEstrazione.
+ */
+if (!process.argv.includes('--forza-foglio-inglese')) {
+  console.log('fix-monsters.cjs e\' disattivato: sovrascriverebbe i blocchi ricavati dai file del gioco.');
+  console.log('Se sei davvero sicuro, rilancialo con --forza-foglio-inglese.');
+  process.exit(0);
+}
+
 const {
   DB_USER = 'root', DB_PASSWORD = 'example',
   DB_IP = 'mongo', DB_PORT = '27017', DB_NAME = 'apypos',

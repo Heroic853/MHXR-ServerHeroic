@@ -16,7 +16,7 @@ vi.mock('../../../middleware/logger', () => ({
 import User from '../../../model/user.js';
 import { encryptAndSend } from '../../../services/crypto/encryptionHelpers.js';
 import { ERROR_CODE, ERROR_CATEGORY } from '../../../constants/error.codes.js';
-import { get, otomoGet, equipLevelup, storageInfo, sale, favoriteSet } from './box.controller.js';
+import { get, otomoGet, partnerGet, equipLevelup, storageInfo, sale, favoriteSet, leveupAuto } from './box.controller.js';
 
 function mockReqRes(body: Record<string, unknown> = {}) {
   const req = { body, ip: '127.0.0.1', get: vi.fn() } as unknown as Request;
@@ -94,6 +94,45 @@ describe('box.controller', () => {
       await otomoGet(req, res);
 
       expect(encryptAndSend).toHaveBeenCalledWith({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG, 'Box not found');
+    });
+  });
+
+  describe('partnerGet', () => {
+    it('returns partners from user box', async () => {
+      const mockPartners = [{ partner_id: 'PT_001', mst_partner_id: 507850012 }];
+      vi.mocked(User.findOne).mockResolvedValue({
+        box: { partners: mockPartners },
+      } as never);
+
+      const { req, res } = mockReqRes({ session_id: 'sess-1' });
+
+      await partnerGet(req, res);
+
+      expect(encryptAndSend).toHaveBeenCalledWith(
+        expect.objectContaining({ partners: mockPartners }),
+        res,
+        req,
+      );
+    });
+
+    it('returns error when box is missing', async () => {
+      vi.mocked(User.findOne).mockResolvedValue({ box: null } as never);
+
+      const { req, res } = mockReqRes({ session_id: 'sess-1' });
+
+      await partnerGet(req, res);
+
+      expect(encryptAndSend).toHaveBeenCalledWith({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG, 'Box not found');
+    });
+
+    it('returns NOT_AUTHENTICATED when the session is unknown', async () => {
+      vi.mocked(User.findOne).mockResolvedValue(null);
+
+      const { req, res } = mockReqRes({ session_id: 'bad' });
+
+      await partnerGet(req, res);
+
+      expect(encryptAndSend).toHaveBeenCalledWith({}, res, req, ERROR_CODE.NOT_AUTHENTICATED);
     });
   });
 
@@ -202,5 +241,46 @@ describe('box.controller', () => {
         req,
       );
     });
+  });
+});
+
+describe("monument leveupAuto (pietra HR)", () => {
+  beforeEach(() => {
+    vi.resetAllMocks();
+  });
+  const utente = (augite: { amount: number; mst_augite_id: number; mst_monument_type_id: number }[]) => ({
+    id: "u1",
+    box: { capacity: {}, monument: { hr: 10, mlv: { atk: 1, def: 1, hp: 1, sp: 1 }, augite } },
+  });
+
+  it("attack level-up spends 10 攻撃の輝石 and raises atk and HR", async () => {
+    const doc = utente([{ amount: 25, mst_augite_id: 2483912298, mst_monument_type_id: 1 }]);
+    vi.mocked(User.findOne).mockResolvedValue(doc as never);
+    vi.mocked(User.findByIdAndUpdate).mockResolvedValue({} as never);
+    const { req, res } = mockReqRes({ session_id: "s1", type: "atk" });
+    await leveupAuto(req, res);
+    expect(doc.box.monument.augite[0]!.amount).toBe(15);
+    expect(doc.box.monument.mlv.atk).toBe(2);
+    expect(doc.box.monument.hr).toBe(11);
+    expect(User.findByIdAndUpdate).toHaveBeenCalled();
+  });
+
+  it("refuses when the right augite is missing (hp augite does not pay for atk)", async () => {
+    const doc = utente([{ amount: 9999, mst_augite_id: 2047024966, mst_monument_type_id: 3 }]);
+    vi.mocked(User.findOne).mockResolvedValue(doc as never);
+    const { req, res } = mockReqRes({ session_id: "s1", type: "atk" });
+    await leveupAuto(req, res);
+    expect(doc.box.monument.mlv.atk).toBe(1);
+    expect(User.findByIdAndUpdate).not.toHaveBeenCalled();
+    expect(encryptAndSend).toHaveBeenCalledWith({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG, "Not enough augite");
+  });
+
+  it("refuses with fewer than 10", async () => {
+    const doc = utente([{ amount: 9, mst_augite_id: 2047024966, mst_monument_type_id: 3 }]);
+    vi.mocked(User.findOne).mockResolvedValue(doc as never);
+    const { req, res } = mockReqRes({ session_id: "s1", type: "hp" });
+    await leveupAuto(req, res);
+    expect(doc.box.monument.augite[0]!.amount).toBe(9);
+    expect(User.findByIdAndUpdate).not.toHaveBeenCalled();
   });
 });

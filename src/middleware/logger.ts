@@ -8,6 +8,9 @@ const level = process.env.DEBUG === 'true' ? 'debug' : 'info';
 export const logger = winston.createLogger({
   level,
   format: winston.format.combine(
+    // Sostituisce %s/%d nei messaggi (log.info('x %s', v)): senza, nei log
+    // restava scritto letteralmente "404 UNMATCHED: %s %s".
+    winston.format.splat(),
     winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
     winston.format.errors({ stack: true }),
     winston.format.json(),

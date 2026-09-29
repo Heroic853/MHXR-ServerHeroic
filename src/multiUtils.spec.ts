@@ -7,8 +7,9 @@ import {
   createInfoPacket,
   createActivityPacket,
   createSessionPacket,
+  createHostChangePacket,
 } from './multiUtils.js';
-import { FLAG1, HEADER_SIZE, DEFAULT_SEQ, DEFAULT_FLAG2, SERVER_PLAYER_ID } from './constants/multiplayer.js';
+import { FLAG1, EMIT_TYPE, HEADER_SIZE, DEFAULT_SEQ, DEFAULT_FLAG2, SERVER_PLAYER_ID } from './constants/multiplayer.js';
 
 describe('multiUtils', () => {
   describe('createHeader / parseHeader round-trip', () => {
@@ -213,6 +214,30 @@ describe('multiUtils', () => {
       const { header } = parseHeader(packet);
       expect(header.seq).toBe(DEFAULT_SEQ);
       expect(header.flag2).toBe(DEFAULT_FLAG2);
+    });
+  });
+  describe('createHostChangePacket', () => {
+    // Il gioco ascolta host_change solo sul canale di sessione (flag1 = 3) e
+    // prende il capo stanza dal playerId dell'intestazione (byte 4).
+    it('goes out on the session channel with the host slot in the header', () => {
+      const pkt = createHostChangePacket({ roomNumber: 1000, hostSlot: 0, seq: 5, unk2: 0 });
+      const { header, payload } = parseHeader(pkt);
+      expect(header.flag1).toBe(FLAG1.SESSION);
+      expect(header.flag1).toBe(3);
+      expect(header.emitTypeHex).toBe(EMIT_TYPE.HOST_CHANGE);
+      expect(header.playerId).toBe(0);
+      expect(header.roomNumber).toBe(1000);
+      expect(header.seq).toBe(5);
+      expect(header.flag2).toBe(DEFAULT_FLAG2);
+      expect(header.pktlen).toBe(4);
+      expect(payload.readInt32LE(0)).toBe(0);
+    });
+
+    it('never copies the request channel 0 (the old bug)', () => {
+      const pkt = createHostChangePacket({ roomNumber: 1000, hostSlot: 2, seq: 9, unk2: 0 });
+      expect(pkt[9]).not.toBe(0);
+      expect(pkt[4]).toBe(2);
+      expect(pkt.length).toBe(HEADER_SIZE + 4);
     });
   });
 });

@@ -187,9 +187,10 @@ const userSchema = new Schema({
   },
   box: {
     capacity: {
-      // Il corredo iniziale e' di 117 pezzi: con il vecchio limite di 100 un
-      // giocatore nuovo sarebbe nato con la box gia' oltre capienza.
-      eqp_box: { type: Number, default: 200 },
+      // L'originale era 100. Portato a 200 quando il corredo iniziale era di
+      // 117 pezzi; dal 29/09 il corredo e' tornato ai 17 pezzi originali, ma la
+      // capienza e' 500 per tutti (come Heroic69) per lasciare spazio a gacha ed eventi.
+      eqp_box: { type: Number, default: 500 },
       eqp_set: { type: Number, default: 100 },
       friend_max: { type: Number, default: 100 },
     },

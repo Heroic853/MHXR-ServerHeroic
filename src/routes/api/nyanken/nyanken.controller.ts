@@ -124,7 +124,7 @@ async function consegnaPremi(sessionId: string, idRichiesto?: unknown) {
   // start, altrimenti la generale. Un ID che non e' tra le categorie non passa.
   const categoria = categoriaDa(idRichiesto) ?? categoriaDa(doc.nyanken_cooldown?.mst_nyanken_id) ?? CATEGORIA_BASE;
   const esistenti = doc.box?.equipments ?? [];
-  const capienza = Number(doc.box?.capacity?.eqp_box ?? 200);
+  const capienza = Number(doc.box?.capacity?.eqp_box ?? 500);
   const posto = Math.max(0, capienza - esistenti.length);
   const pezzi = pesca(poolDi(categoria), new Set(esistenti.map((e) => String(e.equipment_id))), Math.min(PEZZI_PER_SPEDIZIONE, posto)).map(nuovoPezzo);
   if (pezzi.length) {

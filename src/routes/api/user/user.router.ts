@@ -12,6 +12,7 @@ import {
   PartnerSetSchema,
   SearchUserIdSchema,
   SearchGameIdSchema,
+  NavigationRewardReceiveSchema,
 } from './user.schema.js';
 import { ModelCreateSchema, ModelSetSchema } from './model/userModel.schema.js';
 import { EquipSetSetSchema, EquipSetSocialSetSchema } from './equipset/userEquipSet.schema.js';
@@ -42,7 +43,7 @@ userRouter.post('/equipset/social/set', validate(EquipSetSocialSetSchema), userE
 //Nav
 userRouter.post('/navigation/all', validate(SessionOnlySchema), userController.navigationAll);
 userRouter.post('/navigation/news', validate(SessionOnlySchema), userController.navigationNews);
-// userRouter.post("/navigation/reward/receive", );
+userRouter.post('/navigation/reward/receive', validate(NavigationRewardReceiveSchema), userController.navigationRewardReceive);
 
 //Title
 userRouter.post('/title/all', validate(SessionOnlySchema), userController.titleAll);

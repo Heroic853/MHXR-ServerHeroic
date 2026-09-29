@@ -5,8 +5,11 @@
  * giocando (KARIDAMA_A_MISSIONE a fine missione) e si spendono nel gacha dei gatti.
  */
 export const KARIDAMA_IDS = [1573159746, 3301823224, 3016417902, 766408653, 1521043291, 3282048737] as const;
-// Il tipo in cui si accredita (lo stesso che Heroic69 ha gia' e che il gioco mostra).
-export const KARIDAMA_PRINCIPALE = 1573159746;
+// Il tipo in cui si accredita. Il contatore in home somma SOLO i tipi con
+// mItemType 2 (3301823224 e 1521043291): verificato il 29/09 mettendo 1/10/100/
+// 1000/10000/100000 sui 6 tipi, la home mostrava 10.010. Il tipo 1573159746
+// (mItemType 3) il gioco non lo mostra: accreditato li' era invisibile.
+export const KARIDAMA_PRINCIPALE = 3301823224;
 export const KARIDAMA_A_MISSIONE = 3;
 
 type Voce = { mst_payment_id?: number | null; amount?: number | null };

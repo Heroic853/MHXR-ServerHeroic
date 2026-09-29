@@ -55,6 +55,8 @@ export interface IUser extends Document {
   // Solo per l'amministratore (tools-js/recupera-account.cjs): mai mandati al gioco.
   ultimo_accesso?: Date;
   ultimo_ip?: string;
+  // Voci del 探検ナビ gia' riscattate (services/navigazioneService.ts).
+  navigazioni_riscattate?: number[];
   comment?: string;
   tutorial_flags: number[];
   model_info?: ModelInfo;
@@ -174,6 +176,7 @@ const userSchema = new Schema({
   // accountService). Facoltativi: gli account vecchi semplicemente non li hanno.
   ultimo_accesso: Date,
   ultimo_ip: String,
+  navigazioni_riscattate: { type: [Number], default: [] },
   current_session: String,
   comment: String,
   tutorial_flags: [Number],

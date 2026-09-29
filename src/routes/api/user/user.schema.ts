@@ -61,3 +61,13 @@ export const SearchGameIdSchema = z
   .loose();
 
 export type SearchGameIdInput = z.infer<typeof SearchGameIdSchema>;
+
+export const NavigationRewardReceiveSchema = z
+  .object({
+    session_id: sessionIdSchema,
+    mst_navigation_ids: z.array(z.number().int()).default([]),
+    ...commonRequestFields,
+  })
+  .loose();
+
+export type NavigationRewardReceiveInput = z.infer<typeof NavigationRewardReceiveSchema>;

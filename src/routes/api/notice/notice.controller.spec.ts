@@ -57,7 +57,7 @@ describe('notice.controller', () => {
             island_campaign_list: expect.any(Array),
           }),
           navigationNum: expect.objectContaining({
-            notClearNum: 5,
+            notClearNum: 0,
           }),
           stretch_effect_info: expect.objectContaining({
             mst_event_info_id: 3454260853,

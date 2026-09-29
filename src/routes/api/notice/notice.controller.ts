@@ -4,6 +4,7 @@ import { ERROR_CODE, ERROR_CATEGORY } from '../../../constants/error.codes.js';
 import { createLogger } from '../../../middleware/logger.js';
 import User from '../../../model/user.js';
 import Present from '../../../model/presents.js';
+import { conteggiNavigazione } from '../../../services/navigazioneService.js';
 import type { SessionOnlyInput } from './notice.schema.js';
 const log = createLogger('notice');
 
@@ -191,12 +192,8 @@ export const get = async (req: Request, res: Response) => {
       remain_time: 3600,
     },
     invite_num: 0,
-    navigationNum: {
-      notClearNum: 5,
-      notClearNumLimited: 1,
-      notReceivedNum: 1,
-      notReceivedNumLimited: 1,
-    },
+    // Il numerino rosso sulla bussola (探検ナビ): voci ancora da riscattare.
+    navigationNum: conteggiNavigazione(userDoc),
     offer_products: [
       // {
       //   additional_point:0,

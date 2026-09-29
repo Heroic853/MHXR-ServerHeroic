@@ -164,9 +164,13 @@ export const loginAccount = async (req: Request, res: Response) => {
     const result = await loginUser(uu_id, secret_id, session_id ?? '');
 
     if (result.error === 'NOT_FOUND') {
+      // Tipico del telefono da cui l'account e' stato trasferito altrove: il
+      // trasferimento riscrive uu_id, quindi il vecchio dispositivo non e' piu' nessuno.
+      log.warn('login rifiutato: dispositivo sconosciuto | uu=%s ip=%s', String(uu_id).slice(0, 8), req.ip);
       return encryptAndSend({}, res, req, ERROR_CODE.LOGIN_FAILED);
     }
     if (result.error === 'NOT_AUTHENTICATED') {
+      log.warn('login rifiutato: secret_id errato | uu=%s ip=%s', String(uu_id).slice(0, 8), req.ip);
       return encryptAndSend({}, res, req, ERROR_CODE.NOT_AUTHENTICATED);
     }
 

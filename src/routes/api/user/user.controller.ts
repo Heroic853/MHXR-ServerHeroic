@@ -3,7 +3,9 @@ import { encryptAndSend } from '../../../services/crypto/encryptionHelpers.js';
 import { ERROR_CODE, ERROR_CATEGORY } from '../../../constants/error.codes.js';
 import User from '../../../model/user.js';
 import { createLogger } from '../../../middleware/logger.js';
-import type { RenameInput, CommentSetInput, TitleSetInput, PartnerSetInput, SearchUserIdInput, SearchGameIdInput, SessionOnlyInput } from './user.schema.js';
+import type { RenameInput, CommentSetInput, TitleSetInput, PartnerSetInput, SearchUserIdInput, SearchGameIdInput, SessionOnlyInput, NavigationRewardReceiveInput } from './user.schema.js';
+import { vociNavigazione, conteggiNavigazione, riscattaNavigazioni } from '../../../services/navigazioneService.js';
+import { KARIDAMA_PRINCIPALE } from '../../../services/karidamaService.js';
 const log = createLogger('user');
 
 const DEFAULT_SOCIAL_EQUIP = {
@@ -218,76 +220,44 @@ export const OfferCheck = (req: Request, res: Response) => {
   }
 };
 
-export const navigationAll = (req: Request, res: Response) => {
-  const data = {
-    //This is the left hand menu with the compass. It is a way of guding the user to do things and reward them when they have done it.
-    navigations: [
-      {
-        close_at: 360000,
-        end_at: 36000,
-        explain: 'Explaination! Quick brown fox.',
-        is_clear: 0,
-        is_reward: 0,
-        item_list: {
-          payments: [
-            {
-              amount: 50,
-              mst_payment_id: 1573159746,
-            },
-          ],
-        },
-        limited_flag: 0,
-        mst_navigation_id: 0,
-        name: 'Name 1!',
-        progress: 1,
-        progress_max: 6,
-        start_at: 0,
-      },
-      {
-        close_at: 360000,
-        end_at: 36000,
-        explain: 'Explaination! Quick brown fox.',
-        is_clear: 0,
-        is_reward: 0,
-        item_list: {
-          payments: [
-            {
-              amount: 50,
-              mst_payment_id: 1573159746,
-            },
-          ],
-        },
-        limited_flag: 1,
-        mst_navigation_id: 1,
-        name: 'Name 2!',
-        progress: 1,
-        progress_max: 6,
-        start_at: 0,
-      },
-      {
-        close_at: 360000,
-        end_at: 36000,
-        explain: 'Explaination! Quick brown fox.',
-        is_clear: 0,
-        is_reward: 0,
-        item_list: {
-          payments: [
-            {
-              amount: 50,
-              mst_payment_id: 1573159746,
-            },
-          ],
-        },
-        limited_flag: 2,
-        mst_navigation_id: 2,
-        name: 'Name 3!',
-        progress: 6,
-        progress_max: 6,
-        start_at: 0,
-      },
-    ],
-  };
-  encryptAndSend(data, res, req);
+export const navigationAll = async (req: Request, res: Response) => {
+  try {
+    // La bussola in home (探検ナビ): le voci vere, vedi services/navigazioneService.ts.
+    const { session_id } = req.body as SessionOnlyInput;
+    const doc = await User.findOne({ current_session: session_id });
+    if (!doc) {
+      return encryptAndSend({}, res, req, ERROR_CODE.NOT_AUTHENTICATED);
+    }
+    encryptAndSend({ navigations: vociNavigazione(doc) }, res, req);
+  } catch (error) {
+    log.error('Error in navigationAll:', error);
+    encryptAndSend({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG, 'Get navigation failed');
+  }
+};
+
+export const navigationRewardReceive = async (req: Request, res: Response) => {
+  try {
+    // Campi della risposta letti con Ghidra (cAPIUserNavigationRewardReceive::Response):
+    // navigation_rewards[{ mst_navigation_id, additional_box }] + navigationNum.
+    const { session_id, mst_navigation_ids } = req.body as NavigationRewardReceiveInput;
+    const doc = await User.findOne({ current_session: session_id });
+    if (!doc) {
+      return encryptAndSend({}, res, req, ERROR_CODE.NOT_AUTHENTICATED);
+    }
+    const premi = await riscattaNavigazioni(doc._id, mst_navigation_ids ?? []);
+    for (const p of premi) log.info('探検ナビ | %s riscatta %d: +%d 狩玉', doc.character_name ?? '?', p.mst_navigation_id, p.karidama);
+    const riscattate = [...(doc.navigazioni_riscattate ?? []), ...premi.map((p) => p.mst_navigation_id)];
+    encryptAndSend({
+      navigation_rewards: premi.map((p) => ({
+        mst_navigation_id: p.mst_navigation_id,
+        additional_box: { payments: [{ amount: p.karidama, mst_payment_id: KARIDAMA_PRINCIPALE }] },
+      })),
+      navigationNum: conteggiNavigazione({ navigazioni_riscattate: riscattate }),
+    }, res, req);
+  } catch (error) {
+    log.error('Error in navigationRewardReceive:', error);
+    encryptAndSend({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG, 'Receive navigation reward failed');
+  }
 };
 
 export const titleAll = (req: Request, res: Response) => {

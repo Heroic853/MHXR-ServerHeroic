@@ -580,6 +580,9 @@ function accreditaPremi(box: BoxPremi, vinti: Map<number, { quanti: number; fami
   return conteggio;
 }
 
+// Una casella di premio vuota: il client la accetta e non mostra niente.
+const NESSUN_PREMIO = { item_list: {} };
+
 export const islandEnd = async (req: Request, res: Response) => {
   try {
     const { mst_quest_id, clear_time, session_id } = req.body as IslandEndInput;
@@ -706,53 +709,22 @@ export const islandEnd = async (req: Request, res: Response) => {
     rewards: {
       luck_value: 4,
       upper_luck_value: 10,
-      multi_reward: {
-        item_list: {
-          materials: [{ amount: 14, mst_material_id: 1714092880 }],
-        },
-      },
-      pick_reward: {
-        item_list: {
-          materials: [{ amount: 10, mst_material_id: 1714092880 }],
-        },
-      },
-      break_reward: {
-        item_list: {
-          materials: [{ amount: 3, mst_material_id: 1714092880 }],
-        },
-      },
-      bingo_reward: {
-        item_list: {
-          materials: [{ amount: 22, mst_material_id: 1714092880 }],
-        },
-      },
-      friend_reward: {
-        //Hunting Friend and Hunting Group Reward
-        item_list: {
-          materials: [{ amount: 5, mst_material_id: 1714092880 }],
-        },
-      },
-      lucky_reward: {
-        item_list: {
-          materials: [{ amount: 12, mst_material_id: 1714092880 }],
-        },
-      },
-      gold_reward: {
-        //Money Luck Skill
-        item_list: {
-          materials: [{ amount: 6, mst_material_id: 1714092880 }],
-        },
-      },
-      enemy_drop_reward: {
-        item_list: {
-          materials: [{ amount: 4, mst_material_id: 1714092880 }],
-        },
-      },
-      break_drop_reward: {
-        item_list: {
-          materials: [{ amount: 2, mst_material_id: 1714092880 }],
-        },
-      },
+      /*
+       * Le caselle "その他報酬" (bonus multi, raccolta, rottura parti, bingo, amici,
+       * fortuna, soldi, drop speciali, raid). Prima erano tutte fisse a
+       * Monster Body Fluid con numeri inventati, mostrate a ogni caccia e mai
+       * accreditate. Nell'originale comparivano solo quando c'era il motivo:
+       * finche' non si calcolano davvero restano vuote, cosi' non promettono niente.
+       */
+      multi_reward: NESSUN_PREMIO,
+      pick_reward: NESSUN_PREMIO,
+      break_reward: NESSUN_PREMIO,
+      bingo_reward: NESSUN_PREMIO,
+      friend_reward: NESSUN_PREMIO,
+      lucky_reward: NESSUN_PREMIO,
+      gold_reward: NESSUN_PREMIO,
+      enemy_drop_reward: NESSUN_PREMIO,
+      break_drop_reward: NESSUN_PREMIO,
 
       //DOUBLE CHECK BELOW START
       //This is the main reward screen
@@ -791,11 +763,7 @@ export const islandEnd = async (req: Request, res: Response) => {
           },
         },
       },
-      raid_reward: {
-        item_list: {
-          materials: [{ amount: 1, mst_material_id: 1714092880 }],
-        },
-      },
+      raid_reward: NESSUN_PREMIO,
       point_info: {
         armor_skill_value: 2,
         campaign_value: 2,

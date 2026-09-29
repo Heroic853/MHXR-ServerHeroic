@@ -57,7 +57,7 @@ export interface IUser extends Document {
   ultimo_ip?: string;
   // Voci del 探検ナビ gia' riscattate (services/navigazioneService.ts).
   navigazioni_riscattate?: number[];
-  // Mappa della storia con la progressione vera (services/progressioneStoria.ts); per ora solo in prova.
+  // Mappa della storia con la progressione vera (services/progressioneStoria.ts).
   progressione_storia?: boolean;
   comment?: string;
   tutorial_flags: number[];
@@ -179,7 +179,8 @@ const userSchema = new Schema({
   ultimo_accesso: Date,
   ultimo_ip: String,
   navigazioni_riscattate: { type: [Number], default: [] },
-  progressione_storia: { type: Boolean, default: false },
+  // Acceso per tutti dal 29/09 (prima solo in prova su Heroic69); false lo spegne per un account.
+  progressione_storia: { type: Boolean, default: true },
   current_session: String,
   comment: String,
   tutorial_flags: [Number],

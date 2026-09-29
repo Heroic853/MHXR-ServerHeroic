@@ -805,8 +805,8 @@ export const islandMapAll = async (req: Request, res: Response) => {
     }
 
     const plainDoc = doc.toObject();
-    // Tutorial finito: la mappa completa, oppure (solo per gli account con
-    // progressione_storia, per ora in prova) quella ridotta a cio' che hanno aperto.
+    // Tutorial finito: la mappa con la progressione vera (progressione_storia,
+    // acceso per tutti), o la mappa completa per chi ha l'interruttore spento.
     const oceanPlain = plainDoc.tutorial_step == 0xffff
       ? (plainDoc.progressione_storia ? mappaProgressiva(full_island, missioniCompletate(plainDoc.cleared_quests)) : full_island)
       : plainDoc.ocean_list;

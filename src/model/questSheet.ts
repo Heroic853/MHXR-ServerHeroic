@@ -40,6 +40,8 @@ const QuestDataSchema = new mongoose.Schema({
   mbDangerLvWarning: String,
   mbRandomBlock: String,
   mBlocks: [Number],
+  // Solo per le quest a blocchi casuali: per ogni area i blocchi possibili (vedi services/blocchiQuest.ts).
+  mBlocchiCasuali: { type: [[Number]], default: undefined },
   mbUseNewDamageCalc: String,
   mDefineId: String,
 });

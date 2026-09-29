@@ -11,6 +11,7 @@ import { createLogger } from '../../../middleware/logger.js';
 const log = createLogger('quest');
 
 import QuestSheet from '../../../model/questSheet.js';
+import { blocchiPerAvvio } from '../../../services/blocchiQuest.js';
 import type { EternalStartInput } from './quest.schema.js';
 
 interface BlockListItem {
@@ -82,7 +83,7 @@ export const eternalStart = async (req: Request, res: Response) => {
         subtargets: [{ instance_id: 0, mst_subtarget_id: 0 }],
       },
     };
-    const blocks = quest?.mBlocks || [];
+    const blocks = blocchiPerAvvio(quest);
     if (blocks.length === 0) {
       return encryptAndSend({}, res, req, ERROR_CODE.QUEST_INFO_FAILED);
     }

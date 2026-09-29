@@ -6,6 +6,7 @@ import { Event, AssualtEvents, M16Events, ScoreEvents, StandingEvents, TicketEve
 const log = createLogger('quest');
 
 import QuestSheet from '../../../model/questSheet.js';
+import { blocchiPerAvvio } from '../../../services/blocchiQuest.js';
 import type { EventStartInput } from './quest.schema.js';
 
 interface BlockListItem {
@@ -93,7 +94,7 @@ export const eventNormalStart = async (req: Request, res: Response) => {
     };
 
     const quest = await QuestSheet.findOne({ mQuestID: String(mst_quest_id) });
-    const blocks = quest?.mBlocks || [];
+    const blocks = blocchiPerAvvio(quest);
 
     if (blocks.length === 0) {
       return encryptAndSend({}, res, req, ERROR_CODE.QUEST_INFO_FAILED);
@@ -162,7 +163,7 @@ export const eventTicketStart = async (req: Request, res: Response) => {
         subtargets: [{ instance_id: 0, mst_subtarget_id: 0 }],
       },
     };
-    const blocks = quest?.mBlocks || [];
+    const blocks = blocchiPerAvvio(quest);
     if (blocks.length === 0) {
       return encryptAndSend({}, res, req, ERROR_CODE.QUEST_INFO_FAILED);
     }
@@ -230,7 +231,7 @@ export const eventScoreStart = async (req: Request, res: Response) => {
         subtargets: [{ instance_id: 0, mst_subtarget_id: 0 }],
       },
     };
-    const blocks = quest?.mBlocks || [];
+    const blocks = blocchiPerAvvio(quest);
     if (blocks.length === 0) {
       return encryptAndSend({}, res, req, ERROR_CODE.QUEST_INFO_FAILED);
     }

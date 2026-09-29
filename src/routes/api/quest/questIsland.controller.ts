@@ -15,6 +15,7 @@ import catalogoRicompense from '../../../json/catalogo-ricompense.json' with { t
 import { readFile } from 'fs/promises';
 
 import QuestSheet from '../../../model/questSheet.js';
+import { blocchiPerAvvio } from '../../../services/blocchiQuest.js';
 import { aggiungiKaridama, saldoKaridama, KARIDAMA_A_MISSIONE, KARIDAMA_PRINCIPALE } from '../../../services/karidamaService.js';
 import type { IslandStartInput, IslandEndInput, IslandMapAllInput } from './quest.schema.js';
 
@@ -286,7 +287,7 @@ export const islandStart = async (req: Request, res: Response) => {
       },
     };
 
-    const blocks = quest?.mBlocks || [];
+    const blocks = blocchiPerAvvio(quest);
     if (blocks.length === 0) {
       return encryptAndSend({}, res, req, ERROR_CODE.QUEST_INFO_FAILED);
     }

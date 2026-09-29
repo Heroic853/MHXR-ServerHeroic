@@ -16,7 +16,8 @@ vi.mock('../../../middleware/logger', () => ({
 import User from '../../../model/user.js';
 import { encryptAndSend } from '../../../services/crypto/encryptionHelpers.js';
 import { ERROR_CODE, ERROR_CATEGORY } from '../../../constants/error.codes.js';
-import { get, otomoGet, partnerGet, equipLevelup, storageInfo, sale, favoriteSet, leveupAuto } from './box.controller.js';
+import { get, otomoGet, partnerGet, equipLevelup, storageInfo, sale, favoriteSet, leveupAuto, materialSell } from './box.controller.js';
+import prezzi from '../../../json/prezzi-vendita.json' with { type: 'json' };
 
 function mockReqRes(body: Record<string, unknown> = {}) {
   const req = { body, ip: '127.0.0.1', get: vi.fn() } as unknown as Request;
@@ -199,47 +200,81 @@ describe('box.controller', () => {
     });
   });
 
+  // Prezzi veri dai file del gioco (prezzi-vendita.json).
+  const [ID_EQUIP, PREZZO_EQUIP] = Object.entries(prezzi.e)[0]!;
+  const [ID_MAT, PREZZO_MAT] = Object.entries(prezzi.m)[0]!;
+  const pezzo = (equipment_id: string, favorite = 0) => ({ equipment_id, mst_equipment_id: Number(ID_EQUIP), favorite });
+
   describe('sale', () => {
-    it('returns sale response data', () => {
-      const { req, res } = mockReqRes({
-        eqp_obj_ids: ['EQP_001'],
-      });
+    it('removes the sold pieces, adds their game price and returns the NEW zeny total', async () => {
+      vi.mocked(User.findOne).mockResolvedValue({
+        _id: 'u1', equipset: {}, box: { zeny: 1000, points: [], equipments: [pezzo('A'), pezzo('B'), pezzo('C')] },
+      } as never);
+      vi.mocked(User.updateOne).mockResolvedValue({} as never);
+      const { req, res } = mockReqRes({ session_id: 's1', eqp_obj_ids: ['A', 'C', 'NON_ESISTE'] });
+      await sale(req, res);
 
-      sale(req, res);
-
+      const totale = 1000 + 2 * PREZZO_EQUIP;
+      expect(User.updateOne).toHaveBeenCalledWith({ _id: 'u1' }, { $set: { 'box.equipments': [pezzo('B')], 'box.zeny': totale } });
       expect(encryptAndSend).toHaveBeenCalledWith(
-        expect.objectContaining({
-          equip_sell: expect.objectContaining({
-            zeny: 750000,
-          }),
-        }),
-        res,
-        req,
+        { equip_sell: { zeny: totale, point: { amount: 0, mst_event_point_id: 0 }, eqp_obj_ids: ['A', 'C'] } }, res, req,
       );
+    });
+
+    it('never sells favorites or pieces worn in an equip set', async () => {
+      vi.mocked(User.findOne).mockResolvedValue({
+        _id: 'u1', equipset: { sets: [{ weapon: { equipment_id: 'W' } }] },
+        box: { zeny: 5, points: [], equipments: [pezzo('F', 1), pezzo('W')] },
+      } as never);
+      const { req, res } = mockReqRes({ session_id: 's1', eqp_obj_ids: ['F', 'W'] });
+      await sale(req, res);
+      expect(User.updateOne).not.toHaveBeenCalled();
+      expect(encryptAndSend).toHaveBeenCalledWith(expect.objectContaining({ equip_sell: expect.objectContaining({ zeny: 5, eqp_obj_ids: [] }) }), res, req);
+    });
+  });
+
+  describe('materialSell', () => {
+    it('sells from all duplicate rows, merges them and returns zeny total + remaining amount', async () => {
+      vi.mocked(User.findOne).mockResolvedValue({
+        _id: 'u1',
+        box: { zeny: 100, materials: [{ mst_material_id: Number(ID_MAT), amount: 3 }, { mst_material_id: 7, amount: 1 }, { mst_material_id: Number(ID_MAT), amount: 4 }] },
+      } as never);
+      vi.mocked(User.updateOne).mockResolvedValue({} as never);
+      const { req, res } = mockReqRes({ session_id: 's1', material: { mst_material_id: Number(ID_MAT), amount: 5 } });
+      await materialSell(req, res);
+
+      const totale = 100 + 5 * PREZZO_MAT;
+      expect(User.updateOne).toHaveBeenCalledWith({ _id: 'u1' }, {
+        $set: { 'box.materials': [{ mst_material_id: 7, amount: 1 }, { mst_material_id: Number(ID_MAT), amount: 2 }], 'box.zeny': totale },
+      });
+      expect(encryptAndSend).toHaveBeenCalledWith({ zeny: totale, material: { amount: 2, mst_material_id: Number(ID_MAT) } }, res, req);
+    });
+
+    it('refuses a material the player does not have (the client would crash looking it up)', async () => {
+      vi.mocked(User.findOne).mockResolvedValue({ _id: 'u1', box: { zeny: 1, materials: [] } } as never);
+      const { req, res } = mockReqRes({ session_id: 's1', material: { mst_material_id: 123, amount: 1 } });
+      await materialSell(req, res);
+      expect(User.updateOne).not.toHaveBeenCalled();
+      expect(encryptAndSend).toHaveBeenCalledWith({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG, 'Material not found');
     });
   });
 
   describe('favoriteSet', () => {
-    it('returns equipment with favorite flag set', () => {
-      const { req, res } = mockReqRes({
-        is_favorite: 1,
-        eqp_obj_id: 'EQP_001',
-      });
+    it('saves the flag and returns the real piece', async () => {
+      vi.mocked(User.findOne).mockResolvedValue({ _id: 'u1', box: { equipments: [pezzo('X'), pezzo('Y')] } } as never);
+      vi.mocked(User.updateOne).mockResolvedValue({} as never);
+      const { req, res } = mockReqRes({ session_id: 's1', is_favorite: 1, eqp_obj_id: 'Y' });
+      await favoriteSet(req, res);
+      expect(User.updateOne).toHaveBeenCalledWith({ _id: 'u1' }, { $set: { 'box.equipments.1.favorite': 1 } });
+      expect(encryptAndSend).toHaveBeenCalledWith({ favorite_set: { equipment: { ...pezzo('Y'), favorite: 1 } } }, res, req);
+    });
 
-      favoriteSet(req, res);
-
-      expect(encryptAndSend).toHaveBeenCalledWith(
-        expect.objectContaining({
-          favorite_set: expect.objectContaining({
-            equipment: expect.objectContaining({
-              equipment_id: 'EQP_001',
-              favorite: 1,
-            }),
-          }),
-        }),
-        res,
-        req,
-      );
+    it('refuses an unknown piece instead of inventing one', async () => {
+      vi.mocked(User.findOne).mockResolvedValue({ _id: 'u1', box: { equipments: [] } } as never);
+      const { req, res } = mockReqRes({ session_id: 's1', is_favorite: 1, eqp_obj_id: 'Z' });
+      await favoriteSet(req, res);
+      expect(User.updateOne).not.toHaveBeenCalled();
+      expect(encryptAndSend).toHaveBeenCalledWith({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG, 'Equipment not found');
     });
   });
 });

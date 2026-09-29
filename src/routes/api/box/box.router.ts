@@ -7,6 +7,8 @@ import {
   StorageGetSchema,
   EquipLevelupSchema,
   MonumentLevelupSchema,
+  SaleSchema,
+  FavoriteSetSchema,
 } from './box.schema.js';
 import { SessionOnlySchema } from '../../../schemas/common.schema.js';
 
@@ -20,7 +22,9 @@ boxRouter.post('/otomo/get', validate(SessionOnlySchema), boxController.otomoGet
 // boxRouter.post("/otomo/skill/remove", );
 boxRouter.post('/partner/get', validate(SessionOnlySchema), boxController.partnerGet);
 boxRouter.post('/partner/levelup', notImplemented.blankResponseEncrypted);
-boxRouter.post('/material/sell', notImplemented.blankResponseEncrypted);
+// Vendita materiali/equipaggiamenti e preferiti prima rispondevano {} e il gioco
+// andava in crash (dettagli in box.controller).
+boxRouter.post('/material/sell', boxController.materialSell);
 
 boxRouter.post('/storage/info', validate(SessionOnlySchema), boxController.storageInfo);
 boxRouter.post('/storage/content/get', validate(StorageGetSchema), boxController.storageGet);
@@ -34,8 +38,8 @@ boxRouter.post('/equipment/awake', notImplemented.blankResponseEncrypted);
 // boxRouter.post("/equipment/potentialup", );
 // boxRouter.post("/equipment/wskillup", );
 boxRouter.post('/equipment/potentialup/auto/set', notImplemented.blankResponseEncrypted);
-boxRouter.post('/equipment/favorite/set', notImplemented.blankResponseEncrypted);
-boxRouter.post('/equipment/sale', notImplemented.blankResponseEncrypted);
+boxRouter.post('/equipment/favorite/set', validate(FavoriteSetSchema), boxController.favoriteSet);
+boxRouter.post('/equipment/sale', validate(SaleSchema), boxController.sale);
 boxRouter.post('/equipment/capacity/info', validate(SessionOnlySchema), boxController.equipCapacityInfo);
 boxRouter.post('/equipment/capacity/expand', validate(SessionOnlySchema), boxController.equipCapacityExpand);
 

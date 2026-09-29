@@ -4,6 +4,7 @@ import { ERROR_CODE, ERROR_CATEGORY } from '../../../constants/error.codes.js';
 import { createLogger } from '../../../middleware/logger.js';
 import User from '../../../model/user.js';
 import { calcMstId as _calcMstId } from '../../../services/defineService.js';
+import prezziVendita from '../../../json/prezzi-vendita.json' with { type: 'json' };
 import type { BoxGetInput, StorageGetInput, EquipLevelupInput, EquipAwakeInput, PotentialupAutoSetInput, SaleInput, FavoriteSetInput, MonumentLevelupInput } from './box.schema.js';
 const log = createLogger('box');
 
@@ -406,54 +407,125 @@ export const potentialupAutoSet = (req: Request, res: Response) => {
   }
 };
 
-export const sale = (req: Request, res: Response) => {
+/*
+ * Vendita e preferiti. Formati letti dal gioco (libMHS.so, Ghidra):
+ * - box/equipment/sale: richiesta { eqp_obj_ids }, risposta
+ *   { equip_sell: { zeny, point: { amount, mst_event_point_id }, eqp_obj_ids } }.
+ *   sServer::setupBoxEquipmentSaleResponse toglie dalla box ogni pezzo di
+ *   eqp_obj_ids e IMPOSTA gli zeny al valore ricevuto (totale, non guadagno).
+ * - box/material/sell: richiesta { material: { amount, mst_material_id } },
+ *   risposta { zeny, material: { amount, mst_material_id } }. Il gioco cerca
+ *   material.mst_material_id nella sua box SENZA controllare che esista: con la
+ *   vecchia risposta vuota {} cercava il materiale 0 e andava in crash.
+ * - box/equipment/favorite/set: richiesta { is_favorite, eqp_obj_id }, risposta
+ *   { favorite_set: { equipment } } col pezzo aggiornato (prima vuoto: crash).
+ * Prezzi da prezzi-vendita.json (tools-js/costruisci-prezzi-vendita.cjs, dai
+ * file del gioco: mSellValue degli equipaggiamenti, mTradePoint dei materiali).
+ */
+const PREZZO_EQUIP = (prezziVendita as { e: Record<string, number> }).e;
+const PREZZO_MATERIALE = (prezziVendita as { m: Record<string, number> }).m;
+
+function sessioneDa(body: unknown): string | null {
+  const s = (body as { session_id?: unknown } | undefined)?.session_id;
+  return typeof s === 'string' && s ? s : null;
+}
+
+/** equipment_id usati in un set equipaggiamento: non si vendono, il set resterebbe rotto. */
+function pezziIndossati(equipset: unknown): Set<string> {
+  const usati = new Set<string>();
+  for (const m of JSON.stringify(equipset ?? {}).matchAll(/"equipment_id":"([^"]+)"/g)) usati.add(m[1]!);
+  return usati;
+}
+
+/** Il gioco IMPOSTA l'importo del punto ricevuto: si rimanda un punto gia' posseduto, invariato. */
+function puntoInvariato(points: unknown): { amount: number; mst_event_point_id: number } {
+  const lista = Array.isArray(points) ? (points as { amount?: number; mst_event_point_id?: number }[]) : [];
+  const p = lista.find((x) => x?.mst_event_point_id);
+  return p ? { amount: Number(p.amount ?? 0), mst_event_point_id: Number(p.mst_event_point_id) } : { amount: 0, mst_event_point_id: 0 };
+}
+
+export const sale = async (req: Request, res: Response) => {
   try {
-    const { eqp_obj_ids: _eqp_obj_ids } = req.body as SaleInput;
-    //todo real data
-    const data = {
-      equip_sell: {
-        eqp_obj_ids: ['EQP_OBJ_12345', 'EQP_OBJ_67890', 'EQP_OBJ_ABCDE'],
-        point: {
-          amount: 2500,
-          mst_event_point_id: 42,
-        },
-        zeny: 750000,
-      },
-    };
-    encryptAndSend(data, res, req);
+    const sessione = sessioneDa(req.body);
+    if (!sessione) return encryptAndSend({}, res, req, ERROR_CODE.NOT_AUTHENTICATED);
+    const ids = (req.body as SaleInput).eqp_obj_ids;
+    const richiesti = new Set((Array.isArray(ids) ? ids : []).map(String));
+    const doc = await User.findOne({ current_session: sessione });
+    if (!doc?.box) return encryptAndSend({}, res, req, ERROR_CODE.NOT_AUTHENTICATED);
+
+    const indossati = pezziIndossati(doc.equipset);
+    const venduti: string[] = [];
+    let guadagno = 0;
+    const restano = (doc.box.equipments ?? []).filter((p) => {
+      const id = String(p.equipment_id);
+      if (!richiesti.has(id) || p.favorite || indossati.has(id)) return true;
+      venduti.push(id);
+      guadagno += PREZZO_EQUIP[String(p.mst_equipment_id)] ?? 0;
+      return false;
+    });
+    const zeny = Number(doc.box.zeny ?? 0) + guadagno;
+    if (venduti.length) {
+      await User.updateOne({ _id: doc._id }, { $set: { 'box.equipments': restano, 'box.zeny': zeny } });
+    }
+    log.info('vendita equip | %s vende %d pezzi (%d chiesti) per %d zeny, totale %d',
+      doc.character_name ?? '?', venduti.length, richiesti.size, guadagno, zeny);
+    encryptAndSend({ equip_sell: { zeny, point: puntoInvariato(doc.box.points), eqp_obj_ids: venduti } }, res, req);
   } catch (error) {
     log.error('Error in sale:', error);
     encryptAndSend({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG, 'Equipment sale failed');
   }
 };
 
-export const favoriteSet = (req: Request, res: Response) => {
+export const materialSell = async (req: Request, res: Response) => {
   try {
+    const sessione = sessioneDa(req.body);
+    if (!sessione) return encryptAndSend({}, res, req, ERROR_CODE.NOT_AUTHENTICATED);
+    const richiesta = (req.body as { material?: { amount?: unknown; mst_material_id?: unknown } }).material ?? {};
+    const idMateriale = Number(richiesta.mst_material_id);
+    const quanti = Math.max(0, Math.floor(Number(richiesta.amount) || 0));
+    const doc = await User.findOne({ current_session: sessione });
+    if (!doc?.box) return encryptAndSend({}, res, req, ERROR_CODE.NOT_AUTHENTICATED);
+
+    // Le righe doppie dello stesso materiale (nate dal tutorial) vengono unite in una.
+    const materiali = doc.box.materials ?? [];
+    const suoi = materiali.filter((m) => Number(m.mst_material_id) === idMateriale);
+    if (!Number.isFinite(idMateriale) || !suoi.length) {
+      return encryptAndSend({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG, 'Material not found');
+    }
+    const posseduti = suoi.reduce((t, m) => t + Number(m.amount ?? 0), 0);
+    const venduti = Math.min(quanti, posseduti);
+    const rimasti = posseduti - venduti;
+    const guadagno = venduti * (PREZZO_MATERIALE[String(idMateriale)] ?? 0);
+    const zeny = Number(doc.box.zeny ?? 0) + guadagno;
+    const altri = materiali.filter((m) => Number(m.mst_material_id) !== idMateriale);
+    const nuovi = rimasti > 0 ? [...altri, { mst_material_id: idMateriale, amount: rimasti }] : altri;
+    await User.updateOne({ _id: doc._id }, { $set: { 'box.materials': nuovi, 'box.zeny': zeny } });
+    log.info('vendita materiale | %s vende %d x %d per %d zeny, ne restano %d',
+      doc.character_name ?? '?', venduti, idMateriale, guadagno, rimasti);
+    encryptAndSend({ zeny, material: { amount: rimasti, mst_material_id: idMateriale } }, res, req);
+  } catch (error) {
+    log.error('Error in materialSell:', error);
+    encryptAndSend({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG, 'Material sale failed');
+  }
+};
+
+export const favoriteSet = async (req: Request, res: Response) => {
+  try {
+    const sessione = sessioneDa(req.body);
+    if (!sessione) return encryptAndSend({}, res, req, ERROR_CODE.NOT_AUTHENTICATED);
     const { is_favorite, eqp_obj_id } = req.body as FavoriteSetInput;
-    //todo real data
-    const data = {
-      favorite_set: {
-        equipment: {
-          auto_potential_composite: 123,
-          awaked: 1,
-          created: 1700000000,
-          elv: 5,
-          endAwakeCount: 10,
-          endAwakeRemain: 3,
-          end_remain: 100,
-          equipment_id: eqp_obj_id,
-          evolve_start_time: 1700001234,
-          favorite: is_favorite,
-          is_awake: 1,
-          is_complete_auto_potential_composite: 0,
-          mst_equipment_id: 987654,
-          potential: 222,
-          slv: 3,
-          start_remain: 200,
-        },
-      },
-    };
-    encryptAndSend(data, res, req);
+    const doc = await User.findOne({ current_session: sessione });
+    if (!doc?.box) return encryptAndSend({}, res, req, ERROR_CODE.NOT_AUTHENTICATED);
+    const indice = (doc.box.equipments ?? []).findIndex((p) => String(p.equipment_id) === String(eqp_obj_id));
+    if (indice === -1) {
+      return encryptAndSend({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG, 'Equipment not found');
+    }
+    const valore = Number(is_favorite) ? 1 : 0;
+    await User.updateOne({ _id: doc._id }, { $set: { [`box.equipments.${indice}.favorite`]: valore } });
+    const pezzo = doc.box.equipments![indice] as unknown as { toObject?: () => Record<string, unknown> } & Record<string, unknown>;
+    const equipment: Record<string, unknown> = { ...(typeof pezzo.toObject === 'function' ? pezzo.toObject() : pezzo), favorite: valore };
+    delete equipment._id;
+    encryptAndSend({ favorite_set: { equipment } }, res, req);
   } catch (error) {
     log.error('Error in favoriteSet:', error);
     encryptAndSend({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG, 'Set favorite failed');

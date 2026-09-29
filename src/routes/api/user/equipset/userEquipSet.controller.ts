@@ -3,6 +3,7 @@ import { encryptAndSend } from '../../../../services/crypto/encryptionHelpers.js
 import { ERROR_CODE, ERROR_CATEGORY } from '../../../../constants/error.codes.js';
 import User from '../../../../model/user.js';
 import { createLogger } from '../../../../middleware/logger.js';
+import { sistemaMercenari } from '../../../../services/setMercenari.js';
 import type { SessionOnlyInput, EquipSetSetInput, EquipSetSocialSetInput } from './userEquipSet.schema.js';
 const log = createLogger('equipSet');
 
@@ -15,7 +16,9 @@ export const equipSetGet = async (req: Request, res: Response) => {
     if (!doc) {
       return encryptAndSend({}, res, req, ERROR_CODE.NOT_AUTHENTICATED);
     }
-    const data = { ...doc.equipset } as object;
+    const utente = doc.toObject();
+    const m = await sistemaMercenari(utente, (f, u) => User.updateOne(f, u));
+    const data = { ...utente.equipset, equip_sets: m.sets } as object;
     encryptAndSend(data, res, req);
   } catch (error) {
     log.error('Error in equipSetGet:', error);
@@ -31,15 +34,16 @@ export const equipSetSet = async (req: Request, res: Response) => {
     if (!doc?.equipset) {
       return encryptAndSend({}, res, req, ERROR_CODE.NOT_AUTHENTICATED);
     }
+    let sets = doc.toObject().equipset?.equip_sets ?? [];
     if (equip_sets.length > 0) {
-      doc.equipset.equip_sets = equip_sets as typeof doc.equipset.equip_sets;
       doc.equipset.selected_equip_set_index = selected_equip_set_index;
       doc.equipset.capacity_eqp_set = capacity_eqp_set;
-      const update = { equipset: doc.equipset };
-
-      await User.findByIdAndUpdate(doc.id, update);
+      await User.findByIdAndUpdate(doc.id, { 'equipset.selected_equip_set_index': selected_equip_set_index, 'equipset.capacity_eqp_set': capacity_eqp_set });
+      // I set arrivano dal gioco: prima di salvarli si completano i mercenari (arma e set validi).
+      const m = await sistemaMercenari(doc.toObject(), (f, u) => User.updateOne(f, u), equip_sets as never[]);
+      sets = m.sets as unknown as typeof sets;
     }
-    const data = { ...doc.equipset } as object;
+    const data = { ...doc.toObject().equipset, equip_sets: sets } as object;
     encryptAndSend(data, res, req);
   } catch (error) {
     log.error('Error in equipSetSet:', error);

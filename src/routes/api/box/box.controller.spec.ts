@@ -33,8 +33,10 @@ describe('box.controller', () => {
   describe('get', () => {
     it('returns box data for authenticated user', async () => {
       const mockBox = { equipments: [], monument: { hr: 1 } };
+      // Il controller lavora su doc.toObject() (sistemaMercenari).
       vi.mocked(User.findOne).mockResolvedValue({
         box: mockBox,
+        toObject() { return { _id: 'u1', box: mockBox }; },
       } as never);
 
       const { req, res } = mockReqRes({ session_id: 'sess-1' });

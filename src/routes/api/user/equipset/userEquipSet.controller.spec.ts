@@ -42,6 +42,7 @@ describe('userEquipSet.controller', () => {
       };
       vi.mocked(User.findOne).mockResolvedValue({
         equipset: mockEquipset,
+        toObject() { return { _id: 'u1', equipset: mockEquipset }; },
       } as never);
 
       const { req, res } = mockReqRes({ session_id: 'sess-1' });
@@ -85,6 +86,7 @@ describe('userEquipSet.controller', () => {
           equip_sets: [],
           selected_equip_set_index: 1,
         },
+        toObject() { return { _id: 'user-1', box: { equipments: [], partners: [] }, equipset: this.equipset }; },
       };
       vi.mocked(User.findOne).mockResolvedValue(mockDoc as never);
       vi.mocked(User.findByIdAndUpdate).mockResolvedValue(null);

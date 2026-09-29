@@ -6,6 +6,7 @@ import User from '../../../model/user.js';
 import { calcMstId as _calcMstId } from '../../../services/defineService.js';
 import prezziVendita from '../../../json/prezzi-vendita.json' with { type: 'json' };
 import { KARIDAMA_IDS } from '../../../services/karidamaService.js';
+import { sistemaMercenari } from '../../../services/setMercenari.js';
 import type { BoxGetInput, StorageGetInput, EquipLevelupInput, EquipAwakeInput, PotentialupAutoSetInput, SaleInput, FavoriteSetInput, MonumentLevelupInput } from './box.schema.js';
 const log = createLogger('box');
 
@@ -18,8 +19,12 @@ export const get = async (req: Request, res: Response) => {
     if (!doc) {
       return encryptAndSend({}, res, req, ERROR_CODE.NOT_AUTHENTICATED); //Not authenticated
     }
+    // Prima che il gioco scarichi il box: ogni mercenario deve avere la sua arma
+    // e un set valido, altrimenti il menu equipaggiamento va in crash.
+    const m = await sistemaMercenari(doc.toObject(), (f, u) => User.updateOne(f, u));
+    if (m.aggiunti.length || m.setCambiati) log.info('mercenari | %s: armi aggiunte %d, set sistemati %s', doc.character_name ?? '?', m.aggiunti.length, m.setCambiati);
     const data = {
-      box: doc.box,
+      box: m.box,
     };
     encryptAndSend(data, res, req);
   } catch (error) {

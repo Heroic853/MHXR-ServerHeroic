@@ -215,7 +215,7 @@ export const paymentLimitGet = (req: Request, res: Response) => {
 // l'utente non ne possiede affatto. Serve tenerli tutti nella risposta: il
 // client si aspetta l'elenco completo, non solo quelli che il giocatore ha.
 const PAYMENT_DEFAULTS = [
-  { amount: 99999, mst_payment_id: 1573159746 },
+  { amount: 50, mst_payment_id: 1573159746 },
   { amount: 25, mst_payment_id: 3301823224 },
   { amount: 5, mst_payment_id: 3016417902 },
   { amount: 3, mst_payment_id: 766408653 },

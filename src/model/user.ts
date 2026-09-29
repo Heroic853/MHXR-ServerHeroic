@@ -220,14 +220,7 @@ const userSchema = new Schema({
       type: [partnerSchema],
       default: DEFAULT_PARTNERS,
     },
-    // 狩玉 (la valuta premium, item_payment nel gioco). Niente microtransazioni:
-    // ogni giocatore ne ha 99999 del tipo 1573159746 (lo stesso di Heroic69, che
-    // funziona in gioco); il server non li scala mai. Senza, il gacha a pagamento
-    // e le altre funzioni a 狩玉 restavano bloccate a 0.
-    payments: {
-      type: [paymentSchema],
-      default: () => [{ mst_payment_id: 1573159746, amount: 99999 }],
-    },
+    payments: [paymentSchema],
     points: [pointSchema],
     powers: [powerSchema],
     zeny: { type: Number, default: 100000 },

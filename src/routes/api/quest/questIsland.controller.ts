@@ -16,6 +16,7 @@ import { readFile } from 'fs/promises';
 
 import QuestSheet from '../../../model/questSheet.js';
 import { blocchiPerAvvio } from '../../../services/blocchiQuest.js';
+import { campiTesoro, tesoroDelBlocco } from '../../../services/tesoriIsole.js';
 import { aggiungiKaridama, saldoKaridama, KARIDAMA_A_MISSIONE, KARIDAMA_PRINCIPALE } from '../../../services/karidamaService.js';
 import type { IslandStartInput, IslandEndInput, IslandMapAllInput } from './quest.schema.js';
 
@@ -292,19 +293,18 @@ export const islandStart = async (req: Request, res: Response) => {
       return encryptAndSend({}, res, req, ERROR_CODE.QUEST_INFO_FAILED);
     }
     blocks.forEach((block, index) => {
+      // Il forziere del tesoro dell'isola, se il blocco ce l'ha (services/tesoriIsole.ts).
+      const tesoro = campiTesoro(block, index + 1);
+      if (tesoro.drop_list.length) log.info('秘宝 | %s: forziere nel blocco %d (%s)', doc.character_name ?? '?', index + 1, tesoroDelBlocco(block)?.nome);
       data.instance_data.block_list.push({
         block_idx: index + 1,
-        block_instance_list: [
-          // { instance_id: 0, serial_no: 1 }
-        ],
-        drop_list: [],
-        instance_id: 0,
+        block_instance_list: tesoro.block_instance_list,
+        drop_list: tesoro.drop_list as never[],
+        instance_id: tesoro.instance_id,
         is_insert: 0,
         is_raid: 0,
         mst_block_id: block,
-        repop_list: [
-          // { amount: 0, serial_no: 0 }
-        ],
+        repop_list: tesoro.repop_list,
       });
     });
     encryptAndSend(data, res, req);

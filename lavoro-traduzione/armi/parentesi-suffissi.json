@@ -1,0 +1,41 @@
+{
+"parentesi": {
+"裂雷": "Splitting Thunder", "花天": "Flower Heaven", "弐天": "Second Heaven", "鯨波": "War Cry", "参天": "Third Heaven", "雨唄": "Rain Song", "水戯": "Water Play", "稚雷": "Young Thunder", "二演": "Second Act", "前奏": "Prelude", "獣王": "Beast King", "惨雨": "Tragic Rain", "落命": "Fallen Life", "絶命": "Death Blow", "寒椿": "Winter Camellia", "中奏": "Interlude", "後奏": "Postlude", "火雷": "Fire Thunder", "瀑布": "Waterfall", "肆天": "Fourth Heaven", "来福": "Good Fortune", "大雷": "Great Thunder", "打砕": "Smash", "粉砕": "Pulverize", "独り寝": "Sleeping Alone", "添い寝": "Sleeping Together", "瀧潰": "Falls Crusher", "寝物語": "Bedtime Story", "鈍感": "Dull", "敏感": "Keen", "察知": "Sense", "慧眼": "Insight", "果実": "Fruit", "超実": "Super Fruit", "極実": "Ultimate Fruit", "三演": "Third Act", "四演": "Fourth Act", "五演": "Fifth Act", "六演": "Sixth Act", "七演": "Seventh Act", "遠撃": "Long Shot", "飛撃": "Flying Shot", "姫撃": "Princess Shot", "桜花": "Cherry Blossom", "山桜": "Mountain Cherry", "山雷": "Mountain Thunder", "逆獄": "Reverse Hell", "火刃": "Fire Blade", "炎刃": "Flame Blade", "進撃": "Advance", "水嵐": "Water Storm", "壱": "I", "弐": "II", "霧雲": "Mist Cloud", "若雷": "Young Thunder", "イカズチ": "Ikazuchi", "朱羅": "Crimson Rakshasa", "是空": "Emptiness", "花一輪": "Single Flower", "薔薇百本": "Hundred Roses", "水渦": "Whirlpool", "百花繚乱": "Hundred Flowers", "燦然": "Brilliance", "紅牙": "Crimson Fang", "炎天": "Blazing Sky", "烈日": "Scorching Sun", "野雷": "Wild Thunder", "反獄": "Anti-Hell", "一角": "One Horn", "天角": "Heaven Horn", "三ツ角": "Three Horns", "黄龍": "Yellow Dragon", "飛泉": "Flying Spring", "レア": "Rare", "幻魔": "Phantom Demon", "ウェルダン": "Well-Done", "ミディアム": "Medium", "高等幻魔": "High Phantom Demon", "黒雷": "Black Thunder", "麒麟": "Kirin", "大麒麟": "Great Kirin", "断海": "Sea Cleaver", "上兵": "Elite Soldier", "王者": "Champion", "鬼武者": "Onimusha", "鬼変化": "Oni Transformation", "終奏": "Finale", "禊": "Purification", "伏雷": "Hidden Thunder", "悪獄": "Evil Hell", "氷華": "Ice Flower", "犬牙": "Canine Fang", "双火": "Twin Fire", "銀": "Silver", "焔二重": "Double Flame", "八重桜": "Double Cherry", "鮫斬": "Shark Cutter", "晃刃": "Gleaming Blade", "景秀": "Keishu", "ベリル": "Beryl", "霧斬": "Mist Cutter", "花吹雪": "Petal Storm", "大花吹雪": "Great Petal Storm", "参": "III", "黒": "Black", "稲妻": "Lightning", "阿修羅": "Asura", "鳴雷": "Roaring Thunder", "戦ノ音": "Sound of War", "壱式": "Type I", "火": "Fire", "水": "Water", "雷": "Thunder", "氷": "Ice", "土": "Earth", "滝音": "Sound of Falls", "称賛": "Praise", "祝福": "Blessing", "折雷": "Broken Thunder", "翼": "Wing", "戦士": "Warrior", "戦神": "War God", "探索": "Exploration", "脱出": "Escape", "伍天": "Fifth Heaven", "陸天": "Sixth Heaven", "漆天": "Seventh Heaven", "土雷": "Earth Thunder", "火薬玉": "Gunpowder Ball", "水禍玉": "Water Calamity Ball", "霜降玉": "Frost Ball", "雷光玉": "Lightning Ball", "泥団子玉": "Mud Ball", "宴": "Feast", "饗宴": "Banquet", "生地": "Dough", "網焼": "Grilled", "黒蜜塗": "Brown Sugar Glazed", "天下一品": "Peerless", "高丸": "Takamaru", "水鬼": "Water Oni", "藍鼠": "Indigo Mouse", "白粉花": "Four O'Clock Flower", "爪駆": "Claw Rush", "猿王": "Monkey King", "夜叉": "Yaksha", "爆雷": "Blast Thunder", "燃焼": "Combustion", "爆燃": "Deflagration"
+},
+"suffissi": {
+"改": "+",
+"極": " Ultimate",
+"真": " True",
+"零": " Zero",
+"絶": " Absolute",
+"・凶": " Wicked",
+"・荒": " Savage",
+"・贋": " Replica",
+"・鋼": " Steel",
+"・黒閃": " Black Flash",
+"・煌閃": " Radiant Flash",
+"・始": " Origin",
+"・深": " Abyss",
+"・幻": " Phantom",
+"・秘": " Arcane",
+"・零": " Zero",
+"・絶": " Absolute",
+"・に": " 2",
+"・さん": " 3",
+"・弐": " II",
+"・参": " III",
+"・零弐": " Zero II",
+"・零参": " Zero III",
+"・絶弐": " Absolute II",
+"・絶参": " Absolute III",
+"・皇": " Emperor",
+"・戦": " Battle",
+"・天": " Heaven",
+"・解放": " Unleashed",
+"・真打": " Masterpiece",
+"α試": " α Proto",
+"β試": " β Proto",
+"γ試": " γ Proto",
+"・": " "
+}
+}

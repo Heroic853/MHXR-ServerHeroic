@@ -1,0 +1,5 @@
+# Storico degli aggiornamenti delle risorse (res_ver). Una riga per versione:
+#   <versione> <pacchetti cambiati rispetto alla versione prima, percorsi relativi a stdDL/>
+# Lo usa tools-js/pubblica-risorse.sh per creare le cartelle di differenze dXXXX_YYYY.
+283 cmn/GUI.00.fpk cmn/resident.00.fpk
+284 cmn/resident.00.fpk

@@ -1,0 +1,512 @@
+[
+ {
+  "i": 0,
+  "jp": "もどる",
+  "en": "Back"
+ },
+ {
+  "i": 1,
+  "jp": "を手に入れた",
+  "en": "obtained"
+ },
+ {
+  "i": 2,
+  "jp": "2倍ダメージ！",
+  "en": "2x Damage!"
+ },
+ {
+  "i": 3,
+  "jp": "素材",
+  "en": "Material"
+ },
+ {
+  "i": 4,
+  "jp": "会心！",
+  "en": "Critical!"
+ },
+ {
+  "i": 5,
+  "jp": "会心＋2倍ダメージ！",
+  "en": "Critical + 2x Damage!"
+ },
+ {
+  "i": 6,
+  "jp": "ダメージ半減！",
+  "en": "Damage Halved!"
+ },
+ {
+  "i": 7,
+  "jp": "獲得アイテム確認",
+  "en": "Items Obtained"
+ },
+ {
+  "i": 8,
+  "jp": "ステータス確認",
+  "en": "Check Status"
+ },
+ {
+  "i": 9,
+  "jp": "リタイアする",
+  "en": "Retire"
+ },
+ {
+  "i": 10,
+  "jp": "スキル確認",
+  "en": "Check Skills"
+ },
+ {
+  "i": 11,
+  "jp": "本当にあきらめますか？\r\nあきらめると獲得アイテムがなく\r\nなります。",
+  "en": "Do you really want to give up?\r\nIf you give up, you will lose\r\nthe items obtained."
+ },
+ {
+  "i": 12,
+  "jp": "本当にあきらめますか？\r\nあきらめると乱入モンスター\r\n討伐報酬が入手できません。\r\n※獲得アイテムは入手できます。 ",
+  "en": "Do you really want to give up?\r\nIf you give up, you will not get\r\nthe intruding monster rewards.\r\n*You keep the items obtained. "
+ },
+ {
+  "i": 13,
+  "jp": "本当にあきらめますか？\r\nあきらめると獲得アイテムと\r\n深域アイテムがなくなります。",
+  "en": "Do you really want to give up?\r\nIf you give up, you will lose the\r\nitems and Deep Zone items obtained."
+ },
+ {
+  "i": 14,
+  "jp": "力尽きました",
+  "en": "You fainted"
+ },
+ {
+  "i": 15,
+  "jp": "クエストに失敗しました",
+  "en": "Quest failed"
+ },
+ {
+  "i": 16,
+  "jp": "これまで獲得したアイテムは失われます",
+  "en": "All items obtained so far will be lost"
+ },
+ {
+  "i": 17,
+  "jp": "狩玉を１個使いコンティニューしますか？",
+  "en": "Use 1 Hunting Orb to continue?"
+ },
+ {
+  "i": 18,
+  "jp": "×%d",
+  "en": "×%d"
+ },
+ {
+  "i": 19,
+  "jp": "これまで獲得したアイテムは失われます",
+  "en": "All items obtained so far will be lost"
+ },
+ {
+  "i": 20,
+  "jp": "本当によろしいですか？",
+  "en": "Are you sure?"
+ },
+ {
+  "i": 21,
+  "jp": "ハンターを選択してください",
+  "en": "Please select a hunter"
+ },
+ {
+  "i": 22,
+  "jp": "自分の装備",
+  "en": "My Equipment"
+ },
+ {
+  "i": 23,
+  "jp": "現在の装備",
+  "en": "Current Equipment"
+ },
+ {
+  "i": 24,
+  "jp": "装　備",
+  "en": "Equip"
+ },
+ {
+  "i": 25,
+  "jp": "オススメのメンバーが選択されました。\r\n\r\nこのメンバーでクエストに\r\n行ってもいいですか？",
+  "en": "The recommended members have been selected.\r\n\r\nGo on the quest\r\nwith these members?"
+ },
+ {
+  "i": 26,
+  "jp": "連れて行く",
+  "en": "Take Along"
+ },
+ {
+  "i": 27,
+  "jp": "やめる",
+  "en": "Cancel"
+ },
+ {
+  "i": 28,
+  "jp": "オススメセット",
+  "en": "Recommended Set"
+ },
+ {
+  "i": 29,
+  "jp": "山菜ジイさん",
+  "en": "Old Herb Man"
+ },
+ {
+  "i": 30,
+  "jp": "行商ばあちゃん",
+  "en": "Peddler Granny"
+ },
+ {
+  "i": 31,
+  "jp": "狩友",
+  "en": "Hunting Friend"
+ },
+ {
+  "i": 32,
+  "jp": "モンスターに負けるな！\r\nがんばれ！　応援してるぞ！",
+  "en": "Don't lose to the monster!\r\nGo for it! I'm rooting for you!"
+ },
+ {
+  "i": 33,
+  "jp": "モンスターに負けないで！\r\nがんばって！　応援してる！",
+  "en": "Don't lose to the monster!\r\nYou can do it! I'm rooting for you!"
+ },
+ {
+  "i": 34,
+  "jp": "珍しいの。\r\nここに人が来るとは。",
+  "en": "How unusual.\r\nTo think someone would come here."
+ },
+ {
+  "i": 35,
+  "jp": "もし狩玉を持っていたら\r\n<RGB ff0505ff>レアな素材や装備</RGB>と交換してやるぞ。\r\n中身は見てのお楽しみじゃ！",
+  "en": "If you have Hunting Orbs,\r\nI'll trade you <RGB ff0505ff>rare materials or gear</RGB>.\r\nWhat you get is a surprise!"
+ },
+ {
+  "i": 36,
+  "jp": "狩玉1個と交換するか？\r\n<COL 99cf60ff>所持狩玉数：%d個\r\n　狩玉：%d個\r\n　支給用狩玉：%d個</COL>\r\n<RGB ff0505ff>（支給用狩玉から先に使用します）</RGB>",
+  "en": "Trade 1 Hunting Orb?\r\n<COL 99cf60ff>Hunting Orbs owned: %d\r\n　Hunting Orbs: %d\r\n　Free Hunting Orbs: %d</COL>\r\n<RGB ff0505ff>(Free Hunting Orbs are used first)</RGB>"
+ },
+ {
+  "i": 37,
+  "jp": "しかたないのう。\r\nせっかくだから\r\nワシの集めたオタカラをやろう。",
+  "en": "Oh well, it can't be helped.\r\nSince you came all this way,\r\nhave some treasure I collected."
+ },
+ {
+  "i": 38,
+  "jp": "大切にするんじゃぞ。",
+  "en": "Take good care of it."
+ },
+ {
+  "i": 39,
+  "jp": "話のわかる奴じゃ！\r\nワシのトッテオキをやろう！",
+  "en": "You understand me!\r\nHave my special treasure!"
+ },
+ {
+  "i": 40,
+  "jp": "なくさないように後で\r\n<RGB ff0505ff>プレゼント</RGB>として届けてやるぞい！",
+  "en": "So you don't lose it, I'll send it\r\nlater as a <RGB ff0505ff>Present</RGB>!"
+ },
+ {
+  "i": 41,
+  "jp": "あんれ、珍しいとこで会うなあ～。\r\nせっかくだ。\r\nさっき仕入れたばかりの\r\nこれさやるべえ。",
+  "en": "Well now, fancy meeting you here~.\r\nSince you're here,\r\nhave this, I just\r\ngot it in stock."
+ },
+ {
+  "i": 42,
+  "jp": "先輩ハンター",
+  "en": "Senior Hunter"
+ },
+ {
+  "i": 43,
+  "jp": "狩友１",
+  "en": "Hunting Friend 1"
+ },
+ {
+  "i": 44,
+  "jp": "狩友２",
+  "en": "Hunting Friend 2"
+ },
+ {
+  "i": 45,
+  "jp": "名無しのハンター",
+  "en": "Nameless Hunter"
+ },
+ {
+  "i": 46,
+  "jp": "獲得アイテム一覧",
+  "en": "Items Obtained"
+ },
+ {
+  "i": 47,
+  "jp": "武技確認",
+  "en": "Check Martial Arts"
+ },
+ {
+  "i": 48,
+  "jp": "ステータス確認",
+  "en": "Check Status"
+ },
+ {
+  "i": 49,
+  "jp": "操作オプション",
+  "en": "Control Options"
+ },
+ {
+  "i": 50,
+  "jp": "リタイアする",
+  "en": "Retire"
+ },
+ {
+  "i": 51,
+  "jp": "サブターゲット確認",
+  "en": "Check Sub-target"
+ },
+ {
+  "i": 52,
+  "jp": "クエストに戻る",
+  "en": "Return to Quest"
+ },
+ {
+  "i": 53,
+  "jp": "表示オプション",
+  "en": "Display Options"
+ },
+ {
+  "i": 54,
+  "jp": "秘技確認",
+  "en": "Check Secret Arts"
+ },
+ {
+  "i": 55,
+  "jp": "状態：",
+  "en": "Status:"
+ },
+ {
+  "i": 56,
+  "jp": "効果：",
+  "en": "Effect:"
+ },
+ {
+  "i": 57,
+  "jp": "スキル：",
+  "en": "Skill:"
+ },
+ {
+  "i": 58,
+  "jp": "毒",
+  "en": "Poison"
+ },
+ {
+  "i": 59,
+  "jp": "猛毒",
+  "en": "Deadly Poison"
+ },
+ {
+  "i": 60,
+  "jp": "劇毒",
+  "en": "Noxious Poison"
+ },
+ {
+  "i": 61,
+  "jp": "睡眠",
+  "en": "Sleep"
+ },
+ {
+  "i": 62,
+  "jp": "麻痺",
+  "en": "Paralysis"
+ },
+ {
+  "i": 63,
+  "jp": "泥まみれ",
+  "en": "Muddy"
+ },
+ {
+  "i": 64,
+  "jp": "雪だるま",
+  "en": "Snowman"
+ },
+ {
+  "i": 65,
+  "jp": "気絶",
+  "en": "Stun"
+ },
+ {
+  "i": 66,
+  "jp": "泡状態【小】",
+  "en": "Bubbles (Small)"
+ },
+ {
+  "i": 67,
+  "jp": "泡状態【大】",
+  "en": "Bubbles (Large)"
+ },
+ {
+  "i": 68,
+  "jp": "被ダメージアップ",
+  "en": "Damage Taken Up"
+ },
+ {
+  "i": 69,
+  "jp": "体力が減り続ける",
+  "en": "Health keeps decreasing"
+ },
+ {
+  "i": 70,
+  "jp": "体力が減り続ける",
+  "en": "Health keeps decreasing"
+ },
+ {
+  "i": 71,
+  "jp": "体力が減り続ける",
+  "en": "Health keeps decreasing"
+ },
+ {
+  "i": 72,
+  "jp": "身動きが取れない",
+  "en": "Cannot move"
+ },
+ {
+  "i": 73,
+  "jp": "身動きが取れない",
+  "en": "Cannot move"
+ },
+ {
+  "i": 74,
+  "jp": "動きが鈍くなり\r\n行動が制限される",
+  "en": "Movement slows and\r\nactions are limited"
+ },
+ {
+  "i": 75,
+  "jp": "動きが鈍くなり\r\n行動が制限される",
+  "en": "Movement slows and\r\nactions are limited"
+ },
+ {
+  "i": 76,
+  "jp": "身動きが取れない",
+  "en": "Cannot move"
+ },
+ {
+  "i": 77,
+  "jp": "回避行動の無敵時間が\r\n長くなる",
+  "en": "Evasion invincibility\r\nlasts longer"
+ },
+ {
+  "i": 78,
+  "jp": "行動が制限され、\r\nダメージが大きくなる",
+  "en": "Actions are limited and\r\ndamage taken increases"
+ },
+ {
+  "i": 79,
+  "jp": "モンスターから受ける\r\nダメージが大きくなる",
+  "en": "Damage taken from\r\nmonsters increases"
+ },
+ {
+  "i": 80,
+  "jp": "火傷",
+  "en": "Fireblight"
+ },
+ {
+  "i": 81,
+  "jp": "感電",
+  "en": "Thunderblight"
+ },
+ {
+  "i": 82,
+  "jp": "ずぶ濡れ",
+  "en": "Waterblight"
+ },
+ {
+  "i": 83,
+  "jp": "爆破やられ",
+  "en": "Blastblight"
+ },
+ {
+  "i": 84,
+  "jp": "狂竜ウイルス感染",
+  "en": "Frenzy Infected"
+ },
+ {
+  "i": 85,
+  "jp": "狂竜ウイルス発症",
+  "en": "Frenzy Outbreak"
+ },
+ {
+  "i": 86,
+  "jp": "狂撃化",
+  "en": "Frenzied"
+ },
+ {
+  "i": 87,
+  "jp": "裂傷",
+  "en": "Bleeding"
+ },
+ {
+  "i": 88,
+  "jp": "武技Ｐが\r\n減少し続ける",
+  "en": "Martial Art P\r\nkeeps decreasing"
+ },
+ {
+  "i": 89,
+  "jp": "武技が\r\n使用できなくなる",
+  "en": "Martial Arts\r\ncannot be used"
+ },
+ {
+  "i": 90,
+  "jp": "スキルが\r\n無効になる",
+  "en": "Skills are\r\ndisabled"
+ },
+ {
+  "i": 91,
+  "jp": "一定時間が経過すると\r\n爆発ダメージを受ける",
+  "en": "Takes explosion damage\r\nafter some time"
+ },
+ {
+  "i": 92,
+  "jp": "ゲージが最大になると\r\n狂竜ウイルスが発症",
+  "en": "When the gauge is full,\r\nthe Frenzy breaks out"
+ },
+ {
+  "i": 93,
+  "jp": "体力を回復できず、\r\nダメージが大きくなる",
+  "en": "Health cannot be recovered\r\nand damage taken increases"
+ },
+ {
+  "i": 94,
+  "jp": "会心率が上昇する",
+  "en": "Critical rate increases"
+ },
+ {
+  "i": 95,
+  "jp": "回避またはガードを\r\n行うとダメージを受ける",
+  "en": "Taking damage when\r\nevading or guarding"
+ },
+ {
+  "i": 96,
+  "jp": "Lv.",
+  "en": "Lv."
+ },
+ {
+  "i": 97,
+  "jp": "必要武技Ｐ :",
+  "en": "Martial Art P needed:"
+ },
+ {
+  "i": 98,
+  "jp": "技玉が不足しているため\r\n武技が発動できません",
+  "en": "Not enough Skill Orbs:\r\nthe Martial Art cannot be used"
+ },
+ {
+  "i": 99,
+  "jp": "操作パッド上でも回避操作を\r\n可能にする",
+  "en": "Allows evading on the\r\ncontrol pad as well"
+ },
+ {
+  "i": 100,
+  "jp": "敵の透過処理を行う",
+  "en": "Makes enemies see-through"
+ },
+ {
+  "i": 101,
+  "jp": "自分以外の攻撃エフェクト\r\nを縮小する",
+  "en": "Shrinks other players'\r\nattack effects"
+ }
+]

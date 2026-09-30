@@ -3,3 +3,4 @@
 # Lo usa tools-js/pubblica-risorse.sh per creare le cartelle di differenze dXXXX_YYYY.
 283 cmn/GUI.00.fpk cmn/resident.00.fpk
 284 cmn/resident.00.fpk
+285 cmn/GUI.00.fpk

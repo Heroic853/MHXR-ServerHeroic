@@ -59,6 +59,9 @@ export interface IUser extends Document {
   navigazioni_riscattate?: number[];
   // Mappa della storia con la progressione vera (services/progressioneStoria.ts).
   progressione_storia?: boolean;
+  // Bonus % sulle 狩玉 di fine missione e decimali accumulati (karidamaConBonus).
+  bonus_karidama?: number;
+  karidama_frazione?: number;
   comment?: string;
   tutorial_flags: number[];
   model_info?: ModelInfo;
@@ -181,6 +184,8 @@ const userSchema = new Schema({
   navigazioni_riscattate: { type: [Number], default: [] },
   // Acceso per tutti dal 29/09 (prima solo in prova su Heroic69); false lo spegne per un account.
   progressione_storia: { type: Boolean, default: true },
+  bonus_karidama: { type: Number, default: 0 },
+  karidama_frazione: { type: Number, default: 0 },
   current_session: String,
   comment: String,
   tutorial_flags: [Number],

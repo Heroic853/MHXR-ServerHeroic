@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { saldoKaridama, aggiungiKaridama, spendiKaridama, KARIDAMA_PRINCIPALE } from './karidamaService.js';
+import { saldoKaridama, aggiungiKaridama, spendiKaridama, karidamaConBonus, KARIDAMA_PRINCIPALE } from './karidamaService.js';
 
 describe('karidamaService (狩玉)', () => {
   it('the balance is the sum of the 6 karidama types, other payments ignored', () => {
@@ -23,5 +23,30 @@ describe('karidamaService (狩玉)', () => {
     expect(box.payments.every((p) => p.amount >= 0)).toBe(true);
     expect(spendiKaridama(box, 4)).toBe(false);
     expect(saldoKaridama(box.payments)).toBe(3);
+  });
+});
+
+describe('karidamaConBonus (bonus donatori)', () => {
+  it('no bonus: always 3, nothing accumulated', () => {
+    expect(karidamaConBonus(3, 0, 0)).toEqual({ gemme: 3, frazione: 0 });
+    expect(karidamaConBonus(3, undefined, undefined)).toEqual({ gemme: 3, frazione: 0 });
+  });
+
+  it('+10% gives one extra gem every 10 missions, without losing decimals', () => {
+    let f = 0, tot = 0;
+    for (let i = 0; i < 10; i++) { const r = karidamaConBonus(3, 10, f); f = r.frazione; tot += r.gemme; }
+    expect(tot).toBe(33);
+    expect(f).toBe(0);
+  });
+
+  it('+30% over 10 missions gives 39', () => {
+    let f = 0, tot = 0;
+    for (let i = 0; i < 10; i++) { const r = karidamaConBonus(3, 30, f); f = r.frazione; tot += r.gemme; }
+    expect(tot).toBe(39);
+  });
+
+  it('the percentage is clamped to 0-100', () => {
+    expect(karidamaConBonus(3, 500, 0).gemme).toBe(6);
+    expect(karidamaConBonus(3, -20, 0).gemme).toBe(3);
   });
 });

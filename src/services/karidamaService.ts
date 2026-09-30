@@ -45,3 +45,18 @@ export function spendiKaridama(box: { payments?: Voce[] }, n: number): boolean {
   }
   return true;
 }
+
+/*
+ * Bonus in percentuale sulle 狩玉 di fine missione, per singolo giocatore
+ * (user.bonus_karidama, 0-100; si imposta con tools-js/bonus-donatore.cjs).
+ * Con 3 gemme a missione un +10% vale 0,3: i decimali non si buttano ma si
+ * accumulano in user.karidama_frazione, e quando arrivano a 1 diventano una gemma.
+ */
+export const BONUS_MASSIMO = 100;
+
+export function karidamaConBonus(base: number, percento: unknown, frazione: unknown): { gemme: number; frazione: number } {
+  const p = Math.min(BONUS_MASSIMO, Math.max(0, Math.floor(Number(percento) || 0)));
+  const extra = (base * p) / 100 + Math.max(0, Number(frazione) || 0);
+  const intero = Math.floor(extra + 1e-9);
+  return { gemme: base + intero, frazione: Math.round((extra - intero) * 1000) / 1000 };
+}

@@ -11,6 +11,7 @@ import {
   getScheduleIndex,
   getScheduleIndexOld,
   getFirstDL,
+  getDownload,
 } from './web.controller.js';
 
 function mockReqRes() {
@@ -25,8 +26,9 @@ function mockReqRes() {
 }
 
 // Nessuna SITE_URL impostata nell'ambiente di test: i controller ricadono sul
-// default (mhxr-feedback su Heroic853SiteV1), e' questo il valore da aspettarsi.
-const SITO_DEFAULT = 'https://heroic853.github.io/Heroic853SiteV1/mhxr-feedback';
+// default (newmods su Heroic853SiteV1), e' questo il valore da aspettarsi.
+const SITO_DEFAULT = 'https://heroic853.github.io/Heroic853SiteV1/newmods';
+const PAGINA_DOWNLOAD = 'https://heroic853.github.io/Heroic853SiteV1/MessageOfGratitude';
 
 describe('web.controller', () => {
   beforeEach(() => {
@@ -84,14 +86,14 @@ describe('web.controller', () => {
     });
   });
 
-  describe('getFirstDL', () => {
-    it('sends first-dl.html file', () => {
-      const { req, res } = mockReqRes();
-      getFirstDL(req, res);
-
-      expect(res.sendFile).toHaveBeenCalledWith(
-        expect.stringContaining('first-dl.html'),
-      );
+  describe('download pages', () => {
+    it('first_dl and download redirect to the gratitude page', () => {
+      for (const f of [getFirstDL, getDownload]) {
+        const { req, res } = mockReqRes();
+        f(req, res);
+        expect(res.redirect).toHaveBeenCalledWith(PAGINA_DOWNLOAD);
+        expect(res.sendFile).not.toHaveBeenCalled();
+      }
     });
   });
 });

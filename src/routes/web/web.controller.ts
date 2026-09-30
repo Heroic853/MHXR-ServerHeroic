@@ -16,7 +16,15 @@ const __dirname = import.meta.dirname ?? fileURLToPath(new URL('.', import.meta.
  *
  * Si cambia da .env con SITE_URL senza ricompilare.
  */
-const SITO = (process.env.SITE_URL || 'https://heroic853.github.io/Heroic853SiteV1/mhxr-feedback').trim();
+const SITO = (process.env.SITE_URL || 'https://heroic853.github.io/Heroic853SiteV1/newmods').trim();
+
+/*
+ * Pagina mostrata mentre il gioco scarica le risorse (/web/notice/first_dl e
+ * /web/download): prima era una nostra pagina nera "Downloading game resources...",
+ * ora il messaggio di ringraziamento del sito (scelta del gestore, 30/09).
+ * Si cambia da .env con DOWNLOAD_PAGE_URL senza ricompilare.
+ */
+const PAGINA_DOWNLOAD = (process.env.DOWNLOAD_PAGE_URL || 'https://heroic853.github.io/Heroic853SiteV1/MessageOfGratitude').trim();
 
 /*
  * Tutte le altre pagine web interne del gioco (catch-all /web/*: guide armi,
@@ -48,13 +56,11 @@ export const getScheduleIndexOld = (req: Request, res: Response) => {
 };
 
 export const getDownload = (req: Request, res: Response) => {
-  const filePath = path.join(__dirname, '..', '..', 'public', 'web-res', 'download.html');
-  res.sendFile(filePath);
+  res.redirect(PAGINA_DOWNLOAD);
 };
 
 export const getFirstDL = (req: Request, res: Response) => {
-  const filePath = path.join(__dirname, '..', '..', 'public', 'web-res', 'first-dl.html');
-  res.sendFile(filePath);
+  res.redirect(PAGINA_DOWNLOAD);
 };
 
 export const getPatcher = (req: Request, res: Response) => {

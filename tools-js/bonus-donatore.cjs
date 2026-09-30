@@ -3,14 +3,15 @@
  *
  * Il server lo applica in quest/island/end (services/karidamaService.ts,
  * karidamaConBonus). Con 3 gemme a missione i decimali si accumulano: con +10%
- * arriva una gemma in piu' ogni 10 missioni, con +30% ogni 3-4 missioni.
+ * una gemma in piu' ogni 3-4 missioni (33 ogni 10), con +30% quasi sempre 4
+ * (39 ogni 10), con +100% sempre 6, con +500% sempre 18.
  * Vale dalla prossima missione, non serve riavviare niente.
  *
  *   node /app/tools/bonus-donatore.cjs --elenco
  *       chi ha un bonus
  *
  *   node /app/tools/bonus-donatore.cjs --utente=Configur --percento=20
- *       mette il bonus (da 0 a 100; 0 lo toglie)
+ *       mette il bonus (da 0 a 500; 0 lo toglie)
  *
  *   node /app/tools/bonus-donatore.cjs --utente=Configur
  *       mostra il bonus di quel giocatore senza cambiare niente
@@ -31,7 +32,7 @@ const arg = (n) => {
 const UTENTE = arg('utente');
 const PERCENTO = arg('percento');
 const ELENCO = process.argv.includes('--elenco');
-const MASSIMO = 100;
+const MASSIMO = 500; // come BONUS_MASSIMO in services/karidamaService.ts
 
 (async () => {
   await mongoose.connect(`mongodb://${DB_USER}:${DB_PASSWORD}@${DB_IP}:${DB_PORT}`, { dbName: DB_NAME });
@@ -44,7 +45,7 @@ const MASSIMO = 100;
       return;
     }
     if (!UTENTE) {
-      console.log('Uso: --elenco   oppure   --utente=NOME [--percento=0..100]');
+      console.log('Uso: --elenco   oppure   --utente=NOME [--percento=0..500]');
       process.exitCode = 1;
       return;
     }

@@ -45,8 +45,10 @@ describe('karidamaConBonus (bonus donatori)', () => {
     expect(tot).toBe(39);
   });
 
-  it('the percentage is clamped to 0-100', () => {
-    expect(karidamaConBonus(3, 500, 0).gemme).toBe(6);
+  it('the percentage is clamped to 0-500', () => {
+    expect(karidamaConBonus(3, 200, 0).gemme).toBe(9);
+    expect(karidamaConBonus(3, 500, 0).gemme).toBe(18);
+    expect(karidamaConBonus(3, 900, 0).gemme).toBe(18);
     expect(karidamaConBonus(3, -20, 0).gemme).toBe(3);
   });
 });

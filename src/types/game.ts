@@ -307,6 +307,8 @@ export interface NyankenCooldown {
   mst_nyanken_id: number;
   last_draw_time: number;
   pagata?: boolean;
+  inizio?: number;
+  fine?: number;
 }
 
 // --- Selected partner ---

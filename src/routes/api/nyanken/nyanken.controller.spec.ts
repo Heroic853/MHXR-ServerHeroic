@@ -1,11 +1,11 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { Request, Response } from 'express';
 
 vi.mock('../../../services/crypto/encryptionHelpers');
 vi.mock('../../../model/user');
 
 import { encryptAndSend } from '../../../services/crypto/encryptionHelpers.js';
-import { progress, islandInfoGet, historyGet, QuestList, result, start } from './nyanken.controller.js';
+import { progress, islandInfoGet, historyGet, QuestList, result, start, returnHome } from './nyanken.controller.js';
 import User from '../../../model/user.js';
 import pool from '../../../json/nyanken-equip.json' with { type: 'json' };
 import categorie from '../../../json/nyanken-categorie.json' with { type: 'json' };
@@ -24,19 +24,10 @@ describe('nyanken.controller', () => {
   });
 
   describe('progress', () => {
-    it('returns nyanken progress data', () => {
+    it('without an expedition answers "none" (no fixed fake data)', async () => {
       const { req, res } = mockReqRes({});
-      progress(req, res);
-
-      expect(encryptAndSend).toHaveBeenCalledWith(
-        expect.objectContaining({
-          balloon_color_id: 3,
-          mst_nyanken_id: 2022298312,
-          currency_ammount: 5,
-        }),
-        res,
-        req,
-      );
+      await progress(req, res);
+      expect(encryptAndSend).toHaveBeenCalledWith(expect.objectContaining({ mst_nyanken_id: 0, return_time: 0, currency_ammount: 0 }), res, req);
     });
   });
 
@@ -102,14 +93,16 @@ describe('nyanken result (spedizione)', () => {
     vi.resetAllMocks();
   });
 
+  // Spedizione gia' tornata (fine nel passato): i premi si possono ritirare.
+  const tornata = (id = 2022298312) => ({ mst_nyanken_id: id, inizio: 1000, fine: 2000 });
   const utente = (equipments: { equipment_id: string }[], eqp_box = 200) => ({
-    _id: 'u1', character_name: 'Heroic69', box: { equipments, capacity: { eqp_box }, payments: [] },
+    _id: 'u1', character_name: 'Heroic69', nyanken_cooldown: tornata(), box: { equipments, capacity: { eqp_box }, payments: [] },
   });
 
   it('gives 3 real, not-yet-owned pieces shaped exactly like DEFAULT_EQUIPMENT', async () => {
     const posseduto = pool[0]!.n;
     vi.mocked(User.findOne).mockResolvedValue(utente([{ equipment_id: posseduto }]) as never);
-    vi.mocked(User.updateOne).mockResolvedValue({} as never);
+    vi.mocked(User.updateOne).mockResolvedValue({ modifiedCount: 1 } as never);
     const { req, res } = mockReqRes({ session_id: 's1' });
     await result(req, res);
 
@@ -124,18 +117,19 @@ describe('nyanken result (spedizione)', () => {
       expect(p.equipment_id).not.toBe(posseduto);
     }
     expect(new Set(pezzi.map((p) => p.equipment_id)).size).toBe(3);
-    expect(User.updateOne).toHaveBeenCalledWith({ _id: 'u1' }, expect.objectContaining({
-      $push: { 'box.equipments': { $each: pezzi } },
-    }));
+    // Prima si chiude la spedizione (una volta sola), poi si consegna.
+    expect(User.updateOne).toHaveBeenCalledWith({ _id: 'u1', 'nyanken_cooldown.fine': 2000 }, { $set: { 'nyanken_cooldown.fine': 0 } });
+    expect(User.updateOne).toHaveBeenCalledWith({ _id: 'u1' }, expect.objectContaining({ $push: { 'box.equipments': { $each: pezzi } } }));
   });
 
-  it('gives nothing and writes nothing when the box is full', async () => {
+  it('gives nothing when the box is full', async () => {
     vi.mocked(User.findOne).mockResolvedValue(utente([{ equipment_id: 'A' }, { equipment_id: 'B' }], 2) as never);
+    vi.mocked(User.updateOne).mockResolvedValue({ modifiedCount: 1 } as never);
     const { req, res } = mockReqRes({ session_id: 's1' });
     await result(req, res);
     const [data] = vi.mocked(encryptAndSend).mock.calls[0]!;
     expect((data as { result_list: { equipments: unknown[] } }).result_list.equipments).toEqual([]);
-    expect(User.updateOne).not.toHaveBeenCalled();
+    expect(User.updateOne).not.toHaveBeenCalledWith({ _id: 'u1' }, expect.objectContaining({ $push: expect.anything() }));
   });
 
   it('rejects an unknown session', async () => {
@@ -165,14 +159,14 @@ describe('nyanken: premi filtrati per spedizione', () => {
   type Voce = { n: string; r: number; c: string; e?: number };
   const voci = new Map((pool as Voce[]).map((v) => [v.n, v]));
   const idDi = (nome: string) => categorie.find((c) => c.nome === nome)!.mst_nyanken_id;
-  const utente = (salvato = 0) => ({
-    _id: 'u1', character_name: 'Heroic69', nyanken_cooldown: { mst_nyanken_id: salvato },
-    box: { equipments: [], capacity: { eqp_box: 200 }, payments: [] },
-  });
-  const spedisci = async (body: Record<string, unknown>, salvato = 0) => {
-    vi.mocked(User.findOne).mockResolvedValue(utente(salvato) as never);
-    vi.mocked(User.updateOne).mockResolvedValue({} as never);
-    const { req, res } = mockReqRes({ session_id: 's1', ...body });
+  // La categoria dei premi e' quella della spedizione partita (salvata allo start).
+  const spedisci = async (salvato: number) => {
+    vi.mocked(User.findOne).mockResolvedValue({
+      _id: 'u1', character_name: 'Heroic69', nyanken_cooldown: { mst_nyanken_id: salvato, inizio: 1000, fine: 2000 },
+      box: { equipments: [], capacity: { eqp_box: 200 }, payments: [] },
+    } as never);
+    vi.mocked(User.updateOne).mockResolvedValue({ modifiedCount: 1 } as never);
+    const { req, res } = mockReqRes({ session_id: 's1' });
     await result(req, res);
     const [data] = vi.mocked(encryptAndSend).mock.calls.at(-1)!;
     return (data as { result_list: { equipments: { equipment_id: string }[] } }).result_list.equipments.map((p) => voci.get(p.equipment_id)!);
@@ -180,7 +174,7 @@ describe('nyanken: premi filtrati per spedizione', () => {
 
   it('fire expedition gives only fire weapons', async () => {
     for (let k = 0; k < 5; k++) {
-      const pezzi = await spedisci({ mst_nyanken_id: idDi('火属性装備クエスト') });
+      const pezzi = await spedisci(idDi('火属性装備クエスト'));
       expect(pezzi).toHaveLength(3);
       for (const v of pezzi) {
         expect(ARMATURE.has(v.c)).toBe(false);
@@ -191,63 +185,111 @@ describe('nyanken: premi filtrati per spedizione', () => {
 
   it('★6★7 weapon expedition gives only rarity 6-7 weapons', async () => {
     for (let k = 0; k < 5; k++) {
-      for (const v of await spedisci({ mst_nyanken_id: idDi('★6★7武器確定クエスト') })) {
+      for (const v of await spedisci(idDi('★6★7武器確定クエスト'))) {
         expect(ARMATURE.has(v.c)).toBe(false);
         expect([6, 7]).toContain(v.r);
       }
     }
   });
 
-  it('uses the expedition saved at start when the client does not send one', async () => {
-    const pezzi = await spedisci({}, idDi('新防具クエスト'));
+  it('armor expedition gives only armor', async () => {
+    const pezzi = await spedisci(idDi('新防具クエスト'));
     expect(pezzi).toHaveLength(3);
     for (const v of pezzi) expect(ARMATURE.has(v.c)).toBe(true);
   });
 
-  it('an unknown expedition id falls back to the general one instead of failing', async () => {
-    expect(await spedisci({ mst_nyanken_id: 9116 })).toHaveLength(3);
+  it('an unknown saved id falls back to the general expedition instead of failing', async () => {
+    expect(await spedisci(9116)).toHaveLength(3);
   });
 
   it('the pool has no "no equipment" placeholders (AD_*000)', () => {
     expect((pool as Voce[]).some((v) => /^AD_[A-Z]+000$/.test(v.n))).toBe(false);
   });
+});
 
-  const conKaridama = (amount: number, pagata = false, id = 0) => ({
-    _id: 'u1', character_name: 'Heroic69', nyanken_cooldown: { mst_nyanken_id: id, pagata },
-    box: { equipments: [], capacity: { eqp_box: 200 }, payments: [{ mst_payment_id: 1573159746, amount }] },
+describe('nyanken: spedizione con il timer', () => {
+  beforeEach(() => {
+    vi.resetAllMocks();
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date('2026-09-30T12:00:00Z'));
   });
+  afterEach(() => vi.useRealTimers());
 
-  it('start saves only an expedition that is in the list, and charges its 15 karidama', async () => {
-    vi.mocked(User.findOne).mockResolvedValue(conKaridama(20) as never);
+  const ORA = new Date('2026-09-30T12:00:00Z').getTime();
+  const KARIDAMA = 3301823224;
+  const giocatore = (cooldown: Record<string, number>, gemme = 50) => ({
+    _id: 'u1', character_name: 'Heroic69', nyanken_cooldown: cooldown,
+    box: { equipments: [], capacity: { eqp_box: 200 }, payments: [{ mst_payment_id: KARIDAMA, amount: gemme }] },
+  });
+  const ID_ARMI67 = categorie.find((c) => c.nome === '★6★7武器確定クエスト')!.mst_nyanken_id;
+
+  it('start is free and sets the return time from the expedition duration', async () => {
+    vi.mocked(User.findOne).mockResolvedValue(giocatore({ mst_nyanken_id: 0, fine: 0 }) as never);
     vi.mocked(User.updateOne).mockResolvedValue({} as never);
-    const { req, res } = mockReqRes({ session_id: 's1', mst_nyanken_id: 123456 });
+    const { req, res } = mockReqRes({ session_id: 's1', mst_nyanken_id: ID_ARMI67 });
     await start(req, res);
-    expect(User.updateOne).toHaveBeenCalledWith({ _id: 'u1' }, {
-      $set: { 'nyanken_cooldown.mst_nyanken_id': 2022298312, 'nyanken_cooldown.pagata': true, 'box.payments': [{ mst_payment_id: 1573159746, amount: 5 }] },
-    });
-    expect(encryptAndSend).toHaveBeenCalledWith(expect.objectContaining({ currency_ammount: 15 }), res, req);
+    const fine = ORA + 480 * 60_000;
+    expect(User.updateOne).toHaveBeenCalledWith({ _id: 'u1' }, { $set: { 'nyanken_cooldown.mst_nyanken_id': ID_ARMI67, 'nyanken_cooldown.inizio': ORA, 'nyanken_cooldown.fine': fine } });
+    expect(encryptAndSend).toHaveBeenCalledWith(expect.objectContaining({ mst_nyanken_id: ID_ARMI67, return_time: fine / 1000, currency_ammount: 15 }), res, req);
   });
 
-  it('with too few karidama answers with a normal error dialog (no crash, no 404) and charges nothing', async () => {
-    vi.mocked(User.findOne).mockResolvedValue(conKaridama(3) as never);
+  it('a repeated start while the cats are out does not restart the timer', async () => {
+    vi.mocked(User.findOne).mockResolvedValue(giocatore({ mst_nyanken_id: ID_ARMI67, inizio: ORA - 60_000, fine: ORA + 3_600_000 }) as never);
     const { req, res } = mockReqRes({ session_id: 's1', mst_nyanken_id: 2022298312 });
     await start(req, res);
+    expect(User.updateOne).not.toHaveBeenCalled();
+    expect(encryptAndSend).toHaveBeenCalledWith(expect.objectContaining({ mst_nyanken_id: ID_ARMI67, return_time: (ORA + 3_600_000) / 1000 }), res, req);
+  });
+
+  it('progress shows the remaining time and a price that drops as time passes', async () => {
+    // A meta' strada: 15 * 1/2 -> 8 狩玉.
+    vi.mocked(User.findOne).mockResolvedValue(giocatore({ mst_nyanken_id: ID_ARMI67, inizio: ORA - 3_600_000, fine: ORA + 3_600_000 }) as never);
+    const { req, res } = mockReqRes({ session_id: 's1' });
+    await progress(req, res);
+    expect(encryptAndSend).toHaveBeenCalledWith(expect.objectContaining({ mst_nyanken_id: ID_ARMI67, return_time: (ORA + 3_600_000) / 1000, currency_ammount: 8 }), res, req);
+  });
+
+  it('result before the cats are back is refused with a normal message, and gives nothing', async () => {
+    vi.mocked(User.findOne).mockResolvedValue(giocatore({ mst_nyanken_id: ID_ARMI67, inizio: ORA, fine: ORA + 600_000 }) as never);
+    const { req, res } = mockReqRes({ session_id: 's1' });
+    await result(req, res);
+    expect(User.updateOne).not.toHaveBeenCalled();
+    expect(encryptAndSend).toHaveBeenCalledWith({}, res, req, ERROR_CODE.GENERIC_ERROR, 2, expect.stringContaining('10 min'));
+  });
+
+  it('result without an expedition gives nothing (no more free draws)', async () => {
+    vi.mocked(User.findOne).mockResolvedValue(giocatore({ mst_nyanken_id: 0, fine: 0 }) as never);
+    const { req, res } = mockReqRes({ session_id: 's1' });
+    await result(req, res);
+    const [data] = vi.mocked(encryptAndSend).mock.calls[0]!;
+    expect((data as { result_list: { equipments: unknown[] } }).result_list.equipments).toEqual([]);
+    expect(User.updateOne).not.toHaveBeenCalled();
+  });
+
+  it('return pays the current price and brings the cats back now', async () => {
+    vi.mocked(User.findOne).mockResolvedValue(giocatore({ mst_nyanken_id: ID_ARMI67, inizio: ORA - 3_600_000, fine: ORA + 3_600_000 }, 20) as never);
+    vi.mocked(User.updateOne).mockResolvedValue({} as never);
+    const { req, res } = mockReqRes({ session_id: 's1', mst_nyanken_id: ID_ARMI67 });
+    await returnHome(req, res);
+    expect(User.updateOne).toHaveBeenCalledWith({ _id: 'u1' }, { $set: { 'box.payments': [{ mst_payment_id: KARIDAMA, amount: 12 }], 'nyanken_cooldown.fine': ORA } });
+    expect(encryptAndSend).toHaveBeenCalledWith({ mst_nyanken_id: ID_ARMI67, payments: [{ mst_payment_id: KARIDAMA, amount: 12 }], return_time: ORA / 1000 }, res, req);
+  });
+
+  it('return without enough karidama: normal message, nothing changes', async () => {
+    vi.mocked(User.findOne).mockResolvedValue(giocatore({ mst_nyanken_id: ID_ARMI67, inizio: ORA, fine: ORA + 3_600_000 }, 3) as never);
+    const { req, res } = mockReqRes({ session_id: 's1', mst_nyanken_id: ID_ARMI67 });
+    await returnHome(req, res);
     expect(User.updateOne).not.toHaveBeenCalled();
     expect(encryptAndSend).toHaveBeenCalledWith({}, res, req, ERROR_CODE.GENERIC_ERROR, 2, expect.stringContaining('3/15'));
   });
 
-  it('a repeated start for the same expedition is not charged twice', async () => {
-    vi.mocked(User.findOne).mockResolvedValue(conKaridama(20, true, 2022298312) as never);
-    vi.mocked(User.updateOne).mockResolvedValue({} as never);
-    const { req, res } = mockReqRes({ session_id: 's1', mst_nyanken_id: 2022298312 });
-    await start(req, res);
-    expect(User.updateOne).toHaveBeenCalledWith({ _id: 'u1' }, { $set: { 'nyanken_cooldown.mst_nyanken_id': 2022298312, 'nyanken_cooldown.pagata': true } });
-  });
-
-  it('questlist shows the real cost of each expedition', () => {
+  it('questlist shows the duration of each expedition and the full return price', () => {
     const { req, res } = mockReqRes({});
     QuestList(req, res);
     const [data] = vi.mocked(encryptAndSend).mock.calls.at(-1)!;
-    for (const q of (data as { questDataList: { currency_ammount: number }[] }).questDataList) expect(q.currency_ammount).toBe(15);
+    const lista = (data as { questDataList: { name: string; currency_ammount: number; quest_time: number }[] }).questDataList;
+    for (const q of lista) expect(q.currency_ammount).toBe(15);
+    expect(lista.find((q) => q.name === '秘境探検クエスト')!.quest_time).toBe(60);
+    expect(lista.find((q) => q.name === '★6★7武器確定クエスト')!.quest_time).toBe(480);
   });
 });

@@ -7,6 +7,7 @@ import poolEquip from '../../../json/nyanken-equip.json' with { type: 'json' };
 import categorieJson from '../../../json/nyanken-categorie.json' with { type: 'json' };
 import type { NyankenInput } from './nyanken.schema.js';
 import { spendiKaridama, saldoKaridama } from '../../../services/karidamaService.js';
+import { durataMinuti, prezzoRientro, statoSpedizione } from '../../../services/spedizioniGatti.js';
 
 const log = createLogger('nyanken');
 
@@ -151,43 +152,55 @@ function rispostaRisultato(pezzi: ReturnType<typeof nuovoPezzo>[], payments: unk
   };
 }
 
+/*
+ * La spedizione ha il timer vero (services/spedizioniGatti.ts): partire e' gratis,
+ * i gatti tornano dopo quest_time minuti, e si puo' pagare in 狩玉 per farli
+ * rientrare subito (nyanken/return). I premi si ritirano solo a spedizione finita.
+ * Stato salvato in user.nyanken_cooldown: mst_nyanken_id, inizio e fine (ms).
+ */
+const sec = (ms: number) => Math.floor(ms / 1000);
+const prezzoPienoDi = (c: Categoria) => c.costo ?? 0;
+
+type ConSpedizione = { nyanken_cooldown?: { mst_nyanken_id?: number | null; inizio?: number | null; fine?: number | null } | null };
+
+function datiSpedizione(doc: ConSpedizione, ora: number) {
+  const s = doc.nyanken_cooldown ?? {};
+  const categoria = categoriaDa(s.mst_nyanken_id) ?? CATEGORIA_BASE;
+  const inizio = Number(s.inizio) || 0;
+  const fine = Number(s.fine) || 0;
+  return { categoria, inizio, fine, stato: statoSpedizione(s, ora), prezzo: prezzoRientro(prezzoPienoDi(categoria), inizio, fine, ora) };
+}
+
 export const start = async (req: Request, res: Response) => {
   try {
     const { session_id, mst_nyanken_id } = req.body as NyankenInput;
     if (typeof session_id !== 'string' || !session_id) return encryptAndSend({}, res, req, ERROR_CODE.NOT_AUTHENTICATED);
     const doc = await User.findOne({ current_session: session_id });
     if (!doc) return encryptAndSend({}, res, req, ERROR_CODE.NOT_AUTHENTICATED);
-    // Si salva solo una delle categorie di questlist (decide i premi); al gioco
-    // si rimanda l'ID che ha chiesto lui, per non contraddirlo.
-    const categoria = categoriaDa(mst_nyanken_id);
-    const idSpedizione = (categoria ?? CATEGORIA_BASE).mst_nyanken_id;
-    const idRisposta = Number.isFinite(Number(mst_nyanken_id)) && Number(mst_nyanken_id) > 0 ? Number(mst_nyanken_id) : idSpedizione;
-    log.info('spedizione | %s parte: chiesto %s -> %s', doc.character_name ?? '?', String(mst_nyanken_id), categoria ? categoria.nome : 'NON in lista, uso ' + CATEGORIA_BASE.nome);
-
-    // Costo in 狩玉 dalla tabella del gioco (15 per quasi tutte). Si paga una volta
-    // per spedizione: il gioco chiama start anche 2-3 volte di fila (log 29/09),
-    // quindi finche' non arriva il risultato la stessa spedizione non si ripaga.
-    const costo = (categoria ?? CATEGORIA_BASE).costo ?? 0;
-    const giaPagata = Boolean(doc.nyanken_cooldown?.pagata) && Number(doc.nyanken_cooldown?.mst_nyanken_id) === idSpedizione;
-    const $set: Record<string, unknown> = { 'nyanken_cooldown.mst_nyanken_id': idSpedizione, 'nyanken_cooldown.pagata': true };
-    if (!giaPagata && costo > 0) {
-      const box = doc.box as unknown as { payments?: { mst_payment_id?: number | null; amount?: number | null }[] };
-      if (!spendiKaridama(box, costo)) {
-        // Niente crash e niente 404: un messaggio normale, il gioco continua.
-        log.info('spedizione | %s non ha abbastanza 狩玉 (%d su %d)', doc.character_name ?? '?', saldoKaridama(box.payments), costo);
-        return encryptAndSend({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG,
-          `狩玉が足りません (Not enough karidama: ${saldoKaridama(box.payments)}/${costo})`);
-      }
-      $set['box.payments'] = box.payments;
+    const ora = Date.now();
+    let sp = datiSpedizione(doc as unknown as ConSpedizione, ora);
+    // Il gioco chiama start anche 2-3 volte di fila (log 29/09): se i gatti sono
+    // gia' fuori (o tornati con i premi da ritirare) non si riparte da capo.
+    if (sp.stato === 'nessuna') {
+      const categoria = categoriaDa(mst_nyanken_id) ?? CATEGORIA_BASE;
+      const fine = ora + durataMinuti(categoria.nome) * 60_000;
+      await User.updateOne({ _id: doc._id }, { $set: {
+        'nyanken_cooldown.mst_nyanken_id': categoria.mst_nyanken_id, 'nyanken_cooldown.inizio': ora, 'nyanken_cooldown.fine': fine,
+      } });
+      log.info('spedizione | %s parte: %s, torna tra %d minuti', doc.character_name ?? '?', categoria.nome, durataMinuti(categoria.nome));
+      sp = { categoria, inizio: ora, fine, stato: 'in_corso', prezzo: prezzoRientro(prezzoPienoDi(categoria), ora, fine, ora) };
     }
-    await User.updateOne({ _id: doc._id }, { $set });
     encryptAndSend({
-      currency_ammount: costo,
+      balloon_color_id: 0,
+      currency_ammount: sp.prezzo,
       discount_currency_ammount: 0,
-      mst_nyanken_id: idRisposta,
+      message_leaving: '',
+      message_waiting: '',
+      mst_nyanken_id: sp.categoria.mst_nyanken_id,
+      nyanken_icon_id: 0,
       rare_appear_time: 0,
       rare_flag: 0,
-      return_time: 0,
+      return_time: sec(sp.fine),
     }, res, req);
   } catch (error) {
     log.error('Error in nyanken start:', error);
@@ -195,16 +208,63 @@ export const start = async (req: Request, res: Response) => {
   }
 };
 
-export const returnHome = (req: Request, res: Response) => {
-  encryptAndSend({}, res, req);
+/** Far rientrare subito i gatti pagando 狩玉 (prezzo in base al tempo che manca). */
+export const returnHome = async (req: Request, res: Response) => {
+  try {
+    const { session_id } = req.body as NyankenInput;
+    if (typeof session_id !== 'string' || !session_id) return encryptAndSend({}, res, req, ERROR_CODE.NOT_AUTHENTICATED);
+    const doc = await User.findOne({ current_session: session_id });
+    if (!doc) return encryptAndSend({}, res, req, ERROR_CODE.NOT_AUTHENTICATED);
+    const ora = Date.now();
+    const sp = datiSpedizione(doc as unknown as ConSpedizione, ora);
+    const box = doc.box as unknown as { payments?: { mst_payment_id?: number | null; amount?: number | null }[] };
+    if (sp.stato === 'in_corso') {
+      if (!spendiKaridama(box, sp.prezzo)) {
+        return encryptAndSend({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG,
+          `狩玉が足りません (Not enough karidama: ${saldoKaridama(box.payments)}/${sp.prezzo})`);
+      }
+      await User.updateOne({ _id: doc._id }, { $set: { 'box.payments': box.payments, 'nyanken_cooldown.fine': ora } });
+      log.info('spedizione | %s paga %d 狩玉 per far rientrare i gatti (%s), saldo %d', doc.character_name ?? '?', sp.prezzo, sp.categoria.nome, saldoKaridama(box.payments));
+    }
+    encryptAndSend({
+      mst_nyanken_id: sp.categoria.mst_nyanken_id,
+      payments: (box?.payments ?? []).map((p) => ({ mst_payment_id: Number(p.mst_payment_id), amount: Number(p.amount ?? 0) })),
+      return_time: sec(Math.min(sp.fine || ora, ora)),
+    }, res, req);
+  } catch (error) {
+    log.error('Error in nyanken return:', error);
+    encryptAndSend({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG, 'Nyanken return failed');
+  }
 };
+
+/** I premi solo a spedizione finita; poi la spedizione si chiude e si puo' ripartire. */
+async function ritira(req: Request, res: Response, extra: Record<string, unknown>) {
+  const { session_id } = req.body as NyankenInput;
+  if (typeof session_id !== 'string' || !session_id) return encryptAndSend({}, res, req, ERROR_CODE.NOT_AUTHENTICATED);
+  const doc = await User.findOne({ current_session: session_id });
+  if (!doc) return encryptAndSend({}, res, req, ERROR_CODE.NOT_AUTHENTICATED);
+  const ora = Date.now();
+  const sp = datiSpedizione(doc as unknown as ConSpedizione, ora);
+  if (sp.stato === 'in_corso') {
+    const minuti = Math.ceil((sp.fine - ora) / 60_000);
+    return encryptAndSend({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG,
+      `まだ探検中です (The cats are still exploring: ${minuti} min left)`);
+  }
+  if (sp.stato === 'nessuna') {
+    // Nessuna spedizione da ritirare: risposta vuota, niente premi gratis.
+    return encryptAndSend({ ...rispostaRisultato([], doc.box?.payments ?? []), ...extra }, res, req);
+  }
+  // Si chiude PRIMA di consegnare, con condizione: due richieste insieme non danno doppi premi.
+  const chiusa = await User.updateOne({ _id: doc._id, 'nyanken_cooldown.fine': sp.fine }, { $set: { 'nyanken_cooldown.fine': 0 } });
+  if (chiusa.modifiedCount !== 1) return encryptAndSend({ ...rispostaRisultato([], doc.box?.payments ?? []), ...extra }, res, req);
+  const esito = await consegnaPremi(session_id, sp.categoria.mst_nyanken_id);
+  if (!esito) return encryptAndSend({}, res, req, ERROR_CODE.NOT_AUTHENTICATED);
+  encryptAndSend({ ...rispostaRisultato(esito.pezzi, esito.doc.box?.payments ?? []), ...extra }, res, req);
+}
 
 export const result = async (req: Request, res: Response) => {
   try {
-    const { session_id, mst_nyanken_id } = req.body as NyankenInput;
-    const esito = await consegnaPremi(session_id, mst_nyanken_id);
-    if (!esito) return encryptAndSend({}, res, req, ERROR_CODE.NOT_AUTHENTICATED);
-    encryptAndSend(rispostaRisultato(esito.pezzi, esito.doc.box?.payments ?? []), res, req);
+    await ritira(req, res, {});
   } catch (error) {
     log.error('Error in nyanken result:', error);
     encryptAndSend({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG, 'Nyanken result failed');
@@ -213,38 +273,39 @@ export const result = async (req: Request, res: Response) => {
 
 export const paidResult = async (req: Request, res: Response) => {
   try {
-    const { session_id, mst_nyanken_id } = req.body as NyankenInput;
-    const esito = await consegnaPremi(session_id, mst_nyanken_id);
-    if (!esito) return encryptAndSend({}, res, req, ERROR_CODE.NOT_AUTHENTICATED);
-    encryptAndSend({
-      ...rispostaRisultato(esito.pezzi, esito.doc.box?.payments ?? []),
-      disp_last_one_result: 0,
-      is_pop_not_enough_zeny: 0,
-      max_potential_equipments: [],
-    }, res, req);
+    await ritira(req, res, { disp_last_one_result: 0, is_pop_not_enough_zeny: 0, max_potential_equipments: [] });
   } catch (error) {
     log.error('Error in nyanken paid result:', error);
     encryptAndSend({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG, 'Nyanken paid result failed');
   }
 };
 
-export const progress = (req: Request, res: Response) => {
-  //Initial Load
-  const data = {
-    balloon_color_id: 3, //0:grau 1:yellow 2:green 3:pink
-    currency_ammount: 5,
-    discount_currency_ammount: 5,
-    island_reward_times: 5,
-    message_leaving: 'message_leaving',
-    message_waiting: 'message_waiting',
-    mst_nyanken_id: 2022298312, //nyanken quests
-    nyanken_icon_id: 0, //unk ids (looking at the files this might be 0 there are 5 icons but no ids other than 0000)
-    prob_effect_value: 5,
-    rare_appear_time: 5,
-    rare_flag: 0, //1:!! 2:pulsating !!
-    return_time: 5,
-  };
-  encryptAndSend(data, res, req);
+/** Stato della spedizione del giocatore (prima era un valore fisso uguale per tutti). */
+export const progress = async (req: Request, res: Response) => {
+  try {
+    const { session_id } = req.body as { session_id?: string };
+    const doc = typeof session_id === 'string' && session_id ? await User.findOne({ current_session: session_id }) : null;
+    const ora = Date.now();
+    const sp = doc ? datiSpedizione(doc as unknown as ConSpedizione, ora) : null;
+    const attiva = !!sp && sp.stato !== 'nessuna';
+    encryptAndSend({
+      balloon_color_id: 0,
+      currency_ammount: attiva ? sp!.prezzo : 0,
+      discount_currency_ammount: 0,
+      island_reward_times: 0,
+      message_leaving: '',
+      message_waiting: '',
+      mst_nyanken_id: attiva ? sp!.categoria.mst_nyanken_id : 0,
+      nyanken_icon_id: 0,
+      prob_effect_value: 0,
+      rare_appear_time: 0,
+      rare_flag: 0,
+      return_time: attiva ? sec(sp!.fine) : 0,
+    }, res, req);
+  } catch (error) {
+    log.error('Error in nyanken progress:', error);
+    encryptAndSend({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG, 'Nyanken progress failed');
+  }
 };
 
 export const islandInfoGet = (req: Request, res: Response) => {
@@ -368,7 +429,8 @@ export const QuestList = (req: Request, res: Response) => {
     play_limit: 0,
     play_now: 0,
     quest_state: 0,
-    quest_time: 0,
+    // Durata in minuti (services/spedizioniGatti.ts); currency_ammount qui e' il prezzo pieno del rientro.
+    quest_time: durataMinuti(c.nome),
     sequence_no: c.ordine,
     sort_key: c.ordine,
     start: 0,

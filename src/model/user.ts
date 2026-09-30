@@ -280,6 +280,9 @@ const userSchema = new Schema({
     mst_nyanken_id: { type: Number, default: 0 },
     // Spedizione gia' pagata in 狩玉 e non ancora conclusa (vedi nyanken start).
     pagata: { type: Boolean, default: false },
+    // Partenza e rientro dei gatti in ms (services/spedizioniGatti.ts); fine=0: nessuna spedizione.
+    inizio: { type: Number, default: 0 },
+    fine: { type: Number, default: 0 },
     last_draw_time: { type: Number, default: 0 },
   },
   equipment_id_counter: { type: Number, default: 0 },

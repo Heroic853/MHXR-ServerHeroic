@@ -19,7 +19,7 @@ import { blocchiPerAvvio } from '../../../services/blocchiQuest.js';
 import { applicaRaccolta, salvaRaccolta, raccoltoDaiBlocchi, type PuntoAvviato } from '../../../services/raccoltaQuest.js';
 import { tesoroDelBlocco } from '../../../services/tesoriIsole.js';
 import { mappaProgressiva, missioniCompletate } from '../../../services/progressioneStoria.js';
-import { aggiungiKaridama, saldoKaridama, spendiKaridama, karidamaConBonus, KARIDAMA_A_MISSIONE, KARIDAMA_PRINCIPALE } from '../../../services/karidamaService.js';
+import { aggiungiKaridama, saldoKaridama, spendiKaridama, KARIDAMA_A_MISSIONE, KARIDAMA_PRINCIPALE } from '../../../services/karidamaService.js';
 import type { IslandStartInput, IslandEndInput, IslandMapAllInput } from './quest.schema.js';
 
 interface BlockListItem {
@@ -623,8 +623,8 @@ export const islandEnd = async (req: Request, res: Response) => {
     const premi = buildRewardSlots(quest?.mRewardItemList);
 
     const update: Record<string, unknown> = { cleared_quests: cleared_quests };
-    // 狩玉 di fine missione, con l'eventuale bonus del giocatore (karidamaConBonus).
-    let gemmeMissione = KARIDAMA_A_MISSIONE;
+    // 狩玉 di fine missione.
+    const gemmeMissione = KARIDAMA_A_MISSIONE;
 
     let augite: ReturnType<typeof daiAugite> = null;
     if (doc.box) {
@@ -649,11 +649,8 @@ export const islandEnd = async (req: Request, res: Response) => {
       augite = daiAugite(doc.box.monument as { augite?: VoceAugite[] } | undefined);
       if (augite) log.info('輝石 | %s riceve %d x tipo %d', doc.character_name ?? '?', augite.amount, augite.mst_monument_type_id);
       // 狩玉 guadagnati giocando (niente microtransazioni): servono per il gacha dei gatti.
-      const conBonus = karidamaConBonus(KARIDAMA_A_MISSIONE, doc.bonus_karidama, doc.karidama_frazione);
-      gemmeMissione = conBonus.gemme;
-      update.karidama_frazione = conBonus.frazione;
       aggiungiKaridama(doc.box as { payments?: { mst_payment_id?: number | null; amount?: number | null }[] }, gemmeMissione);
-      log.info('狩玉 | %s riceve %d (bonus %d%%), saldo %d', doc.character_name ?? '?', gemmeMissione, Number(doc.bonus_karidama) || 0, saldoKaridama(doc.box.payments));
+      log.info('狩玉 | %s riceve %d, saldo %d', doc.character_name ?? '?', gemmeMissione, saldoKaridama(doc.box.payments));
       update.box = doc.box;
       log.info(
         'ricompense accreditate | quest=%s materiali=%d crescita=%d limitati=%d equipaggiamenti=%d',

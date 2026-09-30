@@ -230,7 +230,7 @@ describe('nyanken: spedizione con il timer', () => {
     await start(req, res);
     const fine = ORA + 480 * 60_000;
     expect(User.updateOne).toHaveBeenCalledWith({ _id: 'u1' }, { $set: { 'nyanken_cooldown.mst_nyanken_id': ID_ARMI67, 'nyanken_cooldown.inizio': ORA, 'nyanken_cooldown.fine': fine } });
-    expect(encryptAndSend).toHaveBeenCalledWith(expect.objectContaining({ mst_nyanken_id: ID_ARMI67, return_time: fine / 1000, currency_ammount: 15 }), res, req);
+    expect(encryptAndSend).toHaveBeenCalledWith(expect.objectContaining({ mst_nyanken_id: ID_ARMI67, return_time: 480 * 60, currency_ammount: 15, discount_currency_ammount: 15 }), res, req);
   });
 
   it('a repeated start while the cats are out does not restart the timer', async () => {
@@ -238,7 +238,7 @@ describe('nyanken: spedizione con il timer', () => {
     const { req, res } = mockReqRes({ session_id: 's1', mst_nyanken_id: 2022298312 });
     await start(req, res);
     expect(User.updateOne).not.toHaveBeenCalled();
-    expect(encryptAndSend).toHaveBeenCalledWith(expect.objectContaining({ mst_nyanken_id: ID_ARMI67, return_time: (ORA + 3_600_000) / 1000 }), res, req);
+    expect(encryptAndSend).toHaveBeenCalledWith(expect.objectContaining({ mst_nyanken_id: ID_ARMI67, return_time: 3600 }), res, req);
   });
 
   it('progress shows the remaining time and a price that drops as time passes', async () => {
@@ -246,7 +246,7 @@ describe('nyanken: spedizione con il timer', () => {
     vi.mocked(User.findOne).mockResolvedValue(giocatore({ mst_nyanken_id: ID_ARMI67, inizio: ORA - 3_600_000, fine: ORA + 3_600_000 }) as never);
     const { req, res } = mockReqRes({ session_id: 's1' });
     await progress(req, res);
-    expect(encryptAndSend).toHaveBeenCalledWith(expect.objectContaining({ mst_nyanken_id: ID_ARMI67, return_time: (ORA + 3_600_000) / 1000, currency_ammount: 8 }), res, req);
+    expect(encryptAndSend).toHaveBeenCalledWith(expect.objectContaining({ mst_nyanken_id: ID_ARMI67, return_time: 3600, currency_ammount: 8, discount_currency_ammount: 8 }), res, req);
   });
 
   it('result before the cats are back is refused with a normal message, and gives nothing', async () => {
@@ -272,7 +272,7 @@ describe('nyanken: spedizione con il timer', () => {
     const { req, res } = mockReqRes({ session_id: 's1', mst_nyanken_id: ID_ARMI67 });
     await returnHome(req, res);
     expect(User.updateOne).toHaveBeenCalledWith({ _id: 'u1' }, { $set: { 'box.payments': [{ mst_payment_id: KARIDAMA, amount: 12 }], 'nyanken_cooldown.fine': ORA } });
-    expect(encryptAndSend).toHaveBeenCalledWith({ mst_nyanken_id: ID_ARMI67, payments: [{ mst_payment_id: KARIDAMA, amount: 12 }], return_time: ORA / 1000 }, res, req);
+    expect(encryptAndSend).toHaveBeenCalledWith({ mst_nyanken_id: ID_ARMI67, payments: [{ mst_payment_id: KARIDAMA, amount: 12 }], return_time: 0 }, res, req);
   });
 
   it('return without enough karidama: normal message, nothing changes', async () => {
@@ -283,12 +283,33 @@ describe('nyanken: spedizione con il timer', () => {
     expect(encryptAndSend).toHaveBeenCalledWith({}, res, req, ERROR_CODE.GENERIC_ERROR, 2, expect.stringContaining('3/15'));
   });
 
+  it('the cats bring 3 or 5 karidama, shown as a normal reward (never the whole balance)', async () => {
+    const ID_BREVE = categorie.find((c) => c.nome === '秘境探検クエスト')!.mst_nyanken_id;
+    for (const [id, attese] of [[ID_BREVE, 3], [ID_ARMI67, 5]] as const) {
+      vi.mocked(encryptAndSend).mockClear();
+      vi.mocked(User.findOne).mockResolvedValue(giocatore({ mst_nyanken_id: id, inizio: ORA - 7_200_000, fine: ORA - 1000 }, 10_000) as never);
+      vi.mocked(User.updateOne).mockResolvedValue({ modifiedCount: 1 } as never);
+      const { req, res } = mockReqRes({ session_id: 's1' });
+      await result(req, res);
+      const [data] = vi.mocked(encryptAndSend).mock.calls.at(-1)!;
+      const d = data as { disp_last_one_result: unknown; last_one_result: unknown; payments: { amount: number }[]; result_list: { payments: unknown[] } };
+      expect(d.result_list.payments).toEqual([{ mst_payment_id: KARIDAMA, amount: attese }]);
+      expect(d.disp_last_one_result).toEqual({});
+      expect(d.last_one_result).toEqual({});
+      expect(d.payments[0]!.amount).toBe(10_000 + attese);
+    }
+  });
+
   it('questlist shows the duration of each expedition and the full return price', () => {
     const { req, res } = mockReqRes({});
     QuestList(req, res);
     const [data] = vi.mocked(encryptAndSend).mock.calls.at(-1)!;
     const lista = (data as { questDataList: { name: string; currency_ammount: number; quest_time: number }[] }).questDataList;
-    for (const q of lista) expect(q.currency_ammount).toBe(15);
+    for (const q of lista) {
+      expect(q.currency_ammount).toBe(15);
+      // uguale al prezzo: niente sconto finto "15 -> 0"
+      expect((q as unknown as { discount_currency_ammount: number }).discount_currency_ammount).toBe(15);
+    }
     expect(lista.find((q) => q.name === '秘境探検クエスト')!.quest_time).toBe(60);
     expect(lista.find((q) => q.name === '★6★7武器確定クエスト')!.quest_time).toBe(480);
   });

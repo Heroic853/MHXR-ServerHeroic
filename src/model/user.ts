@@ -59,9 +59,6 @@ export interface IUser extends Document {
   navigazioni_riscattate?: number[];
   // Mappa della storia con la progressione vera (services/progressioneStoria.ts).
   progressione_storia?: boolean;
-  // Bonus % sulle 狩玉 di fine missione e decimali accumulati (karidamaConBonus).
-  bonus_karidama?: number;
-  karidama_frazione?: number;
   // Cosa c'e' nei punti di raccolta dell'ultima quest avviata (services/raccoltaQuest.ts).
   raccolta_avviata?: { mst_quest_id: number; punti: { instance_id: number; mst_material_id: number; amount: number }[] } | null;
   comment?: string;
@@ -186,8 +183,6 @@ const userSchema = new Schema({
   navigazioni_riscattate: { type: [Number], default: [] },
   // Acceso per tutti dal 29/09 (prima solo in prova su Heroic69); false lo spegne per un account.
   progressione_storia: { type: Boolean, default: true },
-  bonus_karidama: { type: Number, default: 0 },
-  karidama_frazione: { type: Number, default: 0 },
   raccolta_avviata: { type: mongoose.Schema.Types.Mixed, default: null },
   // Premi dell'ultima missione finita, per il "x5" pagato in 狩玉 (rewardFinal).
   ultimi_premi: { type: mongoose.Schema.Types.Mixed, default: null },

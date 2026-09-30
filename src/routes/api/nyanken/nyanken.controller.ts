@@ -6,8 +6,8 @@ import User from '../../../model/user.js';
 import poolEquip from '../../../json/nyanken-equip.json' with { type: 'json' };
 import categorieJson from '../../../json/nyanken-categorie.json' with { type: 'json' };
 import type { NyankenInput } from './nyanken.schema.js';
-import { spendiKaridama, saldoKaridama } from '../../../services/karidamaService.js';
-import { durataMinuti, prezzoRientro, statoSpedizione } from '../../../services/spedizioniGatti.js';
+import { spendiKaridama, saldoKaridama, aggiungiKaridama, KARIDAMA_PRINCIPALE } from '../../../services/karidamaService.js';
+import { durataMinuti, prezzoRientro, statoSpedizione, secondiAlRientro, gemmePremio } from '../../../services/spedizioniGatti.js';
 
 const log = createLogger('nyanken');
 
@@ -130,25 +130,32 @@ async function consegnaPremi(sessionId: string, idRichiesto?: unknown) {
   const capienza = Number(doc.box?.capacity?.eqp_box ?? 500);
   const posto = Math.max(0, capienza - esistenti.length);
   const pezzi = pesca(poolDi(categoria), new Set(esistenti.map((e) => String(e.equipment_id))), Math.min(PEZZI_PER_SPEDIZIONE, posto)).map(nuovoPezzo);
-  if (pezzi.length) {
-    await User.updateOne({ _id: doc._id }, {
-      $push: { 'box.equipments': { $each: pezzi } },
-      $set: { 'nyanken_cooldown.last_draw_time': Date.now(), 'nyanken_cooldown.pagata': false },
-    });
-  }
-  log.info('spedizione | %s riceve %d pezzi da %s (box %d/%d)%s', doc.character_name ?? '?', pezzi.length, categoria.nome,
+  // Qualche 狩玉 insieme ai pezzi (3 o 5 a seconda della spedizione), anche a box piena.
+  const gemme = gemmePremio(categoria.nome);
+  const box = doc.box as unknown as { payments?: { mst_payment_id?: number | null; amount?: number | null }[] } | undefined;
+  if (box) aggiungiKaridama(box, gemme);
+  await User.updateOne({ _id: doc._id }, {
+    ...(pezzi.length ? { $push: { 'box.equipments': { $each: pezzi } } } : {}),
+    $set: { 'nyanken_cooldown.last_draw_time': Date.now(), 'nyanken_cooldown.pagata': false, ...(box ? { 'box.payments': box.payments } : {}) },
+  });
+  log.info('spedizione | %s riceve %d pezzi e %d 狩玉 da %s (box %d/%d)%s', doc.character_name ?? '?', pezzi.length, box ? gemme : 0, categoria.nome,
     esistenti.length + pezzi.length, capienza, posto === 0 ? ' - BOX PIENA, niente premi' : '');
-  return { doc, pezzi };
+  return { doc, pezzi, gemme: box ? gemme : 0 };
 }
 
-function rispostaRisultato(pezzi: ReturnType<typeof nuovoPezzo>[], payments: unknown[]) {
+function rispostaRisultato(pezzi: ReturnType<typeof nuovoPezzo>[], payments: unknown[], gemme = 0) {
   // Stessa forma di tutorial/nyanken/result, l'unica gia' vista funzionare nel client.
+  // disp_last_one_result e last_one_result vanno mandati (vuoti): se mancano il client
+  // (cAPINyankenResult::Response::setup) legge al loro posto i campi della radice, e il
+  // saldo di payments compariva tra i premi come "狩玉 x999+ 確定".
   return {
+    disp_last_one_result: {},
+    last_one_result: {},
     effect_id: 42,
     is_island: 0,
     island_result: { normal_result_list: [], special_result_list: [{ travel: [] }] },
     payments,
-    result_list: { equipments: pezzi },
+    result_list: { equipments: pezzi, payments: gemme > 0 ? [{ mst_payment_id: KARIDAMA_PRINCIPALE, amount: gemme }] : [] },
   };
 }
 
@@ -158,7 +165,6 @@ function rispostaRisultato(pezzi: ReturnType<typeof nuovoPezzo>[], payments: unk
  * rientrare subito (nyanken/return). I premi si ritirano solo a spedizione finita.
  * Stato salvato in user.nyanken_cooldown: mst_nyanken_id, inizio e fine (ms).
  */
-const sec = (ms: number) => Math.floor(ms / 1000);
 const prezzoPienoDi = (c: Categoria) => c.costo ?? 0;
 
 type ConSpedizione = { nyanken_cooldown?: { mst_nyanken_id?: number | null; inizio?: number | null; fine?: number | null } | null };
@@ -193,14 +199,15 @@ export const start = async (req: Request, res: Response) => {
     encryptAndSend({
       balloon_color_id: 0,
       currency_ammount: sp.prezzo,
-      discount_currency_ammount: 0,
+      // Uguale al prezzo: se e' minore il gioco mostra uno sconto (isDiscount: sconto < prezzo).
+      discount_currency_ammount: sp.prezzo,
       message_leaving: '',
       message_waiting: '',
       mst_nyanken_id: sp.categoria.mst_nyanken_id,
       nyanken_icon_id: 0,
       rare_appear_time: 0,
       rare_flag: 0,
-      return_time: sec(sp.fine),
+      return_time: secondiAlRientro(sp.fine, ora),
     }, res, req);
   } catch (error) {
     log.error('Error in nyanken start:', error);
@@ -229,7 +236,7 @@ export const returnHome = async (req: Request, res: Response) => {
     encryptAndSend({
       mst_nyanken_id: sp.categoria.mst_nyanken_id,
       payments: (box?.payments ?? []).map((p) => ({ mst_payment_id: Number(p.mst_payment_id), amount: Number(p.amount ?? 0) })),
-      return_time: sec(Math.min(sp.fine || ora, ora)),
+      return_time: 0,
     }, res, req);
   } catch (error) {
     log.error('Error in nyanken return:', error);
@@ -259,7 +266,7 @@ async function ritira(req: Request, res: Response, extra: Record<string, unknown
   if (chiusa.modifiedCount !== 1) return encryptAndSend({ ...rispostaRisultato([], doc.box?.payments ?? []), ...extra }, res, req);
   const esito = await consegnaPremi(session_id, sp.categoria.mst_nyanken_id);
   if (!esito) return encryptAndSend({}, res, req, ERROR_CODE.NOT_AUTHENTICATED);
-  encryptAndSend({ ...rispostaRisultato(esito.pezzi, esito.doc.box?.payments ?? []), ...extra }, res, req);
+  encryptAndSend({ ...rispostaRisultato(esito.pezzi, esito.doc.box?.payments ?? [], esito.gemme), ...extra }, res, req);
 }
 
 export const result = async (req: Request, res: Response) => {
@@ -291,7 +298,7 @@ export const progress = async (req: Request, res: Response) => {
     encryptAndSend({
       balloon_color_id: 0,
       currency_ammount: attiva ? sp!.prezzo : 0,
-      discount_currency_ammount: 0,
+      discount_currency_ammount: attiva ? sp!.prezzo : 0,
       island_reward_times: 0,
       message_leaving: '',
       message_waiting: '',
@@ -300,7 +307,7 @@ export const progress = async (req: Request, res: Response) => {
       prob_effect_value: 0,
       rare_appear_time: 0,
       rare_flag: 0,
-      return_time: attiva ? sec(sp!.fine) : 0,
+      return_time: attiva ? secondiAlRientro(sp!.fine, ora) : 0,
     }, res, req);
   } catch (error) {
     log.error('Error in nyanken progress:', error);
@@ -413,7 +420,7 @@ export const QuestList = (req: Request, res: Response) => {
     // Costo vero in 狩玉 (tabella del gioco): prima 0, e il prezzo non si vedeva.
     currency_ammount: c.costo ?? 0,
     currency_type: 0,
-    discount_currency_ammount: 0,
+    discount_currency_ammount: c.costo ?? 0,
     end: 0,
     island_info: {
       area_info_list: [],

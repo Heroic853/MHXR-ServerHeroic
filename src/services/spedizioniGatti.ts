@@ -54,3 +54,17 @@ export function statoSpedizione(s: Spedizione | null | undefined, ora: number): 
   if (!fine) return 'nessuna';
   return fine > ora ? 'in_corso' : 'tornata';
 }
+
+/**
+ * Secondi che mancano al rientro, come li vuole il gioco: return_time NON e' una data,
+ * il client lo somma all'ora attuale (sServer::setupNyankenStartResponse/ProgressResponse:
+ * cMHXRTime::operator+(ora, return_time)). Mandare i secondi Unix dava "20726 giorni".
+ */
+export function secondiAlRientro(fine: number, ora: number): number {
+  return fine > ora ? Math.ceil((fine - ora) / 1000) : 0;
+}
+
+/** 狩玉 portate dai gatti: 3 per le spedizioni brevi (fino a 2 ore), 5 per le altre. */
+export function gemmePremio(nome: string): number {
+  return durataMinuti(nome) <= 120 ? 3 : 5;
+}

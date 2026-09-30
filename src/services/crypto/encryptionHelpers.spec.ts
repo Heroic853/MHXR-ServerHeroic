@@ -156,7 +156,7 @@ describe('encryptAndSend', () => {
       encryptionService.decrypt(res._data!).replace(/\0+$/, '').trim(),
     ) as Record<string, unknown>;
     expect(decrypted.result).toBe('ok');
-    expect(decrypted.res_ver).toBe(282);
+    expect(decrypted.res_ver).toBe(283);
     expect(decrypted.banner_ver).toBe(91);
     expect(decrypted.app_ver).toBe('09.03.06');
     expect(decrypted.session_id).toEqual(expect.any(String));

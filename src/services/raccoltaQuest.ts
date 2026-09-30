@@ -12,7 +12,8 @@ import { campiTesoro } from './tesoriIsole.js';
  * cui il formato e' quello gia' verificato del tutorial. Quelli con due punti (176)
  * restano come prima.
  *
- * Cosa esce: un materiale dai premi di raccolta della quest, mRewardType=1 della
+ * Cosa esce: un materiale dai premi di raccolta della quest (se non ne ha, dai
+ * premi principali di tipo 0: vedi materialiDiRaccolta), mRewardType=1 della
  * sua mRewardItemList (su tutte le quest i premi di tipo 1 non vengono quasi mai
  * dai mostri: 6 su 28143 in item_material_search_em), pesato con mProbScale.
  *
@@ -35,12 +36,21 @@ function scegli(lista: { id: number; peso: number }[], seme: string): number | n
   return lista[lista.length - 1]!.id;
 }
 
-/** I materiali di raccolta della quest (premi di tipo 1 che sono materiali veri). */
-export function materialiDiRaccolta(premi: readonly Premio[] | null | undefined) {
+function materialiDiTipo(premi: readonly Premio[] | null | undefined, tipo: string) {
   return (premi ?? [])
-    .filter((p): p is NonNullable<Premio> => !!p && String(p.mRewardType) === '1')
+    .filter((p): p is NonNullable<Premio> => !!p && String(p.mRewardType) === tipo)
     .map((p) => ({ id: Number(p.mItemHash), peso: Math.max(1, Number(p.mProbScale) || 1) }))
     .filter((v) => MATERIALI.has(v.id));
+}
+
+/**
+ * I materiali di raccolta della quest: i premi di tipo 1 che sono materiali veri.
+ * Se la quest non ne ha (292 quest, quasi tutte ticket-premio), per scelta del
+ * gestore del server (30/09) si usano i suoi materiali di tipo 0, i premi principali.
+ */
+export function materialiDiRaccolta(premi: readonly Premio[] | null | undefined) {
+  const raccolta = materialiDiTipo(premi, '1');
+  return raccolta.length ? raccolta : materialiDiTipo(premi, '0');
 }
 
 const itemListMateriale = (id: number, amount: number) => ({

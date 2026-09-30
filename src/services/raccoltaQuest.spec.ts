@@ -21,6 +21,11 @@ describe('raccoltaQuest', () => {
     expect(materialiDiRaccolta([{ mItemHash: '999', mProbScale: '1', mRewardType: '1' }])).toEqual([]);
   });
 
+  it('a quest without gathering rewards falls back to its type-0 materials', () => {
+    expect(materialiDiRaccolta([{ mItemHash: '1714092880', mProbScale: '2', mRewardType: '0' }, { mItemHash: '116224693', mProbScale: '1', mRewardType: '2' }]))
+      .toEqual([{ id: 1714092880, peso: 2 }]);
+  });
+
   it('a gathering block gets its point filled in the tutorial shape', () => {
     const r = campiBlocco(BLOCCO_SCAVO, 1, PREMI, 's:q')!;
     const [serial] = (punti as Record<string, number[]>)[String(BLOCCO_SCAVO)]!;

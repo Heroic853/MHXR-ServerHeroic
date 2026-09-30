@@ -16,7 +16,8 @@ import { readFile } from 'fs/promises';
 
 import QuestSheet from '../../../model/questSheet.js';
 import { blocchiPerAvvio } from '../../../services/blocchiQuest.js';
-import { campiTesoro, tesoroDelBlocco } from '../../../services/tesoriIsole.js';
+import { applicaRaccolta, salvaRaccolta, raccoltoDaiBlocchi, type PuntoAvviato } from '../../../services/raccoltaQuest.js';
+import { tesoroDelBlocco } from '../../../services/tesoriIsole.js';
 import { mappaProgressiva, missioniCompletate } from '../../../services/progressioneStoria.js';
 import { aggiungiKaridama, saldoKaridama, karidamaConBonus, KARIDAMA_A_MISSIONE, KARIDAMA_PRINCIPALE } from '../../../services/karidamaService.js';
 import type { IslandStartInput, IslandEndInput, IslandMapAllInput } from './quest.schema.js';
@@ -294,20 +295,22 @@ export const islandStart = async (req: Request, res: Response) => {
       return encryptAndSend({}, res, req, ERROR_CODE.QUEST_INFO_FAILED);
     }
     blocks.forEach((block, index) => {
-      // Il forziere del tesoro dell'isola, se il blocco ce l'ha (services/tesoriIsole.ts).
-      const tesoro = campiTesoro(block, index + 1);
-      if (tesoro.drop_list.length) log.info('秘宝 | %s: forziere nel blocco %d (%s)', doc.character_name ?? '?', index + 1, tesoroDelBlocco(block)?.nome);
+      if (tesoroDelBlocco(block)) log.info('秘宝 | %s: forziere nel blocco %d (%s)', doc.character_name ?? '?', index + 1, tesoroDelBlocco(block)?.nome);
       data.instance_data.block_list.push({
         block_idx: index + 1,
-        block_instance_list: tesoro.block_instance_list,
-        drop_list: tesoro.drop_list as never[],
-        instance_id: tesoro.instance_id,
+        block_instance_list: [],
+        drop_list: [],
+        instance_id: 0,
         is_insert: 0,
         is_raid: 0,
         mst_block_id: block,
-        repop_list: tesoro.repop_list,
+        repop_list: [],
       });
     });
+    // Forzieri del tesoro e punti di raccolta (services/raccoltaQuest.ts).
+    const sessione = String((req.body as { session_id?: string }).session_id ?? '');
+    const punti = applicaRaccolta(data.instance_data.block_list, quest?.mRewardItemList, `${sessione}:${startedQuest}`);
+    await salvaRaccolta((f, u) => User.updateOne(f, u), sessione, startedQuest, punti);
     encryptAndSend(data, res, req);
   } catch (error) {
     log.error('Error in islandStart:', error);
@@ -626,6 +629,17 @@ export const islandEnd = async (req: Request, res: Response) => {
     let augite: ReturnType<typeof daiAugite> = null;
     if (doc.box) {
       const c = accreditaPremi(doc.box as unknown as BoxPremi, premi.vinti);
+      // Quello che si e' raccolto nei punti di raccolta (services/raccoltaQuest.ts):
+      // solo i punti dell'ultima quest avviata che il gioco dice di aver usato.
+      const avviata = (doc as unknown as { raccolta_avviata?: { mst_quest_id?: number; punti?: PuntoAvviato[] } }).raccolta_avviata;
+      if (avviata && Number(avviata.mst_quest_id) === Number(cleared_quest)) {
+        const presi = raccoltoDaiBlocchi(avviata.punti, (req.body as { blocks?: unknown }).blocks);
+        if (presi.size) {
+          accreditaPremi(doc.box as unknown as BoxPremi, new Map([...presi].map(([id, quanti]) => [id, { quanti, famiglia: 'materiale' as Famiglia }])));
+          log.info('raccolta | %s: %s', doc.character_name ?? '?', [...presi].map(([id, n]) => `${id} x${n}`).join(', '));
+        }
+      }
+      update.raccolta_avviata = null;
       augite = daiAugite(doc.box.monument as { augite?: VoceAugite[] } | undefined);
       if (augite) log.info('輝石 | %s riceve %d x tipo %d', doc.character_name ?? '?', augite.amount, augite.mst_monument_type_id);
       // 狩玉 guadagnati giocando (niente microtransazioni): servono per il gacha dei gatti.

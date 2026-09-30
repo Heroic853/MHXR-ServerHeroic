@@ -43,6 +43,7 @@ export type IslandMapAllInput = z.infer<typeof IslandMapAllSchema>;
 export const EventStartSchema = z
   .object({
     mst_quest_id: questIdSchema,
+    session_id: sessionIdSchema.optional(),
     ...commonRequestFields,
     atk: z.number().int().optional(),
     def: z.number().int().optional(),
@@ -67,6 +68,7 @@ export const EternalStartSchema = z
   .object({
     mst_quest_id: questIdSchema,
     mst_eternal_node_id: z.number().int(),
+    session_id: sessionIdSchema.optional(),
     ...commonRequestFields,
     atk: z.number().int().optional(),
     def: z.number().int().optional(),

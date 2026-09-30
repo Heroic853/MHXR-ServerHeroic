@@ -11,7 +11,9 @@ import { createLogger } from '../../../middleware/logger.js';
 const log = createLogger('quest');
 
 import QuestSheet from '../../../model/questSheet.js';
+import User from '../../../model/user.js';
 import { blocchiPerAvvio } from '../../../services/blocchiQuest.js';
+import { applicaRaccolta, salvaRaccolta } from '../../../services/raccoltaQuest.js';
 import type { EternalStartInput } from './quest.schema.js';
 
 interface BlockListItem {
@@ -103,6 +105,10 @@ export const eternalStart = async (req: Request, res: Response) => {
         ],
       });
     });
+    // Forzieri del tesoro e punti di raccolta (services/raccoltaQuest.ts).
+    const sessione = String((req.body as { session_id?: string }).session_id ?? '');
+    const punti = applicaRaccolta(data.instance_data.block_list, quest?.mRewardItemList, `${sessione}:${startedQuest}`);
+    await salvaRaccolta((f, u) => User.updateOne(f, u), sessione, startedQuest, punti);
     encryptAndSend(data, res, req);
   } catch (error) {
     log.error('Error in eternalStart:', error);

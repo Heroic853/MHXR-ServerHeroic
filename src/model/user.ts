@@ -62,6 +62,8 @@ export interface IUser extends Document {
   // Bonus % sulle 狩玉 di fine missione e decimali accumulati (karidamaConBonus).
   bonus_karidama?: number;
   karidama_frazione?: number;
+  // Cosa c'e' nei punti di raccolta dell'ultima quest avviata (services/raccoltaQuest.ts).
+  raccolta_avviata?: { mst_quest_id: number; punti: { instance_id: number; mst_material_id: number; amount: number }[] } | null;
   comment?: string;
   tutorial_flags: number[];
   model_info?: ModelInfo;
@@ -186,6 +188,7 @@ const userSchema = new Schema({
   progressione_storia: { type: Boolean, default: true },
   bonus_karidama: { type: Number, default: 0 },
   karidama_frazione: { type: Number, default: 0 },
+  raccolta_avviata: { type: mongoose.Schema.Types.Mixed, default: null },
   current_session: String,
   comment: String,
   tutorial_flags: [Number],

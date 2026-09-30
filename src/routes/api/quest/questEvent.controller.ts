@@ -6,7 +6,9 @@ import { Event, AssualtEvents, M16Events, ScoreEvents, StandingEvents, TicketEve
 const log = createLogger('quest');
 
 import QuestSheet from '../../../model/questSheet.js';
+import User from '../../../model/user.js';
 import { blocchiPerAvvio } from '../../../services/blocchiQuest.js';
+import { applicaRaccolta, salvaRaccolta } from '../../../services/raccoltaQuest.js';
 import type { EventStartInput } from './quest.schema.js';
 
 interface BlockListItem {
@@ -112,6 +114,10 @@ export const eventNormalStart = async (req: Request, res: Response) => {
       });
     });
 
+    // Forzieri del tesoro e punti di raccolta (services/raccoltaQuest.ts).
+    const sessione = String((req.body as { session_id?: string }).session_id ?? '');
+    const punti = applicaRaccolta(data.instance_data.block_list, quest?.mRewardItemList, `${sessione}:${mst_quest_id}`);
+    await salvaRaccolta((f, u) => User.updateOne(f, u), sessione, mst_quest_id, punti);
     encryptAndSend(data, res, req);
   } catch (error) {
     log.error('Error in eventNormalStart:', error);
@@ -180,6 +186,10 @@ export const eventTicketStart = async (req: Request, res: Response) => {
       });
     });
 
+    // Forzieri del tesoro e punti di raccolta (services/raccoltaQuest.ts).
+    const sessione = String((req.body as { session_id?: string }).session_id ?? '');
+    const punti = applicaRaccolta(data.instance_data.block_list, quest?.mRewardItemList, `${sessione}:${startedQuest}`);
+    await salvaRaccolta((f, u) => User.updateOne(f, u), sessione, startedQuest, punti);
     encryptAndSend(data, res, req);
   } catch (error) {
     log.error('Error in eventTicketStart:', error);
@@ -248,6 +258,10 @@ export const eventScoreStart = async (req: Request, res: Response) => {
       });
     });
 
+    // Forzieri del tesoro e punti di raccolta (services/raccoltaQuest.ts).
+    const sessione = String((req.body as { session_id?: string }).session_id ?? '');
+    const punti = applicaRaccolta(data.instance_data.block_list, quest?.mRewardItemList, `${sessione}:${startedQuest}`);
+    await salvaRaccolta((f, u) => User.updateOne(f, u), sessione, startedQuest, punti);
     encryptAndSend(data, res, req);
   } catch (error) {
     log.error('Error in eventScoreStart:', error);

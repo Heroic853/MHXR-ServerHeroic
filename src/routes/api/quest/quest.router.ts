@@ -88,15 +88,9 @@ questRouter.post('/training/start', validate(TrainingStartSchema), questTraining
 questRouter.post('/training/end', validate(TrainingEndSchema), questTrainingController.trainingEnd);
 
 //questRouter.post("/reward/exchange", );
-// Il gioco la chiama dopo island/end (che manda final_reward_info) per il
-// "premio finale". Mai implementata nell'originale: rispondeva 404 e il client
-// riprovava all'infinito (visto nei log: 10 tentativi di fila). Il formato vero
-// della risposta (nResponse::Add_final) non e' noto: si usa la stessa risposta
-// vuota dell'originale per retire/continue, cosi' il gioco va avanti. I premi
-// normali della missione li ha gia' accreditati island/end.
-// Niente validate(): la richiesta porta campi mai visti (uno schema stretto la
-// rifiuterebbe) e la risposta vuota non legge niente dal body.
-questRouter.post('/reward/final', notImplemented.blankResponseEncrypted);
+// "Tutti i premi x5" pagato in 狩玉, dopo island/end (final_reward_info):
+// vedi rewardFinal. Niente validate(): la richiesta porta campi mai visti.
+questRouter.post('/reward/final', questIslandController.rewardFinal);
 //questRouter.post("/reward/normal", );
 
 //questRouter.post("/reward/m16/point", );

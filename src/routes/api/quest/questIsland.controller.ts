@@ -19,7 +19,7 @@ import { blocchiPerAvvio } from '../../../services/blocchiQuest.js';
 import { applicaRaccolta, salvaRaccolta, raccoltoDaiBlocchi, type PuntoAvviato } from '../../../services/raccoltaQuest.js';
 import { tesoroDelBlocco } from '../../../services/tesoriIsole.js';
 import { mappaProgressiva, missioniCompletate } from '../../../services/progressioneStoria.js';
-import { aggiungiKaridama, saldoKaridama, karidamaConBonus, KARIDAMA_A_MISSIONE, KARIDAMA_PRINCIPALE } from '../../../services/karidamaService.js';
+import { aggiungiKaridama, saldoKaridama, spendiKaridama, karidamaConBonus, KARIDAMA_A_MISSIONE, KARIDAMA_PRINCIPALE } from '../../../services/karidamaService.js';
 import type { IslandStartInput, IslandEndInput, IslandMapAllInput } from './quest.schema.js';
 
 interface BlockListItem {
@@ -629,6 +629,12 @@ export const islandEnd = async (req: Request, res: Response) => {
     let augite: ReturnType<typeof daiAugite> = null;
     if (doc.box) {
       const c = accreditaPremi(doc.box as unknown as BoxPremi, premi.vinti);
+      // Per il "tutti i premi x5" pagato in 狩玉 (rewardFinal): si ricordano i premi
+      // appena dati. Armi e armature no: sono pezzi unici, non si moltiplicano.
+      update.ultimi_premi = {
+        mst_quest_id: Number(cleared_quest),
+        vinti: [...premi.vinti].filter(([, v]) => v.famiglia !== 'equipaggiamento').map(([id, v]) => [id, v.quanti, v.famiglia]),
+      };
       // Quello che si e' raccolto nei punti di raccolta (services/raccoltaQuest.ts):
       // solo i punti dell'ultima quest avviata che il gioco dice di aver usato.
       const avviata = (doc as unknown as { raccolta_avviata?: { mst_quest_id?: number; punti?: PuntoAvviato[] } }).raccolta_avviata;
@@ -664,9 +670,10 @@ export const islandEnd = async (req: Request, res: Response) => {
     ],
     clear_bingo_mission_ids: [],
     clear_subtarget_ids: [],
+    // "Tutti i premi xN per M 狩玉": lo paga e lo applica rewardFinal (quest/reward/final).
     final_reward_info: {
-      multiplier: 5, //Multiplyer on all rewards
-      value: 2,
+      multiplier: PREMIO_FINALE.moltiplicatore,
+      value: PREMIO_FINALE.prezzo,
     },
     get_accum_reward_ids: [],
     get_guild_accum_reward_ids: [],
@@ -810,6 +817,63 @@ export const islandEnd = async (req: Request, res: Response) => {
   } catch (error) {
     log.error('Error in islandEnd:', error);
     encryptAndSend({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG, 'Island end failed');
+  }
+};
+
+/*
+ * "全ての報酬5倍": a fine missione, aperti tutti i riquadri, il gioco offre di
+ * moltiplicare x5 i premi pagando 2 狩玉 (final_reward_info). Quando si preme
+ * chiama quest/reward/final (nessun campo nella richiesta; risposta
+ * cAPIQuestRewardFinal::Response letta con Ghidra: payments = saldo aggiornato).
+ * Qui: si scala il prezzo e si aggiungono gli altri (xN - 1) premi dell'ultima
+ * missione finita, una volta sola. Senza premi da moltiplicare non si paga niente.
+ */
+export const PREMIO_FINALE = { moltiplicatore: 5, prezzo: 2 };
+
+export const rewardFinal = async (req: Request, res: Response) => {
+  try {
+    const { session_id } = req.body as { session_id?: string };
+    const doc = await User.findOne({ current_session: session_id });
+    if (!doc) {
+      return encryptAndSend({}, res, req, ERROR_CODE.NOT_AUTHENTICATED);
+    }
+    const box = doc.box as unknown as BoxPremi & { payments?: { mst_payment_id?: number | null; amount?: number | null }[] };
+    const risposta = () => ({
+      is_pop_not_enough_zeny: 0,
+      point_info: {
+        armor_skill_value: 0, campaign_value: 0, get_point: 0, guild_bingo_bonus: 0, guild_total_point: 0,
+        m16_get_point: 0, mst_event_info_id: 2740334662, mst_event_point_id: 2992123464, now_point: 0, total_point: 0,
+      },
+      get_accum_reward_ids: [],
+      get_guild_accum_reward_ids: [],
+      get_loop_random_reward_ids: [],
+      get_loop_reward_ids: [],
+      max_potential_equipments: [],
+      payments: (box?.payments ?? []).map((p) => ({ mst_payment_id: Number(p.mst_payment_id), amount: Number(p.amount ?? 0) })),
+    });
+    const ultimi = (doc as unknown as { ultimi_premi?: { mst_quest_id: number; vinti: [number, number, Famiglia][] } | null }).ultimi_premi;
+    if (!box || !ultimi?.vinti?.length) {
+      return encryptAndSend(risposta(), res, req);
+    }
+    if (!spendiKaridama(box, PREMIO_FINALE.prezzo)) {
+      return encryptAndSend({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG,
+        `狩玉が足りません (Not enough karidama: ${saldoKaridama(box.payments)}/${PREMIO_FINALE.prezzo})`);
+    }
+    accreditaPremi(box, new Map(ultimi.vinti.map(([id, quanti, famiglia]) => [id, { quanti: quanti * (PREMIO_FINALE.moltiplicatore - 1), famiglia }])));
+    // Una volta sola: vale solo se i premi da moltiplicare sono ancora quelli letti.
+    const r = await User.updateOne(
+      { _id: doc._id, 'ultimi_premi.mst_quest_id': ultimi.mst_quest_id },
+      { $set: { box: doc.box, ultimi_premi: null } },
+    );
+    if (r.modifiedCount !== 1) {
+      return encryptAndSend(risposta(), res, req);
+    }
+    log.info('premi x%d | %s paga %d 狩玉, quest=%s, voci=%d, saldo %d', PREMIO_FINALE.moltiplicatore, doc.character_name ?? '?',
+      PREMIO_FINALE.prezzo, String(ultimi.mst_quest_id), ultimi.vinti.length, saldoKaridama(box.payments));
+    encryptAndSend(risposta(), res, req);
+  } catch (error) {
+    log.error('Error in rewardFinal:', error);
+    encryptAndSend({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG, 'Reward final failed');
   }
 };
 

@@ -191,6 +191,8 @@ const userSchema = new Schema({
   raccolta_avviata: { type: mongoose.Schema.Types.Mixed, default: null },
   // Premi dell'ultima missione finita, per il "x5" pagato in 狩玉 (rewardFinal).
   ultimi_premi: { type: mongoose.Schema.Types.Mixed, default: null },
+  // Continua usati nella quest in corso (quest/continue).
+  continua: { type: mongoose.Schema.Types.Mixed, default: null },
   current_session: String,
   comment: String,
   tutorial_flags: [Number],

@@ -25,7 +25,8 @@ questRouter.post('/result/end', validate(SessionOnlySchema), questController.que
 //questRouter.post("/result/retry", );
 
 questRouter.post('/retire', notImplemented.blankResponseEncrypted);
-questRouter.post('/continue', notImplemented.blankResponseEncrypted);
+// Continua dopo la sconfitta: 5 狩玉 (const_data continuePrice), vedi questContinue.
+questRouter.post('/continue', questController.questContinue);
 
 //Island
 questRouter.post('/island/map/all', validate(IslandMapAllSchema), questIslandController.islandMapAll);

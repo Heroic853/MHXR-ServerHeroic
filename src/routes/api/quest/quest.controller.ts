@@ -14,6 +14,7 @@ import QuestSheet from '../../../model/questSheet.js';
 import User from '../../../model/user.js';
 import { blocchiPerAvvio } from '../../../services/blocchiQuest.js';
 import { applicaRaccolta, salvaRaccolta } from '../../../services/raccoltaQuest.js';
+import { spendiKaridama, saldoKaridama } from '../../../services/karidamaService.js';
 import type { EternalStartInput } from './quest.schema.js';
 
 interface BlockListItem {
@@ -153,4 +154,42 @@ export const eternalAll = (req: Request, res: Response) => {
     ],
   };
   encryptAndSend(data, res, req);
+};
+
+/*
+ * Continua dopo la sconfitta (quest/continue), pagato in 狩玉.
+ * Il prezzo e' quello del gioco: const_data (rServerConstData) continuePrice = 5,
+ * letto dal client con sServer::getContinueKaridama. Richiesta: mst_quest_id,
+ * quest_instance_id, continue_data; risposta (cAPIQuestContinue::Response, da
+ * Ghidra): payments (saldo aggiornato) e continue_num (continua usati).
+ * Prima rispondeva vuoto: il gioco ripartiva senza scalare niente.
+ */
+export const PREZZO_CONTINUA = 5;
+
+export const questContinue = async (req: Request, res: Response) => {
+  try {
+    const { session_id, mst_quest_id, quest_instance_id } = req.body as { session_id?: string; mst_quest_id?: number; quest_instance_id?: number };
+    const doc = await User.findOne({ current_session: session_id });
+    if (!doc?.box) {
+      return encryptAndSend({}, res, req, ERROR_CODE.NOT_AUTHENTICATED);
+    }
+    const box = doc.box as unknown as { payments?: { mst_payment_id?: number | null; amount?: number | null }[] };
+    if (!spendiKaridama(box, PREZZO_CONTINUA)) {
+      return encryptAndSend({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG,
+        `狩玉が足りません (Not enough karidama: ${saldoKaridama(box.payments)}/${PREZZO_CONTINUA})`);
+    }
+    // Continua usati: si contano per la stessa quest avviata (stesso quest_instance_id).
+    const prima = (doc as unknown as { continua?: { mst_quest_id?: number; quest_instance_id?: number; num?: number } | null }).continua;
+    const stessa = prima && Number(prima.mst_quest_id) === Number(mst_quest_id) && Number(prima.quest_instance_id) === Number(quest_instance_id);
+    const continua = { mst_quest_id: Number(mst_quest_id), quest_instance_id: Number(quest_instance_id), num: (stessa ? Number(prima!.num) || 0 : 0) + 1 };
+    await User.updateOne({ _id: doc._id }, { $set: { 'box.payments': box.payments, continua } });
+    log.info('continua | %s paga %d 狩玉 (quest=%s, continua n.%d), saldo %d', doc.character_name ?? '?', PREZZO_CONTINUA, String(mst_quest_id), continua.num, saldoKaridama(box.payments));
+    encryptAndSend({
+      continue_num: continua.num,
+      payments: (box.payments ?? []).map((p) => ({ mst_payment_id: Number(p.mst_payment_id), amount: Number(p.amount ?? 0) })),
+    }, res, req);
+  } catch (error) {
+    log.error('Error in questContinue:', error);
+    encryptAndSend({}, res, req, ERROR_CODE.GENERIC_ERROR, ERROR_CATEGORY.ERROR_DIALOG, 'Quest continue failed');
+  }
 };
